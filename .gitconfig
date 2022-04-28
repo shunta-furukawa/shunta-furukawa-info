@@ -1,0 +1,9 @@
+[user]
+	email = shunta.furukawa.info@gmail.com
+	name = Shunta Furukawa
+[url "https://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:x-oauth-basic@github.com/"]
+	insteadOf = https://github.com/
+[diff]
+    tool = default-difftool
+[difftool "default-difftool"]
+    cmd = code --wait --diff $LOCAL $REMOTE
