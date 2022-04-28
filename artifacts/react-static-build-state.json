@@ -1,0 +1,62 @@
+{
+  "prefetchRate": 5,
+  "maxThreads": null,
+  "disableRoutePrefixing": false,
+  "outputFileRate": 100,
+  "extensions": [
+    ".js",
+    ".jsx"
+  ],
+  "minLoadTime": 200,
+  "disablePreload": false,
+  "disableRuntime": false,
+  "preloadPollInterval": 300,
+  "productionSourceMaps": false,
+  "silent": false,
+  "entry": "index.js",
+  "plugins": [
+    [
+      "/Users/s05200/go/src/github.com/shunta-furukawa/shunta-furukawa-info/node_modules/react-static-plugin-source-filesystem/node.api.js",
+      {
+        "location": "/Users/s05200/go/src/github.com/shunta-furukawa/shunta-furukawa-info/src/pages"
+      }
+    ],
+    "/Users/s05200/go/src/github.com/shunta-furukawa/shunta-furukawa-info/node_modules/react-static-plugin-reach-router/browser.api.js",
+    "/Users/s05200/go/src/github.com/shunta-furukawa/shunta-furukawa-info/node_modules/react-static-plugin-sitemap/dist/node.api.js",
+    "/Users/s05200/go/src/github.com/shunta-furukawa/shunta-furukawa-info"
+  ],
+  "paths": {
+    "ROOT": "/Users/s05200/go/src/github.com/shunta-furukawa/shunta-furukawa-info",
+    "SRC": "/Users/s05200/go/src/github.com/shunta-furukawa/shunta-furukawa-info/src",
+    "DIST": "/Users/s05200/go/src/github.com/shunta-furukawa/shunta-furukawa-info/dist",
+    "ASSETS": "/Users/s05200/go/src/github.com/shunta-furukawa/shunta-furukawa-info/dist",
+    "PLUGINS": "/Users/s05200/go/src/github.com/shunta-furukawa/shunta-furukawa-info/plugins",
+    "TEMP": "/Users/s05200/go/src/github.com/shunta-furukawa/shunta-furukawa-info/tmp",
+    "ARTIFACTS": "/Users/s05200/go/src/github.com/shunta-furukawa/shunta-furukawa-info/artifacts",
+    "PUBLIC": "/Users/s05200/go/src/github.com/shunta-furukawa/shunta-furukawa-info/public",
+    "NODE_MODULES": "/Users/s05200/go/src/github.com/shunta-furukawa/shunta-furukawa-info/node_modules",
+    "EXCLUDE_MODULES": "/Users/s05200/go/src/github.com/shunta-furukawa/shunta-furukawa-info/node_modules",
+    "PACKAGE": "/Users/s05200/go/src/github.com/shunta-furukawa/shunta-furukawa-info/package.json",
+    "HTML_TEMPLATE": "/Users/s05200/go/src/github.com/shunta-furukawa/shunta-furukawa-info/dist/index.html",
+    "STATIC_DATA": "/Users/s05200/go/src/github.com/shunta-furukawa/shunta-furukawa-info/dist/staticData"
+  },
+  "siteRoot": "/",
+  "basePath": "",
+  "publicPath": "/",
+  "assetsPath": "",
+  "extractCssChunks": false,
+  "inlineCss": false,
+  "babelExcludes": [],
+  "devServer": {
+    "host": "localhost",
+    "port": 3000
+  },
+  "terser": {
+    "terserOptions": {
+      "mangle": {},
+      "parse": {},
+      "compress": {},
+      "output": {}
+    }
+  }
+}
