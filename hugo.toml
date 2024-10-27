@@ -1,0 +1,4 @@
+baseURL = 'https://shunta-furukawa.info'
+languageCode = 'ja-jp'
+title = 'SHUNTA FURUKAWA INFO'
+theme = 'shunta-furukawa-info'
