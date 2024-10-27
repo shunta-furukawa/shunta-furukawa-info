@@ -1,22 +1,197 @@
+/* 全体の設定 */
 body {
-  color: #222;
-  font-family: sans-serif;
-  line-height: 1.5;
-  margin: 1rem;
-  max-width: 768px;
+  font-family: Arial, sans-serif;
+  color: #333;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
 }
 
+/* ナビゲーション */
 header {
-  border-bottom: 1px solid #222;
-  margin-bottom: 1rem;
+  background-color: #fff;
+  padding: 20px;
+  border-bottom: 2px solid #ddd;
 }
 
-footer {
-  border-top: 1px solid #222;
-  margin-top: 1rem;
+header nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-a {
-  color: #00e;
+header nav a {
+  color: #333;
   text-decoration: none;
+  margin: 0 10px;
+}
+
+header nav .logo {
+  font-weight: bold;
+  font-size: 1.5em;
+}
+
+/* アクセントカラー */
+header nav a:hover, 
+footer p {
+  color: #ff007f; /* ショッキングピンク */
+}
+
+/* メインコンテンツ */
+main {
+  padding: 20px;
+}
+
+/* カードデザイン */
+.card {
+  border: 1px solid #ddd;
+  background-color: #fff;
+  padding: 20px;
+  margin-bottom: 20px;
+  transition: box-shadow 0.3s;
+}
+
+.card:hover {
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+  color: #333;
+  margin-top: 0;
+}
+
+.card-link {
+  color: #ff007f; /* ショッキングピンク */
+  text-decoration: none;
+}
+
+.card-link:hover {
+  text-decoration: underline;
+}
+
+/* フッター */
+footer {
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 10px 0;
+  margin-top: 20px;
+}
+
+/* ヘッダーにトランジションエフェクトを追加 */
+header {
+  background-color: #fff;
+  padding: 20px;
+  border-bottom: 2px solid #ddd;
+  position: fixed;
+  width: 100%;
+  top: -100px;
+  /* 初期位置を画面外に */
+  transition: top 0.6s ease;
+  /* スライドダウン効果 */
+  z-index: 1000;
+}
+
+header.visible {
+  top: 0;
+  /* スクロールで表示される */
+}
+
+header nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ヘッダーのリンクエフェクト */
+header nav a {
+  color: #333;
+  text-decoration: none;
+  margin: 0 10px;
+  position: relative;
+  overflow: hidden;
+  transition: color 0.3s ease;
+}
+
+header nav a::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 100%;
+  height: 2px;
+  background-color: #ff007f;
+  transform: translateX(-50%) scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+header nav a:hover::after {
+  transform: translateX(-50%) scaleX(1);
+  /* ホバーでラインがスライドイン */
+}
+
+header nav a:hover {
+  color: #ff007f;
+}
+
+/* コンテンツエリアの初期設定 */
+main section {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* 表示された時のスタイル */
+main section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.card {
+  border: 1px solid #ddd;
+  background-color: #fff;
+  padding: 20px;
+  margin-bottom: 20px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  /* 拡大 */
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.card-link {
+  display: inline-block;
+  padding: 10px 20px;
+  color: #fff;
+  background-color: #333;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  transition: background-color 0.3s ease;
+}
+
+.card-link:hover {
+  background-color: #ff007f;
+}
+
+.card-link::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300%;
+  height: 300%;
+  background-color: #ff007f;
+  transition: transform 0.6s ease;
+  transform: translate(-50%, -50%) scale(0);
+}
+
+.card-link:hover::before {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+html {
+  scroll-behavior: smooth;
 }
