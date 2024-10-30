@@ -195,3 +195,141 @@ main section.visible {
 html {
   scroll-behavior: smooth;
 }
+
+/* 基本的なスタイル */
+body {
+  background-color: #1a1a1a; /* 黒基調の背景 */
+  color: #ffffff;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+/* 丸いボタン */
+.button {
+  background-color: #ff007f; /* ピンクのアクセント */
+  color: #ffffff;
+  border: none;
+  border-radius: 50%; /* 丸くする */
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.button:hover {
+  transform: scale(1.05);
+}
+
+/* マットなカード */
+.card {
+  background-color: #333333; /* ダークグレーのマットな背景 */
+  color: #ffffff;
+  border-radius: 15px; /* 丸みのある角 */
+  padding: 20px;
+  width: 300px;
+  text-align: center;
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ピンクのアクセントライン */
+.accent-line {
+  background-color: #ff007f;
+  height: 4px;
+  width: 100px;
+  margin: 20px 0;
+  border-radius: 2px;
+}
+
+/* 丸いアイコン */
+.icon {
+  background-color: #333333;
+  color: #ff007f; /* ピンクのアクセント */
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+/* テキストとリンク */
+h1, h2, p {
+  margin: 0;
+  padding: 10px 0;
+}
+
+a {
+  color: #ff007f;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: #ff66a1;
+}
+
+/* ナビゲーションバーの基本スタイル */
+.navbar {
+  background-color: #333;
+  color: #fff;
+  padding: 15px 20px;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ロゴ */
+.logo {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #ff007f; /* アクセントカラー */
+  text-decoration: none;
+}
+
+/* ナビゲーションリンク */
+.nav-links a {
+  color: #fff;
+  margin: 0 15px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover {
+  color: #ff007f; /* ホバー時のアクセントカラー */
+}
+
+/* SNSリンク */
+.social-links a {
+  color: #ff007f;
+  margin-left: 15px;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.social-links a:hover {
+  color: #fff;
+}
