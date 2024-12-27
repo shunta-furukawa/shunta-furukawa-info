@@ -1,0 +1,11 @@
+<div class="skill-section">
+    <h2>{{ .category }}</h2>
+    {{ range .items }}
+    <div class="skill">
+        <h3>{{ .name }} <small>{{ .description }}</small></h3>
+        <div class="bar-container">
+            <div class="bar" data-colors="{{ $.color }}" data-years="{{ .years }}">{{ .years }}年</div>
+        </div>
+    </div>
+    {{ end }}
+</div>

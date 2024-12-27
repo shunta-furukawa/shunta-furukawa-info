@@ -1,0 +1,18 @@
+category: "プロジェクト管理"
+color: "#BAAB23"
+items:
+  - name: "プロジェクト計画立案"
+    description: "要件定義、スケジュール策定、リソース配分の計画。"
+    years: 8
+  - name: "チームリーダーシップ"
+    description: "メンバー間のタスク管理、技術指導、進捗管理。"
+    years: 8
+  - name: "プロダクトマネジメント"
+    description: "プロダクトの立ち上げから運用までの一貫したサポート（ABEMA広告案件管理システム）。"
+    years: 5
+  - name: "アジャイル開発"
+    description: "スクラムやカンバンを活用した開発プロセス管理。"
+    years: 5
+  - name: "ドキュメント作成"
+    description: "設計仕様書、ユーザーマニュアル、進捗レポートの作成。"
+    years: 8

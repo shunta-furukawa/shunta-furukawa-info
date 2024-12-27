@@ -1,0 +1,18 @@
+category: "バックエンド開発"
+color: "#4D9DE0"
+items:
+  - name: "Golang"
+    description: "広告配信サーバーのバックエンド実装や大規模配信システム開発など。"
+    years: 5
+  - name: "Kubernetes"
+    description: "オーケストレーションツールを用いたスケーラブルなシステム設計・運用。"
+    years: 5
+  - name: "Terraform"
+    description: "インフラ管理と自動化ツールの活用。"
+    years: 5
+  - name: "GCP / AWS"
+    description: "GCPやAWSを利用したインフラ設計、運用、およびアプリケーション開発。"
+    years: 5
+  - name: "Ruby on Rails"
+    description: "ユーザー属性ベースのインタラクションツールを開発・拡張。"
+    years: 3

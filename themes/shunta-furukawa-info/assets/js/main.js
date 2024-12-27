@@ -26,6 +26,8 @@ document.addEventListener("DOMContentLoaded", () => {
       lastScrollY = currentScrollY;
     });
 
+    /* メニュー ============================================*/ 
+    // メニューを開閉する
     const menuToggle = document.getElementById("menu-toggle");
     const menuDrawer = document.getElementById("menu-drawer");
     const menuClose = document.getElementById("menu-close");
@@ -46,5 +48,23 @@ document.addEventListener("DOMContentLoaded", () => {
             menuDrawer.classList.remove("open");
         }
     });
+
+    /* スキルのグラフアニメーション */ 
+    const bars = document.querySelectorAll(".bar");    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const bar = entry.target;
+            const years = bar.getAttribute("data-years");
+            const barColor = bar.getAttribute("data-colors");
+            bar.style.width = `${years * 5}%`; // 20年=100%として表示
+            bar.style.backgroundColor = barColor;            
+          }
+        });
+      },
+      { threshold: 0.5 } // 50%見えたら発火
+    );    
+    bars.forEach((bar) => observer.observe(bar));
 
 });

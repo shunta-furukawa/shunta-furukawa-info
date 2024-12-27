@@ -1,0 +1,9 @@
+category: "デザイン"
+color: "#7768AE"
+items:
+  - name: "グラフィックデザイン"
+    description: "iPhone向けアプリのビジュアルデザインを担当。"
+    years: 3
+  - name: "UI/UXデザイン"
+    description: "アプリやWebプロダクトでのUI設計、ユーザー体験向上のための改善提案。"
+    years: 8

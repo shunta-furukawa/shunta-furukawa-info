@@ -1,0 +1,6 @@
+category: "その他技術スキル"
+color: "#3BB273"
+items:
+  - name: "Docker"
+    description: "開発環境のコンテナ化およびCI/CDパイプラインで活用。"
+    years: 5

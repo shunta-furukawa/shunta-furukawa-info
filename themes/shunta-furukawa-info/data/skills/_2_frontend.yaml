@@ -1,0 +1,12 @@
+category: "フロントエンド開発"
+color: "#E15554"
+items:
+  - name: "HTML (Pug, Haml)"
+    description: "モバイルアプリやWebページの構造設計。"
+    years: 10
+  - name: "CSS (Sass, Less)"
+    description: "レスポンシブデザインやモダンCSSフレームワークの活用。"
+    years: 10
+  - name: "JavaScript (Vue.js, CoffeeScript, JSX, GAS)"
+    description: "フロントエンドロジックや動的UIの実装、SPA開発。"
+    years: 8
