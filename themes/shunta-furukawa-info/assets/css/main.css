@@ -275,7 +275,7 @@ main {
   margin-top: 20px;
   display: flex;
   justify-content: center;
-  gap: 15px;
+  gap: 65px;
 }
 
 .social-links a {
@@ -285,19 +285,14 @@ main {
   transition: color 0.3s;
 }
 
-.social-links a img {
-  width: 40px;
-  height: 40px;
-}
-
 .social-links a:hover {
   color: var(--primary-color);
 }
 
 @media (max-width: 768px) {
   .hero-logo img {
-      width: 300px;
-      height: 300px;
+      width: 250px;
+      height: 250px;
   }
 
   .hero-text h1 {
@@ -312,4 +307,13 @@ main {
   .hero-text {
       font-size: 1.2rem;
   }
+
+  .social-links {
+    gap: 50px;
+  }
+
+  .social-links a{
+    font-size: 1.5rem;
+  }
+  
 }
