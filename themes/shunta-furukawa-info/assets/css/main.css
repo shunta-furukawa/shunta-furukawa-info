@@ -1,319 +1,63 @@
 /* グローバル設定 */
 :root {
-  --primary-color: #fe1e75; /* ショッキングピンク */
-  --background-color: #1a1615; /* 黒基調の背景 */
-  --light-text: #fff;
-  --dark-text: #333;
-} 
+    --primary-color: #fe1e75; /* ショッキングピンク */
+    --background-color: #1a1615; /* 黒基調の背景 */
+    --light-text: #fff;
+    --dark-text: #333;
+}
 
 /* === リセットCSS === */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-body, html {
-  height: 100%;
+body,
+html {
+    height: 100%;
 }
 
 /* === 全体設定 === */
 body {
-  font-family: 'BuildingsTracks','RocknRollOne', sans-serif;
-  letter-spacing: -0.1rem;
-  line-height: 1.6;
-  color: #cbcbcb; /* テキストの基本色 */
-  background-color: #323232; /* 背景色 */
-  margin: 0;
-  padding: 0;
+    font-family: 'BuildingsTracks', 'RocknRollOne', sans-serif;
+    letter-spacing: -0.1rem;
+    line-height: 1.6;
+    color: #cbcbcb;
+    /* テキストの基本色 */
+    background-color: #323232;
+    /* 背景色 */
+    margin: 0;
+    padding: 0;
 }
 
 a {
-  text-decoration: none;
-  color: inherit;
-  transition: color 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.3s ease;
 }
 
 a:hover {
-  color: var(--primary-color); /* ホバー時のリンク色 */
+    color: var(--primary-color);
+    /* ホバー時のリンク色 */
 }
 
 ul {
-  list-style: none;
+    list-style: none;
 }
 
 img {
-  max-width: 100%;
-  height: auto;
-}
-
-/* === コンテナ設定 === */
-.container {
-  width: 100%;
-  margin: 0 auto;
-}
-
-/* === セクションの余白 === */
-section {
-  padding: 2rem 0;
-}
-
-/* === ヘッダー調整 === */
-.site-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 100;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px;
-  background: var(--background-color); /* ヘッダーの背景色 */
-  color: #fff;
-}
-
-.site-header .container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 70px;
-}
-
-/* ヘッダーを隠す状態 */
-.site-header.hide {
-  transform: translateY(-100%); /* 上に引っ込める */
-  transition: transform 0.3s ease; /* アニメーション効果 */
-}
-
-/* デフォルトの表示状態 */
-.site-header {
-  transform: translateY(0);
-  transition: transform 0.3s ease; /* アニメーション効果 */
-}
-
-
-/* === メインコンテンツ === */
-main {
-  padding-top: 100px; /* ヘッダー分のスペースを確保 */
-}
-
-/* === ヘッダーのロゴのホバーエフェクト === */
-.logo img {
-  height: 70px;
-  border-radius: 100px;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.logo img:hover {
-  transform: scale(1.1); /* ロゴを拡大 */
-  opacity: 0.8; /* 半透明にする */
-}
-
-.menu-toggle {
-  margin: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  cursor: pointer;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-/* === ハンバーガーメニューのホバーエフェクト === */
-.menu-toggle span {
-  width: 25px;
-  height: 3px;
-  background: #fff;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.menu-toggle:hover {
-  transform: scale(1.2); /* 軽く拡大 */
-}
-
-.menu-toggle:hover span{
-  background-color: var(--primary-color);  /* ホバー時に色を変更 */
-}
-
-
-/* ドロワーメニュー */
-.menu-drawer {
-  position: fixed;
-  top: 0;
-  right: -100%;
-  width: 300px;
-  height: 100%;
-  background: rgba(33, 33, 33, 0.8);
-  box-shadow: -5px 0 10px rgba(0, 0, 0, 0.2);
-  transition: right 0.3s ease;
-  z-index: 1000;
-}
-
-.menu-drawer.open {
-  right: 0;
-}
-
-.menu-drawer-content {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  padding: 1rem;
-}
-
-/* メニューを閉じるボタンのスタイル */
-.menu-close {
-  position: absolute; /* 絶対配置に変更 */
-  top: 1rem; /* 上からの余白 */
-  right: 1rem; /* 右からの余白 */
-  width: 30px;
-  height: 30px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: transform 0.3s ease; /* ホバー時のアニメーション */
-}
-
-.menu-close::before,
-.menu-close::after {
-  content: '';
-  position: absolute;
-  width: 24px;
-  height: 2px;
-  background-color: #333; /* バツの線の色 */
-  transition: transform 0.3s ease, background-color 0.3s ease; /* ホバー時のアニメーション */
-}
-
-.menu-close::before {
-  transform: rotate(45deg); /* バツの上側 */
-}
-
-.menu-close::after {
-  transform: rotate(-45deg); /* バツの下側 */
-}
-
-/* ホバー時のエフェクト */
-.menu-close:hover {
-  transform: rotate(90deg); /* ボタン全体を回転 */
-}
-
-.menu-close:hover::before,
-.menu-close:hover::after {
-  background-color: var(--primary-color); /* ホバー時に色を変更 */
-}
-
-.menu-links a {
-  display: block;
-  margin: 1rem 0;
-  font-size: 1.2rem;
-  color: var(--light-text);
-  text-decoration: none;
-}
-
-.menu-links a:hover {
-  color: var(--primary-color); 
-}
-
-.menu-socials a {
-  display: inline-block;
-  margin: 0 0.5rem;
-  color: var(--light-text);
-  text-decoration: none;
-}
-
-
-@font-face {
-  font-family: 'BuildingsTracks';
-  /* see https://typingart.stores.jp/items/6537e2344c088e01e797116c */ 
-  src: url('/fonts/Buildingsandundertherailwaytracksfree_ver.otf') format('opentype');  
+    max-width: 100%;
+    height: auto;
 }
 
 @font-face {
-  font-family: 'RocknRollOne';
-  src: url('/fonts/RocknRollOne-Regular.ttf') format('truetype');
+    font-family: 'BuildingsTracks';
+    /* see https://typingart.stores.jp/items/6537e2344c088e01e797116c */
+    src: url('/fonts/Buildingsandundertherailwaytracksfree_ver.otf') format('opentype');
 }
 
-.hero-container {
-  text-align: center;
-  padding: 20px;
-}
-
-.hero-logo {
-  display: inline-block;
-  margin: 20px;
-}
-
-.hero-logo img {
-  width: 450px;
-  height: 450px;
-  border-radius: 50%;
-}
-
-.hero-text {
-  font-size: 2rem;
-  color: #cccccc;
-}
-
-.hero-text h1 {
-  margin: 10px 0;
-  font-size: 2rem;
-  color: #ffffff;
-}
-
-.hero-text h1 span.name{
-  margin: 10px 0;
-  font-size: 4rem;
-  letter-spacing: -0.5rem;
-  color: #ffffff;
-}
-
-.social-links {
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-  gap: 65px;
-}
-
-.social-links a {
-  text-decoration: none;
-  color: #ffffff;
-  font-size: 2rem;
-  transition: color 0.3s;
-}
-
-.social-links a:hover {
-  color: var(--primary-color);
-}
-
-@media (max-width: 768px) {
-  .hero-logo img {
-      width: 250px;
-      height: 250px;
-  }
-
-  .hero-text h1 {
-      font-size: 1rem;
-  }
-
-  .hero-text h1 span.name{
-      font-size: 2rem;
-      letter-spacing: -0.25rem;
-    }
-
-  .hero-text {
-      font-size: 1.2rem;
-  }
-
-  .social-links {
-    gap: 50px;
-  }
-
-  .social-links a{
-    font-size: 1.5rem;
-  }
-  
+@font-face {
+    font-family: 'RocknRollOne';
+    src: url('/fonts/RocknRollOne-Regular.ttf') format('truetype');
 }
