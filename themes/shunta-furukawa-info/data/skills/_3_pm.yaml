@@ -8,7 +8,7 @@ items:
     description: "メンバー間のタスク管理、技術指導、進捗管理。"
     years: 8
   - name: "プロダクトマネジメント"
-    description: "プロダクトの立ち上げから運用までの一貫したサポート（ABEMA広告案件管理システム）。"
+    description: "プロダクトの立ち上げから運用までの一貫したサポート。"
     years: 5
   - name: "アジャイル開発"
     description: "スクラムやカンバンを活用した開発プロセス管理。"
