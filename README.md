@@ -112,6 +112,11 @@
 
 ---
 
+## 仕様ライブラリ
+[AOS](https://github.com/michalsnik/aos)
+
+---
+
 ## 参考リンク
 - [Hugo Documentation](https://gohugo.io/documentation/)
 - [GitHub Pages](https://pages.github.com/)

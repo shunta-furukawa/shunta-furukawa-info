@@ -4,12 +4,9 @@
   {{ partial "head.html" . }}
 </head>
 <body>
-  {{ partial "navbar.html" . }} <!-- ナビゲーションバーを表示 --> 
+  {{ partial "header.html" . }}
   <main>
     {{ block "main" . }}{{ end }}
   </main>
-  <footer>
-    {{ partial "footer.html" . }}
-  </footer>
 </body>
 </html>
