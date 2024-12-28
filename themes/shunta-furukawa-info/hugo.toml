@@ -2,20 +2,23 @@ baseURL = 'https://shunta-furukawa.info/'
 languageCode = 'ja-JP'
 title = 'SHUNTA FURUKAWA INFO'
 
-[[menus.main]]
-name = 'Home'
-pageRef = '/'
-weight = 10
+[[menu.main]]
+  identifier = "home"
+  name = "ホーム"
+  url = "/"
+  weight = 10
 
-[[menus.main]]
-name = 'Posts'
-pageRef = '/posts'
-weight = 20
+[[menu.main]]
+  identifier = "story"
+  name = "ストーリー"
+  url = "/story"
+  weight = 20
 
-[[menus.main]]
-name = 'Tags'
-pageRef = '/tags'
-weight = 30
+[[menu.main]]
+  identifier = "tags"
+  name = "タグ"
+  url = '/tags'
+  weight = 30
 
 [module]
   [module.hugoVersion]

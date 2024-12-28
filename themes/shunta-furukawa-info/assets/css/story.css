@@ -1,0 +1,163 @@
+.story-container {
+    text-align: center;
+}
+
+.story-container h1 {
+    font-size: 4rem;
+    color: #ffffff;
+}
+
+.story-container h2 {
+    width: 600px;
+    margin: 0 auto;
+    font-size: 1.5rem;
+    color: #AAA;
+    margin-bottom: 50px;
+}
+
+.timeline-container {
+    background-color: #030303;
+}
+
+.timeline {
+    text-align: left;
+    position: relative;
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+.timeline-line {
+    position: absolute;
+    left: 20px;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background-color: #FFFFFF;
+}
+
+.timeline-item {
+    position: relative;
+    margin-left: 50px;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: flex-start;
+}
+
+.timeline-item::before {
+    content: "";
+    position: absolute;
+    left: -38px;
+    top: 0;
+    height: 100%;
+    width: 20px;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+}
+
+.timeline-content {
+    padding: 10px 15px;
+    border-radius: 5px;
+    color: #ffffff;
+}
+
+.timeline-content h3 {
+    margin: 0 0 5px;
+    font-size: 1.9rem;
+    color: #FFFFFF;
+}
+
+.timeline-content-container {
+    display: flex;
+    /* 横並びにする */
+    align-items: center;
+    /* 縦方向の中央揃え */
+    gap: 20px;
+    /* コンテンツ間の隙間 */
+    flex-wrap: wrap;
+    /* 必要に応じて折り返す */
+}
+
+.text-content {
+    flex: 1;
+    /* 均等に幅を取る */
+}
+
+
+/* 画像コンテンツ */
+.image-content {
+    flex: 0.5;
+    /* 均等に幅を取る */
+    display: flex;
+    justify-content: center;
+}
+
+.image-content img {
+    width: 100%;
+    max-width: 250px;
+    max-height: 250px;
+    border-radius: 5px;
+}
+
+.timeline-description {
+    font-size: 0.9rem;
+    color: #CCCCCC;
+    margin-bottom: 10px;
+    font-family: 'RocknRollOne';
+    letter-spacing: 0.04em;
+}
+
+.timeline-skills {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.timeline-skills li {
+    background-color: #555;
+    color: #fff;
+    padding: 5px 20px;
+    margin: 5px;
+    font-size: 1rem;
+    border-radius: 30px;
+    line-height: 1rem;
+}
+
+@media (max-width: 768px) {
+
+    .timeline {
+        width: 95%;
+    }
+
+    .story-container h2 {
+        width: 300px;
+    }
+
+    .timeline-content h3{
+        font-size: 1.4rem;
+    }
+
+    .timeline-content h3 small {
+        display: block;
+    }
+
+    .timeline-content-container {
+        flex-direction: column;
+        /* 縦並びにする */
+    }
+
+    .text-content,
+    .image-content {
+        flex: none;
+        /* デフォルトの幅に戻す */
+        width: 100%;
+        /* 横幅を100%に設定 */
+    }
+
+    .image-content {
+        margin-top: 20px;
+        /* 余白を調整 */
+    }
+
+}

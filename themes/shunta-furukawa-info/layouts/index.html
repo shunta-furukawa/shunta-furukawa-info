@@ -13,12 +13,15 @@
     <a href="https://www.facebook.com/shunta.furukawa" target="_blank">{{ partialCached "icons/facebook.html" . }}</a>
     <a href="https://www.linkedin.com/in/shunta-furukawa" target="_blank">{{ partialCached "icons/linkedin.html" .
       }}</a>
-    <a href="https://github.com/shunta-furukawa" target="_blank">{{ partialCached "icons/github.html" . }}</img></a>
+    <a href="https://github.com/shunta-furukawa" target="_blank">{{ partialCached "icons/github.html" . }}</a>
   </div>
 </section>
 
 <section class="skill-container">
   <h1>スキルセット</h1>
+  <div class="story-link">
+    <a href="/story/" class="button">スキルの裏側にある物語を知る → </a>
+  </div>
   {{ range .Site.Data.skills }}
   {{ partial "skill_section.html" . }}
   {{ end }}

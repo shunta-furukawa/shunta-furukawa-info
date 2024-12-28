@@ -1,0 +1,27 @@
+<div class="timeline-container">
+    <div class="timeline">
+        <div class="timeline-line"></div>
+        {{ range .Site.Data.stories }}
+        <div class="timeline-item">
+            <div class="timeline-content">
+                <h3>{{ .period }} <small>{{ .title }}</small></h3>
+                <div class="timeline-content-container">
+                    <div class="text-content">
+                        {{ range .descriptions }}
+                        <p class="timeline-description">{{ . }}</p>
+                        {{ end }}
+                        <ul class="timeline-skills">
+                            {{ range .skills }}
+                            <li>{{ . }}</li>
+                            {{ end }}
+                        </ul>
+                    </div>
+                    <div class="image-content">
+                        <img src=" {{ .image }}" alt="{{ .title }}">
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{ end }}
+    </div>
+</div>

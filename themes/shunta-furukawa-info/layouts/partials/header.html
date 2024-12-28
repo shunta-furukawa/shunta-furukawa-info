@@ -20,17 +20,12 @@
 <div class="menu-drawer" id="menu-drawer">
     <div class="menu-drawer-content">
         <button class="menu-close" id="menu-close"></button> <!-- 空のボタン -->
-        <nav class="menu-links">
-            <a href="/">Home</a>
-            <a href="/">工事中...</a>
-            <!-- <a href="/blog">Blog</a>
-            <a href="/contact">Contact</a> -->
-        </nav>
+        {{ partial "menu.html" (dict "menuID" "main" "page" .) }}
         <div class="menu-socials">
             <a href="https://x.com/shunta_furukawa" target="_blank">{{ partialCached "icons/x.html" . }}</a>
             <a href="https://www.facebook.com/shunta.furukawa" target="_blank">{{ partialCached "icons/facebook.html" . }}</a>
             <a href="https://www.linkedin.com/in/shunta-furukawa" target="_blank">{{ partialCached "icons/linkedin.html" . }}</a>
-            <a href="https://github.com/shunta-furukawa" target="_blank">{{ partialCached "icons/github.html" . }}</img>
+            <a href="https://github.com/shunta-furukawa" target="_blank">{{ partialCached "icons/github.html" . }}</a>
         </div>
     </div>
 </div>

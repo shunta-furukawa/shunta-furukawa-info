@@ -51,6 +51,15 @@ img {
     height: auto;
 }
 
+/* Footer styles */
+footer {
+    background-color: #333; /* Dark background color */
+    color: #fff; /* White text color */
+    text-align: center;
+    padding: 10px 0;
+    font-size: 1rem;
+}
+
 @font-face {
     font-family: 'BuildingsTracks';
     /* see https://typingart.stores.jp/items/6537e2344c088e01e797116c */
@@ -61,3 +70,4 @@ img {
     font-family: 'RocknRollOne';
     src: url('/fonts/RocknRollOne-Regular.ttf') format('truetype');
 }
+
