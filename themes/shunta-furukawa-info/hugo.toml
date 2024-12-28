@@ -14,11 +14,11 @@ title = 'SHUNTA FURUKAWA INFO'
   url = "/story"
   weight = 20
 
-[[menu.main]]
-  identifier = "tags"
-  name = "タグ"
-  url = '/tags'
-  weight = 30
+# [[menu.main]]
+#   identifier = "tags"
+#   name = "タグ"
+#   url = '/tags'
+#   weight = 30
 
 [module]
   [module.hugoVersion]
