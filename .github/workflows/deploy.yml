@@ -38,6 +38,7 @@ jobs:
           external_repository: shunta-furukawa/shunta-furukawa.github.io
           publish_branch: gh-pages
           publish_dir: ./public
+          cname: shunta-furukawa.info
           user_name: github-actions[bot]
           user_email: 41898282+github-actions[bot]@users.noreply.github.com
           commit_message: "Deploy ${{ github.sha }}"
