@@ -6,7 +6,7 @@ DEPLOY_MSG ?= Deploy updates
 deploy: build
 	cd public && git add . && \
 		(git diff --cached --quiet || git commit -m "$(DEPLOY_MSG)") && \
-		git push origin master
+		git push upstream gh-pages
 	git add . && \
 		(git diff --cached --quiet || git commit -m "$(MSG)") && \
 		git push origin master
