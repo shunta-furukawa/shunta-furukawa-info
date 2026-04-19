@@ -27,29 +27,4 @@
   {{ end }}
 </section>
 
-
-<!-- ブログセクション
-<section id="blog">
-  <h2>Latest Blog Posts</h2>
-
-  <!-- 検索フォーム 
-  <form action="/search" method="get">
-    <input type="text" name="q" placeholder="Search blog posts..." />
-    <button type="submit">Search</button>
-  </form>
-
-  <!-- 最新投稿一覧 
-  <div class="latest-posts">
-    {{ range first 3 (where .Site.Pages "Section" "blog") }}
-      <article>
-        <h3><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
-        <p>{{ .Summary | truncate 100 }}</p>
-        <time datetime="{{ .Date }}">{{ .Date.Format "January 2, 2006" }}</time>
-      </article>
-    {{ end }}
-  </div>
-</section>
-
--->
-
 {{ end }}
