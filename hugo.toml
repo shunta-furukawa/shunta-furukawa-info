@@ -6,6 +6,8 @@ theme = 'shunta-furukawa-info'
 [params]
 author = 'Shunta Furukawa'
 description = 'バックエンドからフロントエンド、デザインまで。面白さとワクワクを、コードとアイデアで形にしていきます。'
+twitter_handle = '@shunta_furukawa'
+og_image = '/images/logo.jpg'
 
 [params.social]
 x = 'https://x.com/shunta_furukawa'
