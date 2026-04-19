@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* ストーリーのアニメーション */
 
-    const items = document.querySelectorAll('.story-item');
+    const items = document.querySelectorAll('.timeline-item');
     const storyObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
