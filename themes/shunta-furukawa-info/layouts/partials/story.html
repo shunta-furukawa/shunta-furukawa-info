@@ -1,7 +1,7 @@
 <div class="timeline-container">
     <div class="timeline">
         <div class="timeline-line"></div>
-        {{ range hugo.Data.stories }}
+        {{ range site.Data.stories }}
         <div class="timeline-item">
             <div class="timeline-content">
                 <h3>{{ .period }} <small>{{ .title }}</small></h3>
