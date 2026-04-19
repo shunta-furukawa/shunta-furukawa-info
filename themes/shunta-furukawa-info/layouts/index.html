@@ -18,7 +18,7 @@
   <div class="story-link">
     <a href="/story/" class="button">スキルの裏側にある物語を知る → </a>
   </div>
-  {{ range .Site.Data.skills }}
+  {{ range sort .Site.Data.skills "weight" }}
   {{ partial "skill_section.html" . }}
   {{ end }}
 </section>

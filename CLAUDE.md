@@ -50,8 +50,8 @@ git add . && git commit -m "Update site content" && git push origin master
 ### データ駆動コンテンツ
 `data/`ディレクトリのYAMLファイルでコンテンツを管理:
 
-- **`data/skills/`**: スキルセット情報（category, color, items配列）
-  - ファイル名のプレフィックス（`_1_`, `_2_`など）で表示順を制御
+- **`data/skills/`**: スキルセット情報（weight, category, color, items配列）
+  - `weight` フィールドで表示順を制御（テンプレート側で `sort ... "weight"`）
 - **`data/stories/`**: キャリア・経歴情報（title, period, descriptions, skills）
   - ファイル名は年月（`_YYYYMM.yaml`）
 
