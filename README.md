@@ -76,33 +76,31 @@
 
 ## デプロイ手順
 
-1. **サイトをビルド**
+ワンライナーでデプロイできます:
 
-   ```bash
-   hugo
-   ```
+```bash
+make deploy
+```
 
-   これにより、`public` ディレクトリに静的ファイルが生成されます。
+`make deploy` は以下を一括で実行します:
 
-2. **`public` をサブモジュールとしてコミット**
+1. `hugo` でサイトをビルド
+2. `public/` 配下を `shunta-furukawa/shunta-furukawa.github.io`（`master` ブランチ）に push
+3. 本リポジトリを `origin` に push
 
-   ```bash
-   cd public
-   git add .
-   git commit -m "Deploy updates"
-   git push origin master
-   cd ..
-   ```
+コミットメッセージをカスタマイズしたい場合:
 
-   > サブモジュールとして `public` を更新し、GitHub Pages にデプロイします。
+```bash
+make deploy MSG="記事を追加" DEPLOY_MSG="Deploy: 記事を追加"
+```
 
-3. **本リポジトリをコミット**
+手動で実行する場合は以下と同等です:
 
-   ```bash
-   git add .
-   git commit -m "Update site content"
-   git push origin main
-   ```
+```bash
+hugo
+cd public && git add . && git commit -m "Deploy updates" && git push origin master && cd ..
+git add . && git commit -m "Update site content" && git push origin master
+```
 
 ---
 

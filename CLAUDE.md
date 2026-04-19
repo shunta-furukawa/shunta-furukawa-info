@@ -10,27 +10,32 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```bash
 # ローカルサーバー起動（http://localhost:1313）
-hugo server
+make serve          # または hugo server
 
 # サイトビルド（publicディレクトリに出力）
-hugo
+make build          # または hugo
 
 # 新規記事作成
-hugo new posts/<記事名>.md
+make new NAME=<記事名>   # または hugo new posts/<記事名>.md
 ```
 
 ## デプロイ手順
 
-`public`ディレクトリはGitHub Pages用の別リポジトリとしてサブモジュール管理されている。
+`public`ディレクトリはGitHub Pages用の別リポジトリ（`shunta-furukawa/shunta-furukawa.github.io`）としてサブモジュール管理されている。
 
 ```bash
-# 1. ビルド
+# ワンライナー: ビルド → public を push → 本リポジトリを push
+make deploy
+
+# コミットメッセージをカスタマイズする場合
+make deploy MSG="記事を追加" DEPLOY_MSG="Deploy: 記事を追加"
+```
+
+手動でやる場合は以下と同等:
+
+```bash
 hugo
-
-# 2. publicをコミット・プッシュ
 cd public && git add . && git commit -m "Deploy updates" && git push origin master && cd ..
-
-# 3. 本リポジトリをコミット
 git add . && git commit -m "Update site content" && git push origin master
 ```
 
