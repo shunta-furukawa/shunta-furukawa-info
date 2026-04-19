@@ -21,7 +21,7 @@ section {
   align-items: center;
   padding: 15px;
   background: var(--background-color); /* ヘッダーの背景色 */
-  color: #fff;
+  color: var(--light-text);
 }
 
 .site-header .container {
@@ -74,7 +74,7 @@ main {
 .menu-toggle span {
   width: 25px;
   height: 3px;
-  background: #fff;
+  background: var(--light-text);
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
@@ -135,7 +135,7 @@ main {
   position: absolute;
   width: 24px;
   height: 2px;
-  background-color: #333; /* バツの線の色 */
+  background-color: var(--surface-panel); /* バツの線の色 */
   transition: transform 0.3s ease, background-color 0.3s ease; /* ホバー時のアニメーション */
 }
 
@@ -193,7 +193,7 @@ main {
 }
 
 .menu-socials a svg path{
-  fill: #ffffff;
+  fill: var(--light-text);
   transition: color 0.3s;
 }
 

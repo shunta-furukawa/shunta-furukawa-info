@@ -22,14 +22,14 @@
 .hero-text h1 {
   margin: 10px 0;
   font-size: 2rem;
-  color: #ffffff;
+  color: var(--light-text);
 }
 
 .hero-text h1 span.name{
   margin: 10px 0;
   font-size: 4rem;
   letter-spacing: -0.5rem;
-  color: #ffffff;
+  color: var(--light-text);
 }
 
 .social-links {
@@ -42,7 +42,7 @@
 
 .social-links a {
   text-decoration: none;
-  color: #ffffff;
+  color: var(--light-text);
   font-size: 2rem;
 }
 
@@ -51,12 +51,12 @@
 }
 
 .social-links a svg {
-  width: 40px; 
-  height: 40px; 
+  width: 40px;
+  height: 40px;
 }
 
 .social-links a svg path{
-  fill: #ffffff;
+  fill: var(--light-text);
   transition: color 0.3s;
 }
 
@@ -85,12 +85,13 @@
   }
 
   .social-links {
+    margin-right: 0;
     gap: 50px;
   }
 
   .social-links a svg {
-    width: 30px; 
-    height: 30px; 
+    width: 30px;
+    height: 30px;
   }
-  
+
 }

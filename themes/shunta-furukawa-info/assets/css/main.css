@@ -2,8 +2,14 @@
 :root {
     --primary-color: #fe1e75; /* ショッキングピンク */
     --background-color: #1a1615; /* 黒基調の背景 */
-    --light-text: #fff;
-    --dark-text: #333;
+    --light-text: #ffffff;
+    --body-text: #cbcbcb;
+    --muted-text: #999999;
+    --body-bg: #323232;
+    --surface-dark: #030303;
+    --surface-panel: #333333;
+    --chip-bg: #555555;
+    --heart-color: #e25555;
 }
 
 /* === リセットCSS === */
@@ -23,10 +29,8 @@ body {
     font-family: 'BuildingsTracks', 'RocknRollOne', sans-serif;
     letter-spacing: -0.1rem;
     line-height: 1.6;
-    color: #cbcbcb;
-    /* テキストの基本色 */
-    background-color: #323232;
-    /* 背景色 */
+    color: var(--body-text);
+    background-color: var(--body-bg);
     margin: 0;
     padding: 0;
 }
@@ -53,8 +57,8 @@ img {
 
 /* Footer styles */
 footer {
-    background-color: #333; /* Dark background color */
-    color: #fff; /* White text color */
+    background-color: var(--surface-panel);
+    color: var(--light-text);
     text-align: center;
     padding: 10px 0;
     font-size: 1rem;
@@ -63,7 +67,7 @@ footer {
 .icon-heart {
     height: 0.8rem;
     vertical-align: baseline;
-    fill: #e25555;
+    fill: var(--heart-color);
 }
 
 @font-face {

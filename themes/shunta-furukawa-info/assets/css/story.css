@@ -4,19 +4,19 @@
 
 .story-container h1 {
     font-size: 4rem;
-    color: #ffffff;
+    color: var(--light-text);
 }
 
 .story-container h2 {
     width: 600px;
     margin: 0 auto;
     font-size: 1.5rem;
-    color: #AAA;
+    color: #aaaaaa;
     margin-bottom: 50px;
 }
 
 .timeline-container {
-    background-color: #030303;
+    background-color: var(--surface-dark);
 }
 
 .timeline {
@@ -33,7 +33,7 @@
     top: 0;
     bottom: 0;
     width: 4px;
-    background-color: #FFFFFF;
+    background-color: var(--light-text);
 }
 
 .timeline-item {
@@ -59,20 +59,20 @@
     top: 0;
     height: 100%;
     width: 20px;
-    background-color: #FFFFFF;
+    background-color: var(--light-text);
     border-radius: 10px;
 }
 
 .timeline-content {
     padding: 10px 15px;
     border-radius: 5px;
-    color: #ffffff;
+    color: var(--light-text);
 }
 
 .timeline-content h3 {
     margin: 0 0 5px;
     font-size: 1.9rem;
-    color: #FFFFFF;
+    color: var(--light-text);
 }
 
 .timeline-content-container {
@@ -109,7 +109,7 @@
 
 .timeline-description {
     font-size: 0.9rem;
-    color: #CCCCCC;
+    color: #cccccc;
     margin-bottom: 10px;
     font-family: 'RocknRollOne';
     letter-spacing: 0.04em;
@@ -123,8 +123,8 @@
 }
 
 .timeline-skills li {
-    background-color: #555;
-    color: #fff;
+    background-color: var(--chip-bg);
+    color: var(--light-text);
     padding: 5px 20px;
     margin: 5px;
     font-size: 1rem;
