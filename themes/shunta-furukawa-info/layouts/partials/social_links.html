@@ -1,0 +1,6 @@
+{{ with site.Params.social }}
+{{ with .x }}<a href="{{ . }}" target="_blank" rel="noopener">{{ partialCached "icons/x.html" . }}</a>{{ end }}
+{{ with .facebook }}<a href="{{ . }}" target="_blank" rel="noopener">{{ partialCached "icons/facebook.html" . }}</a>{{ end }}
+{{ with .linkedin }}<a href="{{ . }}" target="_blank" rel="noopener">{{ partialCached "icons/linkedin.html" . }}</a>{{ end }}
+{{ with .github }}<a href="{{ . }}" target="_blank" rel="noopener">{{ partialCached "icons/github.html" . }}</a>{{ end }}
+{{ end }}

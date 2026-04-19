@@ -2,3 +2,13 @@ baseURL = 'https://shunta-furukawa.info'
 languageCode = 'ja-jp'
 title = 'SHUNTA FURUKAWA INFO'
 theme = 'shunta-furukawa-info'
+
+[params]
+author = 'Shunta Furukawa'
+description = 'バックエンドからフロントエンド、デザインまで。面白さとワクワクを、コードとアイデアで形にしていきます。'
+
+[params.social]
+x = 'https://x.com/shunta_furukawa'
+facebook = 'https://www.facebook.com/shunta.furukawa'
+linkedin = 'https://www.linkedin.com/in/shunta-furukawa'
+github = 'https://github.com/shunta-furukawa'

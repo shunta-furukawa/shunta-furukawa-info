@@ -5,15 +5,11 @@
     <img src="/images/logo.jpg" alt="Shunta Furukawa Logo">
   </div>
   <div class="hero-text">
-    <h1>こんにちは、<span class="name">Shunta Furukawa</span> です。</h1>
-    <p>バックエンドからフロントエンド、デザインまで。<br>面白さとワクワクを、コードとアイデアで形にしていきます。</p>
+    <h1>こんにちは、<span class="name">{{ site.Params.author }}</span> です。</h1>
+    <p>{{ site.Params.description | safeHTML }}</p>
   </div>
   <div class="social-links">
-    <a href="https://x.com/shunta_furukawa" target="_blank">{{ partialCached "icons/x.html" . }}</a>
-    <a href="https://www.facebook.com/shunta.furukawa" target="_blank">{{ partialCached "icons/facebook.html" . }}</a>
-    <a href="https://www.linkedin.com/in/shunta-furukawa" target="_blank">{{ partialCached "icons/linkedin.html" .
-      }}</a>
-    <a href="https://github.com/shunta-furukawa" target="_blank">{{ partialCached "icons/github.html" . }}</a>
+    {{ partial "social_links.html" . }}
   </div>
 </section>
 

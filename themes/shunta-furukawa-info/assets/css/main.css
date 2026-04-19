@@ -60,6 +60,12 @@ footer {
     font-size: 1rem;
 }
 
+.icon-heart {
+    height: 0.8rem;
+    vertical-align: baseline;
+    fill: #e25555;
+}
+
 @font-face {
     font-family: 'BuildingsTracks';
     /* see https://typingart.stores.jp/items/6537e2344c088e01e797116c */
