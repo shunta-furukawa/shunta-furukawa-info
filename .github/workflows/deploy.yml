@@ -16,8 +16,6 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    env:
-      HUGO_VERSION: 0.139.3
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -27,7 +25,7 @@ jobs:
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
         with:
-          hugo-version: ${{ env.HUGO_VERSION }}
+          hugo-version: 'latest'
           extended: true
 
       - name: Build
