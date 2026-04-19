@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /* ストーリーのアニメーション */
 
-    const items = document.querySelectorAll('.timeline-item');
+    const items = document.querySelectorAll('.timeline-item, .highlight-card');
     const storyObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {

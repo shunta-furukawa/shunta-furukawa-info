@@ -1,0 +1,17 @@
+<div class="highlights-container">
+    <h2>代表プロジェクト</h2>
+    <p class="highlights-lead">これまで携わってきた中でも特に印象深い、横断的な取り組みをピックアップしています。</p>
+    <div class="highlights-grid">
+        {{ range sort hugo.Data.highlights "weight" }}
+        <article class="highlight-card">
+            <h3>{{ .title }}</h3>
+            <p>{{ .summary }}</p>
+            <ul class="highlight-tags">
+                {{ range .tags }}
+                <li>{{ . }}</li>
+                {{ end }}
+            </ul>
+        </article>
+        {{ end }}
+    </div>
+</div>
