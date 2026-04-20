@@ -67,8 +67,8 @@
   }
 
   .hero-text h1 span.name .name-ch {
-    animation: name-wave 3.2s ease-in-out infinite;
-    animation-delay: calc(var(--i, 0) * 0.1s);
+    animation: name-wave 3s steps(1, end) infinite;
+    animation-delay: calc(var(--i, 0) * 0.14s);
   }
 }
 
@@ -80,11 +80,14 @@
 }
 
 @keyframes name-wave {
-  0%, 35%, 100% {
+  0%, 24% {
     color: var(--light-text);
   }
-  15% {
+  25%, 44% {
     color: var(--primary-color);
+  }
+  45%, 100% {
+    color: var(--light-text);
   }
 }
 
