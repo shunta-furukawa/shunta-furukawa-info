@@ -1,25 +1,23 @@
+<a class="skip-link" href="#main">本文へスキップ</a>
 <header class="site-header">
     <div class="container">
-        <!-- ロゴ -->
         <div class="logo">
-            <a href="/">
-                <img src="/images/logo.jpg" alt="Logo" />
+            <a href="/" aria-label="ホームへ">
+                <img src="/images/logo.jpg" alt="{{ site.Title }}" />
             </a>
         </div>
 
-        <!-- ハンバーガーメニューアイコン -->
-        <div class="menu-toggle" id="menu-toggle">
+        <button class="menu-toggle" id="menu-toggle" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="menu-drawer">
             <span></span>
             <span></span>
             <span></span>
-        </div>
+        </button>
     </div>
 </header>
 
-<!-- ドロワーメニュー -->
 <div class="menu-drawer" id="menu-drawer">
     <div class="menu-drawer-content">
-        <button class="menu-close" id="menu-close"></button> <!-- 空のボタン -->
+        <button class="menu-close" id="menu-close" type="button" aria-label="メニューを閉じる"></button>
         {{ partial "menu.html" (dict "menuID" "main" "page" .) }}
         <div class="menu-socials">
             {{ partial "social_links.html" . }}
