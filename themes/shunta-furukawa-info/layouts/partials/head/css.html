@@ -1,4 +1,4 @@
-{{- $cssFiles := slice "css/main.css" "css/siteheader.css" "css/hero.css" "css/skill.css" "css/story.css" "css/highlights.css" }}
+{{- $cssFiles := slice "css/main.css" "css/siteheader.css" "css/hero.css" "css/skill.css" "css/story.css" "css/highlights.css" "css/notfound.css" }}
 {{- range $cssFiles }}
   {{- with resources.Get . }}
     {{- if eq hugo.Environment "development" }}
