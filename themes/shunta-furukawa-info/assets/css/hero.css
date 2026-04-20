@@ -22,21 +22,20 @@
 .hero-text h1 {
   margin: 10px 0;
   font-family: var(--font-display);
-  font-size: 2rem;
+  font-size: clamp(0.85rem, 3.2vw, 2rem);
   color: var(--light-text);
   font-weight: 400;
   letter-spacing: 0.02em;
-  word-break: keep-all;
-  overflow-wrap: break-word;
+  white-space: nowrap;
 }
 
 .hero-text h1 span.name {
   display: inline-block;
   margin: 10px 0;
   font-family: var(--font-display);
-  font-size: 4rem;
+  font-size: clamp(1.5rem, 7.2vw, 4rem);
   font-weight: 900;
-  letter-spacing: -0.3rem;
+  letter-spacing: -0.04em;
   background: linear-gradient(90deg, var(--light-text) 0%, var(--light-text) 35%, var(--primary-color) 50%, var(--light-text) 65%, var(--light-text) 100%);
   background-size: 250% 100%;
   background-position: 100% 50%;
@@ -137,15 +136,6 @@
       width: 250px;
       height: 250px;
   }
-
-  .hero-text h1 {
-      font-size: 1rem;
-  }
-
-  .hero-text h1 span.name {
-      font-size: 2.4rem;
-      letter-spacing: -0.15rem;
-    }
 
   .hero-text {
       font-size: 1.2rem;
