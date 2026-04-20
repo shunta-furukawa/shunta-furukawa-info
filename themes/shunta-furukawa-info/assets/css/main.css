@@ -74,10 +74,12 @@ footer {
     font-family: 'BuildingsTracks';
     /* see https://typingart.stores.jp/items/6537e2344c088e01e797116c */
     src: url('/fonts/Buildingsandundertherailwaytracksfree_ver.otf') format('opentype');
+    font-display: swap;
 }
 
 @font-face {
     font-family: 'RocknRollOne';
     src: url('/fonts/RocknRollOne-Regular.ttf') format('truetype');
+    font-display: swap;
 }
 

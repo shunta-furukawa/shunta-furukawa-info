@@ -14,6 +14,9 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <meta name="theme-color" content="#1a1615">
+
+<link rel="preload" href="/fonts/Buildingsandundertherailwaytracksfree_ver.otf" as="font" type="font/otf" crossorigin>
+<link rel="preload" href="/fonts/RocknRollOne-Regular.ttf" as="font" type="font/ttf" crossorigin>
 {{- with .OutputFormats.Get "RSS" }}
 <link rel="alternate" type="application/rss+xml" href="{{ .Permalink }}" title="{{ site.Title }}">
 {{- end }}
