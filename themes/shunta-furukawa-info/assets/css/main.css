@@ -73,6 +73,18 @@ footer {
     fill: var(--heart-color);
 }
 
+.scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 3px;
+    width: 0;
+    background: linear-gradient(90deg, var(--primary-color), #ff5ea3);
+    z-index: 10000;
+    will-change: width;
+    transition: width 80ms linear;
+}
+
 .cursor-glow {
     position: fixed;
     top: 0;
