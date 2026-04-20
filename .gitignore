@@ -5,3 +5,6 @@
 .hugo_build.lock
 resources/_gen/
 /public/
+
+# OG image generator (downloaded fonts)
+/scripts/fonts/
