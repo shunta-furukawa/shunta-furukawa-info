@@ -9,6 +9,9 @@
 <meta name="author" content="{{ site.Params.author }}">
 <link rel="canonical" href="{{ .Permalink }}">
 <link rel="icon" href="/favicon.ico">
+{{- with .OutputFormats.Get "RSS" }}
+<link rel="alternate" type="application/rss+xml" href="{{ .Permalink }}" title="{{ site.Title }}">
+{{- end }}
 
 <meta property="og:title" content="{{ $title }}">
 <meta property="og:description" content="{{ $description }}">
@@ -25,6 +28,26 @@
 {{- with site.Params.twitter_handle }}
 <meta name="twitter:site" content="{{ . }}">
 <meta name="twitter:creator" content="{{ . }}">
+{{- end }}
+
+{{- if .IsHome }}
+{{- $sameAs := slice }}
+{{- with site.Params.social }}
+  {{- with .x }}{{ $sameAs = $sameAs | append . }}{{ end }}
+  {{- with .github }}{{ $sameAs = $sameAs | append . }}{{ end }}
+  {{- with .linkedin }}{{ $sameAs = $sameAs | append . }}{{ end }}
+  {{- with .facebook }}{{ $sameAs = $sameAs | append . }}{{ end }}
+{{- end }}
+{{- $person := dict
+  "@context" "https://schema.org"
+  "@type" "Person"
+  "name" site.Params.author
+  "url" site.BaseURL
+  "image" $ogImage
+  "description" site.Params.description
+  "sameAs" $sameAs
+}}
+<script type="application/ld+json">{{ $person | jsonify | safeJS }}</script>
 {{- end }}
 
 {{ partialCached "head/css.html" . }}
