@@ -74,6 +74,26 @@ document.addEventListener("DOMContentLoaded", () => {
     );    
     bars.forEach((bar) => observer.observe(bar));
 
+    /* カーソル追従グロー（desktop only, prefers-reduced-motion 尊重） */
+    const cursorGlow = document.querySelector(".cursor-glow");
+    if (cursorGlow
+        && window.matchMedia("(pointer: fine)").matches
+        && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        let raf = null;
+        document.addEventListener("pointermove", (e) => {
+            if (raf) return;
+            raf = requestAnimationFrame(() => {
+                cursorGlow.style.setProperty("--mx", e.clientX);
+                cursorGlow.style.setProperty("--my", e.clientY);
+                cursorGlow.classList.add("active");
+                raf = null;
+            });
+        });
+        document.addEventListener("pointerleave", () => {
+            cursorGlow.classList.remove("active");
+        });
+    }
+
     /* ストーリーのアニメーション */
 
     const items = document.querySelectorAll('.timeline-item, .highlight-card');

@@ -73,6 +73,33 @@ footer {
     fill: var(--heart-color);
 }
 
+.cursor-glow {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 520px;
+    height: 520px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(254, 30, 117, 0.12) 0%, rgba(254, 30, 117, 0.05) 35%, rgba(254, 30, 117, 0) 65%);
+    pointer-events: none;
+    opacity: 0;
+    z-index: 9999;
+    mix-blend-mode: screen;
+    transform: translate3d(calc(var(--mx, 0) * 1px - 50%), calc(var(--my, 0) * 1px - 50%), 0);
+    transition: opacity 0.4s ease;
+    will-change: transform, opacity;
+}
+
+.cursor-glow.active {
+    opacity: 1;
+}
+
+@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+    .cursor-glow {
+        display: none;
+    }
+}
+
 @font-face {
     font-family: 'BuildingsTracks';
     /* see https://typingart.stores.jp/items/6537e2344c088e01e797116c */

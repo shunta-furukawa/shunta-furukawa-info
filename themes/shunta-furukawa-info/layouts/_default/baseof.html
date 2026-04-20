@@ -4,6 +4,7 @@
   {{ partial "head.html" . }}
 </head>
 <body>
+  <div class="cursor-glow" aria-hidden="true"></div>
   {{ partial "header.html" . }}
   <main id="main">
     {{ block "main" . }}{{ end }}

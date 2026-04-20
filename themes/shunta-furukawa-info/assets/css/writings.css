@@ -46,13 +46,18 @@
     border-radius: 8px;
     overflow: hidden;
     color: inherit;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .writing-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    transform: translateY(-4px);
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.45), 0 0 32px rgba(254, 30, 117, 0.18);
     color: inherit;
+}
+
+.writing-card:hover h3 {
+    color: var(--primary-color);
+    transition: color 0.25s ease;
 }
 
 .writing-card-thumb {
