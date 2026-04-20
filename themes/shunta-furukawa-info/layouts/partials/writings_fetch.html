@@ -19,7 +19,7 @@
       {{- $raw := $feed.channel.item -}}
       {{- if not (reflect.IsSlice $raw) }}{{ $raw = slice $raw }}{{ end -}}
       {{- range $raw -}}
-        {{- $date := time.Parse "Mon, 02 Jan 2006 15:04:05 -0700" .pubDate -}}
+        {{- $date := time.AsTime .pubDate -}}
         {{- $items = $items | append (dict
           "platform" "zenn"
           "title" .title
