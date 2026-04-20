@@ -23,13 +23,75 @@
   margin: 10px 0;
   font-size: 2rem;
   color: var(--light-text);
+  font-weight: 500;
 }
 
-.hero-text h1 span.name{
+.hero-text h1 span.name {
+  display: inline-block;
   margin: 10px 0;
+  font-family: var(--font-display);
   font-size: 4rem;
-  letter-spacing: -0.5rem;
-  color: var(--light-text);
+  letter-spacing: -0.3rem;
+  background: linear-gradient(90deg, var(--light-text) 0%, var(--light-text) 35%, var(--primary-color) 50%, var(--light-text) 65%, var(--light-text) 100%);
+  background-size: 250% 100%;
+  background-position: 100% 50%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.hero-text p {
+  font-weight: 400;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-container > * {
+    opacity: 0;
+    transform: translateY(16px);
+    animation: hero-reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .hero-logo {
+    animation-delay: 0ms;
+  }
+
+  .hero-text {
+    animation-delay: 180ms;
+  }
+
+  .social-links {
+    animation-delay: 360ms;
+  }
+
+  .hero-text h1 span.name {
+    animation: name-shimmer 6s linear infinite;
+    animation-delay: 1s;
+  }
+}
+
+@keyframes hero-reveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes name-shimmer {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: -150% 50%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-text h1 span.name {
+    background: none;
+    -webkit-text-fill-color: var(--light-text);
+    color: var(--light-text);
+  }
 }
 
 .social-links {
@@ -46,7 +108,7 @@
   font-size: 2rem;
 }
 
-.social-links a:hover{
+.social-links a:hover {
   color: var(--primary-color);
 }
 
@@ -55,7 +117,7 @@
   height: 40px;
 }
 
-.social-links a svg path{
+.social-links a svg path {
   fill: var(--light-text);
   transition: color 0.3s;
 }
@@ -75,9 +137,9 @@
       font-size: 1rem;
   }
 
-  .hero-text h1 span.name{
-      font-size: 2rem;
-      letter-spacing: -0.25rem;
+  .hero-text h1 span.name {
+      font-size: 2.4rem;
+      letter-spacing: -0.15rem;
     }
 
   .hero-text {

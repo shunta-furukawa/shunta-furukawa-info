@@ -10,6 +10,9 @@
     --surface-panel: #333333;
     --chip-bg: #555555;
     --heart-color: #e25555;
+
+    --font-body: 'Space Grotesk', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+    --font-display: 'BuildingsTracks', 'Space Grotesk', sans-serif;
 }
 
 /* === リセットCSS === */
@@ -26,13 +29,14 @@ html {
 
 /* === 全体設定 === */
 body {
-    font-family: 'BuildingsTracks', 'RocknRollOne', sans-serif;
-    letter-spacing: -0.1rem;
-    line-height: 1.6;
+    font-family: var(--font-body);
+    line-height: 1.7;
     color: var(--body-text);
     background-color: var(--body-bg);
     margin: 0;
     padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 a {
@@ -43,7 +47,6 @@ a {
 
 a:hover {
     color: var(--primary-color);
-    /* ホバー時のリンク色 */
 }
 
 ul {
@@ -74,12 +77,6 @@ footer {
     font-family: 'BuildingsTracks';
     /* see https://typingart.stores.jp/items/6537e2344c088e01e797116c */
     src: url('/fonts/Buildingsandundertherailwaytracksfree_ver.otf') format('opentype');
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'RocknRollOne';
-    src: url('/fonts/RocknRollOne-Regular.ttf') format('truetype');
     font-display: swap;
 }
 
