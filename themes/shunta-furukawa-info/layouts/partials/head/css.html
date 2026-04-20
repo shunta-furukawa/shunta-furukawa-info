@@ -1,5 +1,3 @@
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-
 {{- $cssFiles := slice "css/main.css" "css/siteheader.css" "css/hero.css" "css/skill.css" "css/story.css" "css/highlights.css" }}
 {{- range $cssFiles }}
   {{- with resources.Get . }}
