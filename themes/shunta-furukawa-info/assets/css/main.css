@@ -11,8 +11,8 @@
     --chip-bg: #555555;
     --heart-color: #e25555;
 
-    --font-body: 'Space Grotesk', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
-    --font-display: 'BuildingsTracks', 'RocknRoll One', 'Space Grotesk', sans-serif;
+    --font-body: 'Zen Maru Gothic', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Hiragino Sans', sans-serif;
+    --font-display: 'Zen Maru Gothic', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Hiragino Sans', sans-serif;
 }
 
 /* === リセットCSS === */
@@ -110,13 +110,6 @@ footer {
     .cursor-glow {
         display: none;
     }
-}
-
-@font-face {
-    font-family: 'BuildingsTracks';
-    /* see https://typingart.stores.jp/items/6537e2344c088e01e797116c */
-    src: url('/fonts/Buildingsandundertherailwaytracksfree_ver.otf') format('opentype');
-    font-display: swap;
 }
 
 @media (prefers-reduced-motion: reduce) {
