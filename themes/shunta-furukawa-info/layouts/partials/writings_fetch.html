@@ -1,0 +1,35 @@
+{{- /*
+  Fetch Zenn RSS at build time, normalize each entry to
+  { platform, title, url, date, thumbnail }, and return a slice
+  sorted by date desc.
+
+  Feed outages warn (do not halt the build) so third-party
+  availability can't break deploys.
+*/ -}}
+
+{{- $items := slice -}}
+
+{{- with site.Params.feeds.zenn -}}
+  {{- $opts := dict "headers" (dict "User-Agent" "shunta-furukawa.info build") -}}
+  {{- with try (resources.GetRemote . $opts) -}}
+    {{- with .Err -}}
+      {{- warnf "Zenn feed fetch failed: %s" . -}}
+    {{- else with .Value -}}
+      {{- $feed := .Content | transform.Unmarshal -}}
+      {{- $raw := $feed.channel.item -}}
+      {{- if not (reflect.IsSlice $raw) }}{{ $raw = slice $raw }}{{ end -}}
+      {{- range $raw -}}
+        {{- $date := time.Parse "Mon, 02 Jan 2006 15:04:05 -0700" .pubDate -}}
+        {{- $items = $items | append (dict
+          "platform" "zenn"
+          "title" .title
+          "url" .link
+          "date" ($date.Format "2006-01-02T15:04:05Z")
+          "thumbnail" ""
+        ) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- return (sort $items "date" "desc") -}}

@@ -23,4 +23,7 @@
   {{ end }}
 </section>
 
+{{ $writings := partial "writings_fetch.html" . }}
+{{ partial "writings_list.html" (dict "items" (first 6 $writings) "title" "最近の投稿" "showAllLink" true) }}
+
 {{ end }}

@@ -15,3 +15,11 @@ x = 'https://x.com/shunta_furukawa'
 facebook = 'https://www.facebook.com/shunta.furukawa'
 linkedin = 'https://www.linkedin.com/in/shunta-furukawa'
 github = 'https://github.com/shunta-furukawa'
+zenn = 'https://zenn.dev/shunta_furukawa'
+
+[params.feeds]
+zenn = 'https://zenn.dev/shunta_furukawa/feed'
+
+[caches.getresource]
+dir = ':cacheDir/:project'
+maxAge = '10m'

@@ -47,6 +47,7 @@ jobs:
           urls: |
             http://localhost:8080/
             http://localhost:8080/story/
+            http://localhost:8080/writings/
           configPath: ./.lighthouserc.json
           uploadArtifacts: true
           temporaryPublicStorage: true

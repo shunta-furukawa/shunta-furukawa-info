@@ -1,0 +1,8 @@
+{{ define "main" }}
+<section class="writings-page">
+    <h1>投稿一覧</h1>
+    <p class="writings-lead">Zenn への投稿を日付順にまとめています。リンクをクリックすると元の記事ページに移動します。</p>
+    {{ $writings := partial "writings_fetch.html" . }}
+    {{ partial "writings_list.html" (dict "items" $writings "title" "すべての投稿") }}
+</section>
+{{ end }}

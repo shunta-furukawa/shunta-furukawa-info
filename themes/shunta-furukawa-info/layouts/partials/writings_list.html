@@ -1,0 +1,30 @@
+{{- $items := .items -}}
+{{- $title := .title | default "最近の投稿" -}}
+{{- $showAllLink := .showAllLink | default false -}}
+
+<section class="writings-container">
+    <h2>{{ $title }}</h2>
+    {{- if $items }}
+    <div class="writings-grid">
+        {{- range $items }}
+        <a class="writing-card writing-card--{{ .platform }}" href="{{ .url }}" target="_blank" rel="noopener">
+            {{- with .thumbnail }}
+            <div class="writing-card-thumb"><img src="{{ . }}" alt="" loading="lazy"></div>
+            {{- end }}
+            <div class="writing-card-body">
+                <div class="writing-card-meta">
+                    <span class="writing-card-platform">{{ .platform | title }}</span>
+                    <time datetime="{{ .date }}">{{ dateFormat "2006.01.02" .date }}</time>
+                </div>
+                <h3>{{ .title }}</h3>
+            </div>
+        </a>
+        {{- end }}
+    </div>
+    {{- if $showAllLink }}
+    <a href="/writings/" class="writings-all-link">全ての投稿を見る →</a>
+    {{- end }}
+    {{- else }}
+    <p class="writings-empty">投稿を読み込めませんでした。外部フィードの取得に失敗した可能性があります。</p>
+    {{- end }}
+</section>
