@@ -8,7 +8,7 @@ enableRobotsTXT = true
 author = 'Shunta Furukawa'
 description = 'バックエンドからフロントエンド、デザインまで。面白さとワクワクを、コードとアイデアで形にしていきます。'
 twitter_handle = '@shunta_furukawa'
-og_image = '/images/og-default.png'
+og_image = '/images/og-default.jpg'
 
 [params.social]
 x = 'https://x.com/shunta_furukawa'

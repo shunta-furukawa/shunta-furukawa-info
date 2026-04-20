@@ -1,4 +1,4 @@
-"""Generate the 1200x630 default OG image at static/images/og-default.png.
+"""Generate the 1200x630 default OG image at static/images/og-default.jpg.
 
 Run from repo root:
     pip install Pillow
@@ -15,7 +15,7 @@ MUTED = (203, 203, 203)
 LOGO_PATH = "themes/shunta-furukawa-info/static/images/logo.jpg"
 FONT_DISPLAY = "themes/shunta-furukawa-info/static/fonts/Buildingsandundertherailwaytracksfree_ver.otf"
 FONT_BODY = "themes/shunta-furukawa-info/static/fonts/RocknRollOne-Regular.ttf"
-OUT = "themes/shunta-furukawa-info/static/images/og-default.png"
+OUT = "themes/shunta-furukawa-info/static/images/og-default.jpg"
 
 canvas = Image.new("RGB", (W, H), BG)
 draw = ImageDraw.Draw(canvas)
@@ -54,5 +54,5 @@ for line in desc_lines:
 
 draw.text((text_x, y + 10), "shunta-furukawa.info", font=tag_font, fill=PINK)
 
-canvas.save(OUT, optimize=True)
+canvas.save(OUT, "JPEG", quality=88, optimize=True, progressive=True)
 print("wrote", OUT)
