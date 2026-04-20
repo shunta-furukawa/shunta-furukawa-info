@@ -36,13 +36,11 @@
   font-size: clamp(1.5rem, 7.2vw, 4rem);
   font-weight: 900;
   letter-spacing: -0.04em;
-  background: linear-gradient(90deg, var(--light-text) 0%, var(--light-text) 35%, var(--primary-color) 50%, var(--light-text) 65%, var(--light-text) 100%);
-  background-size: 250% 100%;
-  background-position: 100% 50%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
+  color: var(--light-text);
+}
+
+.hero-text h1 span.name .name-ch {
+  display: inline-block;
 }
 
 .hero-text p {
@@ -68,9 +66,9 @@
     animation-delay: 360ms;
   }
 
-  .hero-text h1 span.name {
-    animation: name-shimmer 6s linear infinite;
-    animation-delay: 1s;
+  .hero-text h1 span.name .name-ch {
+    animation: name-wave 3.2s ease-in-out infinite;
+    animation-delay: calc(var(--i, 0) * 0.1s);
   }
 }
 
@@ -81,20 +79,12 @@
   }
 }
 
-@keyframes name-shimmer {
-  0% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: -150% 50%;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-text h1 span.name {
-    background: none;
-    -webkit-text-fill-color: var(--light-text);
+@keyframes name-wave {
+  0%, 35%, 100% {
     color: var(--light-text);
+  }
+  15% {
+    color: var(--primary-color);
   }
 }
 

@@ -5,7 +5,7 @@
     <img src="/images/logo.jpg" alt="{{ site.Params.author }} のアバター">
   </div>
   <div class="hero-text">
-    <h1>こんにちは、<span class="name">{{ site.Params.author }}</span> です。</h1>
+    <h1>こんにちは、<span class="name">{{- range $i, $ch := split site.Params.author "" -}}<span class="name-ch" style="--i: {{ $i }}">{{ if eq $ch " " }}&nbsp;{{ else }}{{ $ch }}{{ end }}</span>{{- end -}}</span> です。</h1>
     <p>{{ site.Params.description | safeHTML }}</p>
   </div>
   <div class="social-links">
