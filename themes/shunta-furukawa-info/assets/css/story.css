@@ -1,172 +1,70 @@
 .story-container {
-    text-align: center;
+  padding: 12px 0;
 }
-
 .story-container h1 {
-    font-family: var(--font-display);
-    font-size: 3.5rem;
-    color: var(--light-text);
-    letter-spacing: 0.02em;
+  color: var(--light-text);
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin-bottom: 10px;
 }
-
 .story-container h2 {
-    width: 600px;
-    margin: 0 auto;
-    font-size: 1.5rem;
-    color: #aaaaaa;
-    margin-bottom: 50px;
+  color: var(--muted-text);
+  font-size: 1.4rem;
+  font-weight: 500;
+  margin-bottom: 20px;
 }
 
 .timeline-container {
-    background-color: var(--surface-dark);
+  background: var(--surface-dark);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 20px;
 }
-
 .timeline {
-    text-align: left;
-    position: relative;
-    width: 80%;
-    margin: 0 auto;
-    padding: 20px 0;
+  position: relative;
+  padding-left: 24px;
 }
-
 .timeline-line {
-    position: absolute;
-    left: 20px;
-    top: 0;
-    bottom: 0;
-    width: 4px;
-    background-color: var(--light-text);
+  position: absolute;
+  inset: 0 auto 0 6px;
+  width: 2px;
+  background: #52586d;
 }
-
 .timeline-item {
-    position: relative;
-    margin-left: 50px;
-    margin-bottom: 30px;
-    display: flex;
-    align-items: flex-start;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
+  position: relative;
+  margin-bottom: 18px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
-
-.timeline-item.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
+.timeline-item.visible { opacity: 1; transform: none; }
 .timeline-item::before {
-    content: "";
-    position: absolute;
-    left: -38px;
-    top: 0;
-    height: 100%;
-    width: 20px;
-    background-color: var(--light-text);
-    border-radius: 10px;
+  content: '';
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: var(--primary-color);
+  position: absolute;
+  left: -23px;
+  top: 8px;
 }
-
 .timeline-content {
-    padding: 10px 15px;
-    border-radius: 5px;
-    color: var(--light-text);
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface-panel);
 }
-
 .timeline-content h3 {
-    margin: 0 0 5px;
-    font-size: 1.9rem;
-    color: var(--light-text);
+  color: var(--light-text);
+  font-size: 1.8rem;
+  margin-bottom: 10px;
 }
+.timeline-content h3 small { color: var(--muted-text); }
+.timeline-content-container { display: grid; grid-template-columns: 1.4fr 0.6fr; gap: 14px; }
+.timeline-description { margin-bottom: 8px; }
+.timeline-skills { display: flex; flex-wrap: wrap; gap: 8px; }
+.timeline-skills li { background: #1a1c24; border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; font-size: 1.2rem; }
+.image-content img { max-height: 180px; object-fit: contain; }
 
-.timeline-content-container {
-    display: flex;
-    /* 横並びにする */
-    align-items: center;
-    /* 縦方向の中央揃え */
-    gap: 20px;
-    /* コンテンツ間の隙間 */
-    flex-wrap: wrap;
-    /* 必要に応じて折り返す */
-}
-
-.text-content {
-    flex: 1;
-    /* 均等に幅を取る */
-}
-
-
-/* 画像コンテンツ */
-.image-content {
-    flex: 0.5;
-    /* 均等に幅を取る */
-    display: flex;
-    justify-content: center;
-}
-
-.image-content img {
-    width: 100%;
-    max-width: 250px;
-    max-height: 250px;
-    border-radius: 5px;
-}
-
-.timeline-description {
-    font-size: 0.9rem;
-    color: #cccccc;
-    margin-bottom: 10px;
-    letter-spacing: 0.04em;
-}
-
-.timeline-skills {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.timeline-skills li {
-    background-color: var(--chip-bg);
-    color: var(--light-text);
-    padding: 5px 20px;
-    margin: 5px;
-    font-size: 1rem;
-    border-radius: 30px;
-    line-height: 1rem;
-}
-
-@media (max-width: 768px) {
-
-    .timeline {
-        width: 95%;
-    }
-
-    .story-container h2 {
-        width: 300px;
-    }
-
-    .timeline-content h3{
-        font-size: 1.4rem;
-    }
-
-    .timeline-content h3 small {
-        display: block;
-    }
-
-    .timeline-content-container {
-        flex-direction: column;
-        /* 縦並びにする */
-    }
-
-    .text-content,
-    .image-content {
-        flex: none;
-        /* デフォルトの幅に戻す */
-        width: 100%;
-        /* 横幅を100%に設定 */
-    }
-
-    .image-content {
-        margin-top: 20px;
-        /* 余白を調整 */
-    }
-
+@media (max-width: 900px) {
+  .timeline-content-container { grid-template-columns: 1fr; }
 }

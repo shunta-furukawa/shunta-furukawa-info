@@ -1,26 +1,36 @@
 <a class="skip-link" href="#main">本文へスキップ</a>
 <header class="site-header">
-    <div class="container">
-        <div class="logo">
-            <a href="/" aria-label="ホームへ">
-                <img src="/images/logo.jpg" alt="{{ site.Title }}" />
-            </a>
-        </div>
+  <div class="container header-inner">
+    <a class="brand" href="/" aria-label="ホームへ">
+      <img src="/images/logo.jpg" alt="{{ site.Title }}" />
+      <span>{{ site.Params.author }}</span>
+    </a>
 
-        <button class="menu-toggle" id="menu-toggle" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="menu-drawer">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
+    <div class="header-right">
+      {{ partial "menu.html" (dict "menuID" "main" "page" . "class" "menu-links menu-links--desktop") }}
+      <div class="header-socials">
+        {{ partial "social_links.html" . }}
+      </div>
+      <button class="theme-toggle" type="button" aria-label="テーマ切り替え（準備中）">◐</button>
     </div>
+
+    <button class="menu-toggle" id="menu-toggle" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="menu-drawer">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
 </header>
 
 <div class="menu-drawer" id="menu-drawer">
-    <div class="menu-drawer-content">
-        <button class="menu-close" id="menu-close" type="button" aria-label="メニューを閉じる"></button>
-        {{ partial "menu.html" (dict "menuID" "main" "page" .) }}
-        <div class="menu-socials">
-            {{ partial "social_links.html" . }}
-        </div>
+  <div class="menu-drawer-content">
+    <div class="menu-drawer-head">
+      <img src="/images/logo.jpg" alt="{{ site.Title }}" />
+      <button class="menu-close" id="menu-close" type="button" aria-label="メニューを閉じる"></button>
     </div>
+    {{ partial "menu.html" (dict "menuID" "main" "page" . "class" "menu-links menu-links--drawer") }}
+    <div class="menu-socials">
+      {{ partial "social_links.html" . }}
+    </div>
+  </div>
 </div>

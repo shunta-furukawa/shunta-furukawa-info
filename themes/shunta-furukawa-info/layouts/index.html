@@ -1,29 +1,48 @@
 {{ define "main" }}
-
-<section class="hero-container">
+<section class="hero-container panel">
+  <div class="hero-text">
+    <p class="hero-kicker">こんにちは、{{ site.Params.author }}です</p>
+    <h1>技術で価値を生み出し、<br>より良い体験を届ける</h1>
+    <p>{{ site.Params.description | safeHTML }}</p>
+    <div class="hero-actions">
+      <a href="/story/" class="btn btn-primary">ストーリーを見る →</a>
+      <a href="/writings/" class="btn btn-secondary">最近の投稿を見る →</a>
+    </div>
+    <div class="hero-social-links">
+      {{ partial "social_links.html" . }}
+    </div>
+  </div>
   <div class="hero-logo">
     <img src="/images/logo.jpg" alt="{{ site.Params.author }} のアバター">
   </div>
-  <div class="hero-text">
-    <h1>こんにちは、<span class="name">{{- range $i, $ch := split site.Params.author "" -}}<span class="name-ch" style="--i: {{ $i }}">{{ if eq $ch " " }}&nbsp;{{ else }}{{ $ch }}{{ end }}</span>{{- end -}}</span> です。</h1>
-    <p>{{ site.Params.description | safeHTML }}</p>
-  </div>
-  <div class="social-links">
-    {{ partial "social_links.html" . }}
-  </div>
 </section>
 
-<section class="skill-container">
-  <h1>スキルセット</h1>
-  <div class="story-link">
-    <a href="/story/" class="button">スキルの裏側にある物語を知る → </a>
+<section class="feature-cards">
+  <article class="feature-card">
+    <h2>開発</h2>
+    <p>バックエンドからフロントエンドまで、幅広い領域を一貫して設計・実装します。</p>
+  </article>
+  <article class="feature-card">
+    <h2>インフラ・運用</h2>
+    <p>GCP / AWS を軸に、安定運用と自動化を見据えた構成をつくります。</p>
+  </article>
+  <article class="feature-card">
+    <h2>デザイン</h2>
+    <p>UI/UX まで含めて、使う人が心地よい体験を目指して改善します。</p>
+  </article>
+</section>
+
+<section class="tech-stack panel">
+  <h2>TECH STACK</h2>
+  <div class="tech-stack-row">
+    {{ range sort site.Data.skills "weight" }}
+      {{ range .items }}
+        <span>{{ .name }}</span>
+      {{ end }}
+    {{ end }}
   </div>
-  {{ range sort site.Data.skills "weight" }}
-  {{ partial "skill_section.html" . }}
-  {{ end }}
 </section>
 
 {{ $writings := partial "writings_fetch.html" . }}
-{{ partial "writings_list.html" (dict "items" (first 6 $writings) "title" "最近の投稿" "showAllLink" true) }}
-
+{{ partial "writings_list.html" (dict "items" (first 3 $writings) "title" "RECENT POSTS" "showAllLink" true) }}
 {{ end }}

@@ -1,223 +1,87 @@
-/* === コンテナ設定 === */
-.container {
-  width: 100%;
-  margin: 0 auto;
-}
+.container { width: min(1200px, 94vw); margin: 0 auto; }
 
-/* === セクションの余白 === */
-section {
-  padding: 2rem 0;
-}
-
-/* === ヘッダー調整 === */
 .site-header {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
+  inset: 0 0 auto;
   z-index: 100;
+  background: rgba(17, 18, 24, 0.92);
+  border-bottom: 1px solid #2c2f39;
+  backdrop-filter: blur(10px);
+  transition: transform 0.3s ease;
+}
+.site-header.hide { transform: translateY(-100%); }
+.header-inner {
+  height: 74px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 15px;
-  background: var(--background-color); /* ヘッダーの背景色 */
-  color: var(--light-text);
-}
-
-.site-header .container {
-  display: flex;
   justify-content: space-between;
+}
+.brand {
+  display: inline-flex;
   align-items: center;
-  height: 70px;
-}
-
-/* ヘッダーを隠す状態 */
-.site-header.hide {
-  transform: translateY(-100%); /* 上に引っ込める */
-  transition: transform 0.3s ease; /* アニメーション効果 */
-}
-
-/* デフォルトの表示状態 */
-.site-header {
-  transform: translateY(0);
-  transition: transform 0.3s ease; /* アニメーション効果 */
-}
-
-
-/* === メインコンテンツ === */
-main {
-  padding-top: 100px; /* ヘッダー分のスペースを確保 */
-}
-
-/* === ヘッダーのロゴのホバーエフェクト === */
-.logo img {
-  height: 70px;
-  border-radius: 100px;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.logo img:hover {
-  transform: scale(1.1); /* ロゴを拡大 */
-  opacity: 0.8; /* 半透明にする */
-}
-
-.skip-link {
-  position: absolute;
-  top: -48px;
-  left: 8px;
-  background: var(--primary-color);
+  gap: 12px;
   color: var(--light-text);
-  padding: 8px 16px;
-  border-radius: 4px;
-  text-decoration: none;
-  z-index: 1001;
-  transition: top 0.2s ease;
+  font-weight: 700;
+  font-size: 1.9rem;
+}
+.brand img { width: 48px; height: 48px; border-radius: 999px; }
+.header-right { display: flex; align-items: center; gap: 18px; }
+
+.menu-links ul { display: flex; gap: 16px; }
+.menu-links a {
+  color: var(--body-text);
+  padding: 8px 6px;
+  font-weight: 700;
+  border-bottom: 2px solid transparent;
+}
+.menu-links a.active,
+.menu-links a:hover { color: var(--light-text); border-color: var(--primary-color); }
+
+.header-socials .social-links,
+.menu-socials { display: flex; gap: 14px; }
+.header-socials .social-links { margin: 0; }
+.social-links svg { width: 22px; height: 22px; }
+.social-links svg path { fill: var(--body-text); }
+.social-links a:hover svg path { fill: var(--primary-color); }
+
+.theme-toggle {
+  background: transparent;
+  border: 1px solid #4f5567;
+  color: var(--body-text);
+  border-radius: 999px;
+  width: 34px;
+  height: 34px;
 }
 
-.skip-link:focus {
-  top: 8px;
-  color: var(--light-text);
-}
+.skip-link { position: absolute; top: -60px; left: 8px; background: var(--primary-color); color: #fff; padding: 8px 12px; border-radius: 4px; }
+.skip-link:focus { top: 8px; z-index: 200; }
 
-.menu-toggle {
-  margin: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  cursor: pointer;
-  background: none;
-  border: none;
-  padding: 0;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
+.menu-toggle { display: none; background: none; border: 0; }
+.menu-toggle span { display: block; width: 24px; height: 2px; background: var(--light-text); margin: 5px 0; }
 
-/* === ハンバーガーメニューのホバーエフェクト === */
-.menu-toggle span {
-  width: 25px;
-  height: 3px;
-  background: var(--light-text);
-  transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.menu-toggle:hover {
-  transform: scale(1.2); /* 軽く拡大 */
-}
-
-.menu-toggle:hover span{
-  background-color: var(--primary-color);  /* ホバー時に色を変更 */
-}
-
-
-/* ドロワーメニュー */
 .menu-drawer {
   position: fixed;
-  top: 0;
-  right: -100%;
-  width: 300px;
-  height: 100%;
-  background: rgba(33, 33, 33, 0.8);
-  box-shadow: -5px 0 10px rgba(0, 0, 0, 0.2);
-  transition: right 0.3s ease;
-  z-index: 1000;
+  inset: 0 0 0 auto;
+  width: min(86vw, 340px);
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  background: #12141c;
+  border-left: 1px solid #2f3443;
+  z-index: 150;
 }
+.menu-drawer.open { transform: translateX(0); }
+.menu-drawer-content { padding: 18px; }
+.menu-drawer-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+.menu-drawer-head img { width: 40px; height: 40px; border-radius: 999px; }
+.menu-close { width: 28px; height: 28px; background: transparent; border: 0; position: relative; }
+.menu-close::before, .menu-close::after { content: ''; position: absolute; inset: 13px 2px; height: 2px; background: var(--light-text); }
+.menu-close::before { transform: rotate(45deg); }
+.menu-close::after { transform: rotate(-45deg); }
+.menu-links--drawer ul { display: block; }
+.menu-links--drawer a { display: block; margin: 8px 0; }
 
-.menu-drawer.open {
-  right: 0;
-}
-
-.menu-drawer-content {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  padding: 1rem;
-}
-
-/* メニューを閉じるボタンのスタイル */
-.menu-close {
-  position: absolute; /* 絶対配置に変更 */
-  top: 1rem; /* 上からの余白 */
-  right: 1rem; /* 右からの余白 */
-  width: 30px;
-  height: 30px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: transform 0.3s ease; /* ホバー時のアニメーション */
-}
-
-.menu-close::before,
-.menu-close::after {
-  content: '';
-  position: absolute;
-  width: 24px;
-  height: 2px;
-  background-color: var(--surface-panel); /* バツの線の色 */
-  transition: transform 0.3s ease, background-color 0.3s ease; /* ホバー時のアニメーション */
-}
-
-.menu-close::before {
-  transform: rotate(45deg); /* バツの上側 */
-}
-
-.menu-close::after {
-  transform: rotate(-45deg); /* バツの下側 */
-}
-
-/* ホバー時のエフェクト */
-.menu-close:hover {
-  transform: rotate(90deg); /* ボタン全体を回転 */
-}
-
-.menu-close:hover::before,
-.menu-close:hover::after {
-  background-color: var(--primary-color); /* ホバー時に色を変更 */
-}
-
-.menu-links {
-  padding-top: 40px;
-}
-
-.menu-links a {
-  display: block;
-  margin: 1rem 0;
-  font-size: 1.2rem;
-  color: var(--light-text);
-  text-decoration: none;
-}
-
-.menu-links a:hover {
-  color: var(--primary-color); 
-}
-
-.menu-socials {
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
-
-.menu-socials a {
-  display: inline-block;
-  margin: 0 0.5rem;
-  color: var(--light-text);
-  text-decoration: none;
-}
-
-.menu-socials a svg {
-  width: 30px; 
-  height: 30px; 
-}
-
-.menu-socials a svg path{
-  fill: var(--light-text);
-  transition: color 0.3s;
-}
-
-.menu-socials a:hover svg path {
-  fill: var(--primary-color);
+@media (max-width: 900px) {
+  .brand span,
+  .header-right { display: none; }
+  .menu-toggle { display: block; }
 }
