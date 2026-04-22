@@ -3,15 +3,15 @@ Renders a menu for the given menu ID.
 
 @context {page} page The current page.
 @context {string} menuID The menu ID.
-
 @example: {{ partial "menu.html" (dict "menuID" "main" "page" .) }}
-*/}}
+*/ -}}
 
-{{- $page := .page }}
-{{- $menuID := .menuID }}
+{{- $page := .page -}}
+{{- $menuID := .menuID -}}
+{{- $class := .class | default "menu-links" -}}
 
 {{- with index site.Menus $menuID }}
-  <nav class="menu-links">
+  <nav class="{{ $class }}">
     <ul>
       {{- partial "inline/menu/walk.html" (dict "page" $page "menuEntries" .) }}
     </ul>

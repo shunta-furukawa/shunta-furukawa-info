@@ -1,3 +1,20 @@
-<footer class="footer">
-    <p>Made with {{ partial "icons/heart.html" . }} by {{ site.Params.author }}</p>
+<footer class="footer panel">
+  <div>
+    <h2>{{ site.Params.author }}</h2>
+    <p>Web 開発者 / エンジニア</p>
+    <p>技術で価値を生み出し、より良い体験を届けることを目指しています。</p>
+  </div>
+  <div>
+    <h3>Navigation</h3>
+    <a href="/">Home</a>
+    <a href="/story/">Story</a>
+    <a href="/writings/">Posts</a>
+  </div>
+  <div>
+    <h3>Links</h3>
+    {{ partial "social_links.html" . }}
+  </div>
+  <div>
+    <a class="btn btn-secondary" href="mailto:contact@shunta-furukawa.info">お問い合わせ</a>
+  </div>
 </footer>
