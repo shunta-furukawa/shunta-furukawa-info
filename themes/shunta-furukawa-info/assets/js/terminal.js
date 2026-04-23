@@ -74,8 +74,8 @@
       ["story", "これまでの歩み"],
       ["blog", "最近の投稿"],
       ["contact", "連絡先・SNS"],
-      ["game snake", "スネークゲーム"],
-      ["game pong", "ポンゲーム"],
+      ["snake", "スネークゲーム"],
+      ["pong", "ポンゲーム"],
       ["clear", "画面をクリア"],
       ["exit", "ターミナルを閉じる"],
       ["date", "現在時刻"],
@@ -162,12 +162,8 @@
   COMMANDS.pwd = () => { print("/home/shunta"); };
   COMMANDS.sudo = () => { print('<span class="term-warn">shunta is not in the sudoers file. This incident will be reported.</span>'); };
 
-  COMMANDS.game = (args) => {
-    const name = (args[0] || "").toLowerCase();
-    if (name === "snake") return startGame("snake");
-    if (name === "pong") return startGame("pong");
-    print('<span class="term-warn">usage: game &lt;snake|pong&gt;</span>');
-  };
+  COMMANDS.snake = () => startGame("snake");
+  COMMANDS.pong = () => startGame("pong");
 
   const ALIASES = { "?": "help", man: "help", cls: "clear", quit: "exit", q: "exit" };
 
@@ -203,7 +199,7 @@
   }
 
   /* ---------- suggestions ---------- */
-  const SUGGESTIONS = ["help", "whoami", "about", "skills", "story", "blog", "contact", "game snake", "game pong", "clear"];
+  const SUGGESTIONS = ["help", "whoami", "about", "skills", "story", "blog", "contact", "snake", "pong", "clear"];
   function buildSuggestions() {
     suggest.innerHTML = "";
     SUGGESTIONS.forEach((s) => {
@@ -263,7 +259,7 @@
     } else if (e.key === "Tab") {
       e.preventDefault();
       const v = input.value;
-      const cands = Object.keys(COMMANDS).concat(["game snake", "game pong"]).filter((c) => c.startsWith(v));
+      const cands = Object.keys(COMMANDS).filter((c) => c.startsWith(v));
       if (cands.length === 1) input.value = cands[0] + " ";
       else if (cands.length) print('<span class="term-info">' + cands.map(esc).join("  ") + "</span>");
     }
