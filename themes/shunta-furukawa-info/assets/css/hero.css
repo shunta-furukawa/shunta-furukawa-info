@@ -119,5 +119,6 @@
   .hero-side { display: none; }
   .hero-visual { order: -1; }
   .hero-visual-frame { width: min(420px, 88vw); }
+  .hero-visual-frame::before { inset: -16px; }
   .hero-desc { max-width: none; }
 }

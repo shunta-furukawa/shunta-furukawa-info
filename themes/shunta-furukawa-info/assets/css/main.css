@@ -21,7 +21,7 @@
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+html { scroll-behavior: smooth; scroll-padding-top: 84px; overflow-x: clip; }
 html, body { min-height: 100%; }
 body {
   font-family: var(--font-body);
@@ -32,6 +32,7 @@ body {
     radial-gradient(900px 500px at -10% 30%, rgba(255, 59, 141, 0.06), transparent 60%),
     var(--background-color);
   font-size: 1.5rem;
+  overflow-x: clip;
 }
 html { font-size: 62.5%; }
 main {
