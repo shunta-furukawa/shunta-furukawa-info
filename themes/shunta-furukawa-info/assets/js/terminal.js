@@ -293,7 +293,11 @@
     gameTitle.textContent = title;
     gameScore.textContent = "SCORE 0";
     if (isTouchLike()) gamePad.classList.add("visible"); else gamePad.classList.remove("visible");
+    // blur input so keyboard gameplay works immediately; user can re-focus to type
+    if (document.activeElement === input) input.blur();
   }
+
+  function isTyping() { return document.activeElement === input; }
 
   /* ---------- Snake ---------- */
   GAMES.snake = function () {
@@ -377,6 +381,7 @@
     }
 
     const onKey = (e) => {
+      if (isTyping()) return;
       if (!alive && (e.key === " " || e.key === "Enter")) { e.preventDefault(); retry(); return; }
       if (e.key === "ArrowUp" || e.key === "w") { e.preventDefault(); setDir(0, -1); }
       else if (e.key === "ArrowDown" || e.key === "s") { e.preventDefault(); setDir(0, 1); }
@@ -506,6 +511,7 @@
 
     const keysDown = new Set();
     const onKey = (e) => {
+      if (isTyping()) return;
       if (over && (e.key === " " || e.key === "Enter")) { e.preventDefault(); retry(); return; }
       if (e.key === "ArrowUp" || e.key === "w" || e.key === "ArrowDown" || e.key === "s") {
         e.preventDefault(); keysDown.add(e.key);
