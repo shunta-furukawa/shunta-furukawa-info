@@ -2,10 +2,11 @@
   "name": "SHUNTA FURUKAWA INFO",
   "short_name": "Shunta Furukawa",
   "icons": [
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
     { "src": "/android-chrome-192.png", "sizes": "192x192", "type": "image/png" },
     { "src": "/android-chrome-512.png", "sizes": "512x512", "type": "image/png" }
   ],
-  "theme_color": "#1a1615",
-  "background_color": "#1a1615",
+  "theme_color": "#0e0f14",
+  "background_color": "#0e0f14",
   "display": "standalone"
 }
