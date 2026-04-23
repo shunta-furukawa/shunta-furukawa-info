@@ -1,0 +1,70 @@
+{{/* Easter-egg terminal + mini games */}}
+{{- $skills := slice -}}
+{{- range sort site.Data.skills "weight" -}}
+  {{- $items := slice -}}
+  {{- range .items -}}
+    {{- $items = $items | append (dict "name" .name "years" .years "description" .description) -}}
+  {{- end -}}
+  {{- $skills = $skills | append (dict "category" .category "color" .color "items" $items) -}}
+{{- end -}}
+
+{{- $stories := slice -}}
+{{- range $k, $v := site.Data.stories -}}
+  {{- $stories = $stories | append (merge $v (dict "key" $k)) -}}
+{{- end -}}
+{{- $stories = sort $stories "key" "desc" -}}
+
+{{- $cliData := dict
+  "author" site.Params.author
+  "role" site.Params.role
+  "location" site.Params.location
+  "email" site.Params.contact_email
+  "description" site.Params.description
+  "about" site.Params.about
+  "social" site.Params.social
+  "feeds" site.Params.feeds
+  "skills" $skills
+  "stories" $stories
+-}}
+
+<script id="cli-data" type="application/json">{{ $cliData | jsonify | safeJS }}</script>
+
+<button id="terminal-fab" type="button" aria-label="ターミナルを開く" aria-expanded="false" aria-controls="terminal-panel">
+  <span class="terminal-fab-prompt">&gt;_</span>
+</button>
+
+<div id="terminal-panel" class="terminal-panel" role="dialog" aria-label="ターミナル" aria-hidden="true">
+  <div class="terminal-head">
+    <div class="terminal-dots" aria-hidden="true">
+      <span></span><span></span><span></span>
+    </div>
+    <div class="terminal-title">shunta@shunta-furukawa.info: ~</div>
+    <button class="terminal-close" id="terminal-close" type="button" aria-label="ターミナルを閉じる">×</button>
+  </div>
+
+  <div class="terminal-body">
+    <div id="terminal-output" class="terminal-output" aria-live="polite"></div>
+
+    <div class="terminal-game-layer" id="terminal-game" aria-hidden="true">
+      <canvas id="terminal-game-canvas" width="360" height="260"></canvas>
+      <div class="terminal-game-hud">
+        <span id="terminal-game-title">GAME</span>
+        <span id="terminal-game-score">SCORE 0</span>
+        <button class="terminal-game-exit" id="terminal-game-exit" type="button" aria-label="ゲームを閉じる">[ exit ]</button>
+      </div>
+      <div class="terminal-game-pad" id="terminal-game-pad" aria-hidden="true">
+        <button data-dir="up" aria-label="上" type="button">▲</button>
+        <button data-dir="left" aria-label="左" type="button">◀</button>
+        <button data-dir="down" aria-label="下" type="button">▼</button>
+        <button data-dir="right" aria-label="右" type="button">▶</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="terminal-suggest" id="terminal-suggest" aria-label="コマンドサジェスト"></div>
+
+  <form class="terminal-input" id="terminal-form" autocomplete="off">
+    <span class="terminal-prompt">shunta@info:~$</span>
+    <input id="terminal-input" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="send" aria-label="コマンドを入力">
+  </form>
+</div>
