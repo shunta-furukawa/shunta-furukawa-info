@@ -53,6 +53,7 @@ zenn = 'https://zenn.dev/shunta_furukawa'
 
 [params.feeds]
 zenn = 'https://zenn.dev/shunta_furukawa/feed'
+zenn_username = 'shunta_furukawa'
 
 [caches.getresource]
 dir = ':cacheDir/:project'

@@ -19,7 +19,10 @@
           <span class="writing-card-platform">{{ .platform | title }}</span>
           <time datetime="{{ .date }}">{{ dateFormat "2006.01.02" .date }}</time>
         </div>
-        <h3>{{ .title }}</h3>
+        <h3>
+          {{- with .emoji }}<span class="writing-card-emoji" aria-hidden="true">{{ . }}</span>{{ end -}}
+          {{ .title }}
+        </h3>
         <p class="writing-card-read">Zenn で読む ↗</p>
       </div>
     </a>

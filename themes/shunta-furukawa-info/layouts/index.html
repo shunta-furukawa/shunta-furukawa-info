@@ -140,7 +140,7 @@
     {{ range first 3 $writings }}
     <a class="blog-card" href="{{ .url }}" target="_blank" rel="noopener">
       <div class="blog-card-thumb" aria-hidden="true">
-        <span class="blog-card-thumb-mark">Zenn</span>
+        <span class="blog-card-thumb-emoji">{{ or .emoji "📝" }}</span>
       </div>
       <div class="blog-card-body">
         <time class="blog-card-date" datetime="{{ .date }}">{{ dateFormat "2006.01.02" .date }}</time>
