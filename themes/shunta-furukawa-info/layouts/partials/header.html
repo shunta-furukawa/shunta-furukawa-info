@@ -1,17 +1,15 @@
 <a class="skip-link" href="#main">本文へスキップ</a>
-<header class="site-header">
+<header class="site-header" id="top">
   <div class="container header-inner">
     <a class="brand" href="/" aria-label="ホームへ">
       <img src="/images/logo.jpg" alt="{{ site.Title }}" />
-      <span>{{ site.Params.author }}</span>
+      <span>shunta-furukawa.info</span>
     </a>
 
-    <div class="header-right">
-      {{ partial "menu.html" (dict "menuID" "main" "page" . "class" "menu-links menu-links--desktop") }}
-      <div class="header-socials">
-        {{ partial "social_links.html" . }}
-      </div>
-      <button class="theme-toggle" type="button" aria-label="テーマ切り替え（準備中）">◐</button>
+    {{ partial "menu.html" (dict "menuID" "main" "page" . "class" "menu-links menu-links--desktop") }}
+
+    <div class="header-actions">
+      <a class="btn btn-outline header-cv" href="/story/">VIEW STORY →</a>
     </div>
 
     <button class="menu-toggle" id="menu-toggle" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="menu-drawer">
@@ -29,6 +27,7 @@
       <button class="menu-close" id="menu-close" type="button" aria-label="メニューを閉じる"></button>
     </div>
     {{ partial "menu.html" (dict "menuID" "main" "page" . "class" "menu-links menu-links--drawer") }}
+    <a class="btn btn-outline menu-drawer-cv" href="/story/">VIEW STORY →</a>
     <div class="menu-socials">
       {{ partial "social_links.html" . }}
     </div>

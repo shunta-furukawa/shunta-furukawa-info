@@ -1,48 +1,174 @@
 {{ define "main" }}
-<section class="hero-container panel">
-  <div class="hero-text">
-    <p class="hero-kicker">こんにちは、{{ site.Params.author }}です</p>
-    <h1>技術で価値を生み出し、<br>より良い体験を届ける</h1>
-    <p>{{ site.Params.description | safeHTML }}</p>
-    <div class="hero-actions">
-      <a href="/story/" class="btn btn-primary">ストーリーを見る →</a>
-      <a href="/writings/" class="btn btn-secondary">最近の投稿を見る →</a>
-    </div>
-    <div class="hero-social-links">
+
+<section class="hero" id="hero">
+  <div class="hero-side">
+    <div class="hero-side-socials">
       {{ partial "social_links.html" . }}
     </div>
+    <span class="hero-scroll">SCROLL</span>
   </div>
-  <div class="hero-logo">
-    <img src="/images/logo.jpg" alt="{{ site.Params.author }} のアバター">
+
+  <div class="hero-inner">
+    <div class="hero-text">
+      <p class="hero-kicker">こんにちは、</p>
+      <h1 class="hero-title">
+        <span class="hero-name">{{ site.Params.author }}</span>です
+      </h1>
+      <p class="hero-lead">
+        <span class="hero-accent">バックエンド</span>を軸に<br>
+        プロダクトを支える<br>
+        エンジニアです。
+      </p>
+      <p class="hero-desc">{{ site.Params.description | safeHTML }}</p>
+      <div class="hero-actions">
+        <a href="/story/" class="btn btn-primary">ストーリーを見る →</a>
+        <a href="#about" class="btn btn-outline">ABOUT ME</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-visual-ring">
+        <img src="/images/logo.jpg" alt="{{ site.Params.author }} のアバター">
+      </div>
+    </div>
   </div>
 </section>
 
-<section class="feature-cards">
-  <article class="feature-card">
-    <h2>開発</h2>
-    <p>バックエンドからフロントエンドまで、幅広い領域を一貫して設計・実装します。</p>
-  </article>
-  <article class="feature-card">
-    <h2>インフラ・運用</h2>
-    <p>GCP / AWS を軸に、安定運用と自動化を見据えた構成をつくります。</p>
-  </article>
-  <article class="feature-card">
-    <h2>デザイン</h2>
-    <p>UI/UX まで含めて、使う人が心地よい体験を目指して改善します。</p>
-  </article>
-</section>
+<section class="about" id="about">
+  <div class="about-grid">
+    <aside class="about-profile">
+      <div class="about-avatar">
+        <img src="/images/logo.jpg" alt="{{ site.Params.author }}">
+      </div>
+      <h3 class="about-name">{{ site.Params.author }}</h3>
+      <p class="about-role">{{ site.Params.role }}</p>
+      <p class="about-location">
+        <span class="about-pin" aria-hidden="true">◉</span>
+        {{ site.Params.location }}
+      </p>
+    </aside>
 
-<section class="tech-stack panel">
-  <h2>TECH STACK</h2>
-  <div class="tech-stack-row">
-    {{ range sort site.Data.skills "weight" }}
-      {{ range .items }}
-        <span>{{ .name }}</span>
+    <div class="about-body">
+      <p class="about-eyebrow">ABOUT ME</p>
+      <h2 class="about-lead">{{ site.Params.about.lead }}</h2>
+      <div class="about-desc">
+        {{ range (split site.Params.about.body "\n") }}
+          {{ with trim . " \t\r" }}<p>{{ . }}</p>{{ end }}
+        {{ end }}
+      </div>
+      <ul class="about-tags">
+        {{ range site.Params.about.tags }}
+          <li>{{ . }}</li>
+        {{ end }}
+      </ul>
+    </div>
+
+    <div class="about-stats">
+      {{ range site.Params.stats }}
+      <div class="stat-card">
+        <div class="stat-value">{{ .value }}</div>
+        <div class="stat-label">{{ .label }}</div>
+      </div>
       {{ end }}
+    </div>
+  </div>
+</section>
+
+<section class="skills" id="skills">
+  <header class="section-head">
+    <p class="section-eyebrow">SKILLS</p>
+    <h2 class="section-title">使える技術・経験領域</h2>
+  </header>
+  <div class="skills-grid">
+    {{ range sort site.Data.skills "weight" }}
+    <div class="skills-col" style="--skill-color: {{ .color }};">
+      <h3 class="skills-col-title">{{ .category }}</h3>
+      <ul class="skills-col-items">
+        {{ range .items }}
+        <li class="skill-chip" title="{{ .description }}">
+          <span class="skill-chip-dot" aria-hidden="true"></span>
+          <span class="skill-chip-name">{{ .name }}</span>
+          {{ with .years }}<span class="skill-chip-years">{{ . }}y</span>{{ end }}
+        </li>
+        {{ end }}
+      </ul>
+    </div>
     {{ end }}
   </div>
 </section>
 
-{{ $writings := partial "writings_fetch.html" . }}
-{{ partial "writings_list.html" (dict "items" (first 3 $writings) "title" "RECENT POSTS" "showAllLink" true) }}
+<section class="story" id="story">
+  <header class="section-head">
+    <div>
+      <p class="section-eyebrow">STORY</p>
+      <h2 class="section-title">これまでの歩み</h2>
+    </div>
+    <a class="section-link" href="/story/">すべてのストーリーを見る →</a>
+  </header>
+  <div class="story-grid">
+    {{ $stories := slice }}
+    {{ range $k, $v := site.Data.stories }}
+      {{ $stories = $stories | append (merge $v (dict "key" $k)) }}
+    {{ end }}
+    {{ range sort $stories "key" "desc" }}
+    <article class="story-card">
+      <p class="story-card-period">{{ .period }}</p>
+      <h3 class="story-card-title">{{ .title }}</h3>
+      {{ with index .descriptions 0 }}
+      <p class="story-card-desc">{{ . | truncate 120 }}</p>
+      {{ end }}
+      <ul class="story-card-skills">
+        {{ range first 5 .skills }}
+        <li>{{ . }}</li>
+        {{ end }}
+      </ul>
+    </article>
+    {{ end }}
+  </div>
+</section>
+
+<section class="blog" id="blog">
+  <header class="section-head">
+    <div>
+      <p class="section-eyebrow">BLOG</p>
+      <h2 class="section-title">最近の投稿</h2>
+    </div>
+    <a class="section-link" href="/writings/">すべての記事を見る →</a>
+  </header>
+  {{ $writings := partial "writings_fetch.html" . }}
+  {{ if $writings }}
+  <div class="blog-grid">
+    {{ range first 3 $writings }}
+    <a class="blog-card" href="{{ .url }}" target="_blank" rel="noopener">
+      <div class="blog-card-thumb" aria-hidden="true">
+        <span class="blog-card-thumb-mark">Zenn</span>
+      </div>
+      <div class="blog-card-body">
+        <time class="blog-card-date" datetime="{{ .date }}">{{ dateFormat "2006.01.02" .date }}</time>
+        <h3 class="blog-card-title">{{ .title }}</h3>
+        <p class="blog-card-read">Zenn で読む ↗</p>
+      </div>
+    </a>
+    {{ end }}
+  </div>
+  {{ else }}
+  <p class="blog-empty">投稿を読み込めませんでした。外部フィードの取得に失敗した可能性があります。</p>
+  {{ end }}
+</section>
+
+<section class="contact" id="contact">
+  <div class="contact-inner">
+    <div class="contact-text">
+      <p class="section-eyebrow">CONTACT</p>
+      <h2 class="contact-title">LET'S CONNECT</h2>
+      <p class="contact-lead">お仕事のご相談・ご依頼など<br>お気軽にご連絡ください。</p>
+      {{ with site.Params.contact_email }}
+      <a class="btn btn-primary contact-cta" href="mailto:{{ . }}">お問い合わせ →</a>
+      {{ end }}
+    </div>
+    <div class="contact-socials">
+      {{ partial "social_links.html" . }}
+    </div>
+  </div>
+</section>
+
 {{ end }}

@@ -1,26 +1,78 @@
-.skill-container {
-  padding: 20px;
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
 }
-.skill-section {
-  padding: 14px 0;
-  border-bottom: 1px solid var(--line);
+.skills-col {
+  background: var(--surface-panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 20px 18px;
+  position: relative;
+  overflow: hidden;
 }
-.skill h3 {
+.skills-col::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--skill-color, var(--primary-color));
+}
+.skills-col-title {
   color: var(--light-text);
-  margin-bottom: 8px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin-bottom: 14px;
 }
-.skill h3 small {
+.skills-col-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.skill-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.02);
+  font-size: 1.25rem;
+  color: var(--body-text);
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.skill-chip:hover {
+  border-color: var(--skill-color, var(--primary-color));
+  color: var(--light-text);
+}
+.skill-chip-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--skill-color, var(--primary-color));
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.04);
+}
+.skill-chip-name { color: inherit; }
+.skill-chip-years {
   color: var(--muted-text);
-  font-size: 0.8em;
+  font-size: 1.1rem;
+  font-weight: 700;
 }
+
+/* 既存の /story/ ページ互換 (timeline skills バー) */
 .bar-container {
   width: 100%;
-  height: 12px;
-  background: #181b22;
+  height: 10px;
+  background: #14161d;
   border-radius: 999px;
+  overflow: hidden;
 }
 .bar {
   height: 100%;
   width: 0;
   border-radius: 999px;
+  transition: width 0.8s ease;
 }
