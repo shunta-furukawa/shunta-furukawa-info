@@ -200,7 +200,8 @@
   outline: 0;
   color: var(--term-text);
   font-family: var(--term-mono);
-  font-size: 1.4rem;
+  /* 16px+ to block iOS Safari's zoom-on-focus */
+  font-size: 16px;
   caret-color: var(--term-accent);
 }
 
@@ -289,7 +290,6 @@
     transform: translateY(40px);
   }
   .terminal-output { font-size: 1.25rem; }
-  #terminal-input { font-size: 1.55rem; } /* avoid iOS zoom on focus */
 }
 
 @media (prefers-reduced-motion: reduce) {
