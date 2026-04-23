@@ -32,6 +32,7 @@
 }
 .writing-card-platform { color: var(--primary-color); font-weight: 700; }
 .writing-card h3 { color: var(--light-text); font-size: 1.7rem; line-height: 1.45; margin-bottom: 12px; }
+.writing-card-emoji { display: inline-block; margin-right: 6px; font-size: 1.15em; }
 .writing-card-read { color: var(--primary-color); font-weight: 700; }
 .writings-empty { color: var(--muted-text); }
 
@@ -79,6 +80,19 @@
   border: 1px solid var(--primary-line);
   border-radius: 999px;
   background: rgba(14, 15, 20, 0.6);
+}
+.blog-card-thumb-emoji {
+  position: relative;
+  font-size: clamp(3.6rem, 7vw, 5.2rem);
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  width: clamp(68px, 14vw, 92px);
+  height: clamp(68px, 14vw, 92px);
+  border-radius: 50%;
+  background: rgba(14, 15, 20, 0.6);
+  border: 1px solid var(--primary-line);
+  box-shadow: 0 10px 30px -15px rgba(255, 59, 141, 0.4);
 }
 .blog-card-body {
   padding: 18px;

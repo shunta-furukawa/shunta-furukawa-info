@@ -1,32 +1,38 @@
 {{- /*
-  Fetch Zenn RSS at build time, normalize each entry to
-  { platform, title, url, date, thumbnail }, and return a slice
-  sorted by date desc.
+  Fetch Zenn's article API at build time and normalize each entry to
+  { platform, title, url, date, emoji, thumbnail } sorted by date desc.
 
-  Feed outages warn (do not halt the build) so third-party
-  availability can't break deploys.
+  We use the (unofficial but stable) /api/articles endpoint instead of
+  the RSS feed so we can pick up each article's emoji, which the RSS
+  feed omits.
+
+  Feed outages warn (do not halt the build) so third-party availability
+  can't break deploys.
 */ -}}
 
 {{- $items := slice -}}
 
-{{- with site.Params.feeds.zenn -}}
+{{- with site.Params.feeds.zenn_username -}}
+  {{- $endpoint := printf "https://zenn.dev/api/articles?username=%s&order=latest" . -}}
   {{- $opts := dict "headers" (dict "User-Agent" "shunta-furukawa.info build") -}}
-  {{- with try (resources.GetRemote . $opts) -}}
+  {{- with try (resources.GetRemote $endpoint $opts) -}}
     {{- with .Err -}}
-      {{- warnf "Zenn feed fetch failed: %s" . -}}
+      {{- warnf "Zenn articles API fetch failed: %s" . -}}
     {{- else with .Value -}}
-      {{- $feed := .Content | transform.Unmarshal -}}
-      {{- $raw := $feed.channel.item -}}
-      {{- if not (reflect.IsSlice $raw) }}{{ $raw = slice $raw }}{{ end -}}
-      {{- range $raw -}}
-        {{- $date := time.AsTime .pubDate -}}
-        {{- $items = $items | append (dict
-          "platform" "zenn"
-          "title" .title
-          "url" .link
-          "date" ($date.Format "2006-01-02T15:04:05Z")
-          "thumbnail" ""
-        ) -}}
+      {{- $payload := .Content | transform.Unmarshal -}}
+      {{- with $payload.articles -}}
+        {{- range . -}}
+          {{- $date := time.AsTime .published_at -}}
+          {{- $url := printf "https://zenn.dev%s" .path -}}
+          {{- $items = $items | append (dict
+            "platform" "zenn"
+            "title" .title
+            "url" $url
+            "date" ($date.Format "2006-01-02T15:04:05Z")
+            "emoji" (or .emoji "📝")
+            "thumbnail" ""
+          ) -}}
+        {{- end -}}
       {{- end -}}
     {{- end -}}
   {{- end -}}
