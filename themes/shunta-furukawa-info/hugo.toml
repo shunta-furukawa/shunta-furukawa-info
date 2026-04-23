@@ -4,21 +4,39 @@ title = 'SHUNTA FURUKAWA INFO'
 
 [[menu.main]]
   identifier = "home"
-  name = "ホーム"
-  url = "/"
+  name = "HOME"
+  url = "/#top"
   weight = 10
 
 [[menu.main]]
-  identifier = "story"
-  name = "ストーリー"
-  url = "/story"
+  identifier = "about"
+  name = "ABOUT"
+  url = "/#about"
   weight = 20
 
 [[menu.main]]
-  identifier = "writings"
-  name = "投稿"
-  url = "/writings"
+  identifier = "skills"
+  name = "SKILLS"
+  url = "/#skills"
   weight = 30
+
+[[menu.main]]
+  identifier = "story"
+  name = "STORY"
+  url = "/story/"
+  weight = 40
+
+[[menu.main]]
+  identifier = "blog"
+  name = "BLOG"
+  url = "/writings/"
+  weight = 50
+
+[[menu.main]]
+  identifier = "contact"
+  name = "CONTACT"
+  url = "/#contact"
+  weight = 60
 
 [module]
   [module.hugoVersion]

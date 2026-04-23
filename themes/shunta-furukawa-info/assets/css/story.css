@@ -1,3 +1,4 @@
+/* /story/ ページ（タイムライン表示） */
 .story-container {
   padding: 12px 0;
 }
@@ -67,4 +68,61 @@
 
 @media (max-width: 900px) {
   .timeline-content-container { grid-template-columns: 1fr; }
+}
+
+/* トップの STORY セクション（カードグリッド） */
+.story-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+.story-card {
+  background: var(--surface-panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+  position: relative;
+}
+.story-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--primary-color);
+  border-radius: var(--radius-md) 0 0 var(--radius-md);
+}
+.story-card:hover { transform: translateY(-3px); border-color: var(--primary-line); }
+.story-card-period {
+  color: var(--primary-color);
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+.story-card-title {
+  color: var(--light-text);
+  font-size: 1.7rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+.story-card-desc {
+  color: var(--body-text);
+  font-size: 1.35rem;
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+.story-card-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.story-card-skills li {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 1.15rem;
+  color: var(--muted-text);
 }

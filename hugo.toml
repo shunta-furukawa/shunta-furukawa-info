@@ -6,9 +6,43 @@ enableRobotsTXT = true
 
 [params]
 author = 'Shunta Furukawa'
+role = 'バックエンドエンジニア'
+location = 'Tokyo, Japan'
 description = 'バックエンドからフロントエンド、デザインまで。面白さとワクワクを、コードとアイデアで形にしていきます。'
 twitter_handle = '@shunta_furukawa'
 og_image = '/images/og-default.jpg'
+contact_email = 'contact@shunta-furukawa.info'
+
+[params.about]
+lead = 'バックエンドを中心に、システムの価値を支えています。'
+body = '''Web アプリケーションや広告配信基盤の開発に携わっています。
+要件定義・設計から実装、運用・改善まで一貫して担当し、
+スケーラブルで信頼性の高いシステムをつくることを意識しています。
+データやインフラを扱う領域に興味があり、継続的に学びながら
+プロダクトの成長に貢献していきたいと考えています。'''
+tags = [
+  'バックエンド開発',
+  '広告配信基盤',
+  'API 設計',
+  'データ処理',
+  'インフラ・運用',
+]
+
+[[params.stats]]
+value = '20+'
+label = 'Years Experience'
+
+[[params.stats]]
+value = '広告配信基盤'
+label = '設計・運用経験'
+
+[[params.stats]]
+value = '大規模データ処理'
+label = '実務経験あり'
+
+[[params.stats]]
+value = 'インフラ運用・改善'
+label = '経験あり'
 
 [params.social]
 x = 'https://x.com/shunta_furukawa'
