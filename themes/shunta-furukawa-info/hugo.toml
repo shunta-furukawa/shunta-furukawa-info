@@ -1,5 +1,5 @@
 baseURL = 'https://shunta-furukawa.info/'
-languageCode = 'ja-JP'
+languageCode = 'ja'
 title = 'SHUNTA FURUKAWA INFO'
 
 [[menu.main]]

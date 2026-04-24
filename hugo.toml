@@ -1,5 +1,5 @@
 baseURL = 'https://shunta-furukawa.info'
-languageCode = 'ja-jp'
+languageCode = 'ja'
 title = 'SHUNTA FURUKAWA INFO'
 theme = 'shunta-furukawa-info'
 enableRobotsTXT = true
@@ -8,7 +8,7 @@ enableRobotsTXT = true
 author = 'Shunta Furukawa'
 role = 'バックエンドエンジニア'
 location = 'Tokyo, Japan'
-description = 'バックエンドからフロントエンド、デザインまで。面白さとワクワクを、コードとアイデアで形にしていきます。'
+description = 'Shunta Furukawa のポートフォリオサイト。広告配信基盤 / API 設計 / 大規模データ処理を軸に、バックエンドからフロントエンド・デザインまで手がけるエンジニアとしての経歴・技術スタック・最近の投稿をまとめています。'
 twitter_handle = '@shunta_furukawa'
 og_image = '/images/og-default.jpg'
 contact_email = 'contact@shunta-furukawa.info'
