@@ -13,6 +13,7 @@
   --line-strong: #3a3f4e;
   --font-body: 'Zen Maru Gothic', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Hiragino Sans', sans-serif;
   --font-display: var(--font-body);
+  --font-mono: ui-monospace, 'JetBrains Mono', Menlo, Consolas, 'Courier New', monospace;
   --container-max: 1200px;
   --container-pad: 4vw;
   --radius-lg: 18px;

@@ -64,7 +64,7 @@
   max-width: 820px;
 }
 .story-headline {
-  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-family: var(--font-mono);
   font-weight: 700;
   font-size: clamp(1.8rem, 3.2vw, 3rem);
   line-height: 1.45;
@@ -111,19 +111,19 @@
   display: inline-flex;
   align-items: baseline;
   gap: 8px;
-  padding: 6px 12px;
+  padding: 6px 14px;
   border-radius: 999px;
   border: 1px solid var(--line);
   background: rgba(255, 255, 255, 0.02);
-  font-family: ui-monospace, Menlo, Consolas, monospace;
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   color: var(--light-text);
 }
 .story-hero-chip span {
   color: var(--primary-color);
-  letter-spacing: 0.16em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   font-size: 1rem;
+  font-weight: 700;
 }
 
 .story-scroll-hint {
@@ -132,9 +132,10 @@
   align-items: center;
   gap: 6px;
   color: var(--muted-text);
-  font-family: ui-monospace, Menlo, Consolas, monospace;
   font-size: 1.1rem;
-  letter-spacing: 0.28em;
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
 }
 .story-scroll-hint:hover { color: var(--primary-color); }
 .story-scroll-hint-arrow {
@@ -219,7 +220,6 @@
   position: absolute;
   top: -24px;
   left: -8px;
-  font-family: ui-monospace, Menlo, Consolas, monospace;
   font-weight: 900;
   font-size: clamp(6rem, 12vw, 10rem);
   line-height: 0.9;
@@ -233,19 +233,17 @@
 .story-chapter-year-num {
   position: relative;
   z-index: 1;
-  font-family: ui-monospace, Menlo, Consolas, monospace;
-  font-weight: 800;
-  font-size: clamp(2.4rem, 3vw, 3rem);
+  font-weight: 900;
+  font-size: clamp(2.6rem, 3.2vw, 3.2rem);
   color: var(--primary-color);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
   line-height: 1;
 }
 .story-chapter-year-period {
   position: relative;
   z-index: 1;
   color: var(--muted-text);
-  font-size: 1.25rem;
-  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-size: 1.3rem;
   max-width: 200px;
 }
 
@@ -256,14 +254,15 @@
 .story-chapter-header { margin-bottom: 16px; }
 .story-chapter-chip {
   display: inline-block;
-  padding: 3px 10px;
+  padding: 3px 12px;
   border-radius: 999px;
   background: rgba(255, 59, 141, 0.1);
   border: 1px solid rgba(255, 59, 141, 0.35);
   color: var(--primary-color);
-  font-family: ui-monospace, Menlo, Consolas, monospace;
   font-size: 1.1rem;
-  letter-spacing: 0.16em;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
   margin-bottom: 10px;
 }
 .story-chapter-title {
@@ -340,13 +339,14 @@
   position: absolute;
   top: -6px;
   right: 10px;
-  font-family: ui-monospace, Menlo, Consolas, monospace;
+  font-family: var(--font-mono);
   font-weight: 900;
   font-size: 4.2rem;
   color: transparent;
   -webkit-text-stroke: 1px rgba(255, 59, 141, 0.3);
   pointer-events: none;
   user-select: none;
+  letter-spacing: -0.02em;
 }
 .story-highlight-card h3 {
   color: var(--light-text);
@@ -410,7 +410,7 @@
   flex-wrap: wrap;
   gap: 12px;
 }
-.story-now-terminal { font-family: ui-monospace, Menlo, Consolas, monospace; }
+.story-now-terminal { font-family: var(--font-mono); letter-spacing: 0.04em; }
 
 /* ==========================================================================
    Reduced motion
