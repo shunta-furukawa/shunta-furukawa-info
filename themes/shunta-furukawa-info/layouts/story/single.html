@@ -1,8 +1,110 @@
 {{ define "main" }}
-<section class="story-container">
-    <h1>ストーリー</h1>
-    <h2>このストーリーページでは、私のこれまでのキャリアやスキル形成の過程、そして人生を通じて大切にしている価値観について記載しています。これを通じて、私の人となりやバックグラウンドを知っていただければ幸いです。</h2>
-    {{ partial "story.html" . }}
-    {{ partial "highlights.html" . }}
-</section>
+
+{{- /* Ordered stories (oldest → newest) */ -}}
+{{- $chapters := slice -}}
+{{- range $k, $v := site.Data.stories -}}
+  {{- $year := substr $k 1 4 -}}
+  {{- $chapters = $chapters | append (merge $v (dict "key" $k "year" $year)) -}}
+{{- end -}}
+{{- $chapters = sort $chapters "key" "asc" -}}
+{{- $first := index $chapters 0 -}}
+{{- $last := index $chapters (sub (len $chapters) 1) -}}
+
+<div class="story-root">
+  <div class="story-bg" aria-hidden="true">
+    <div class="story-bg-dots"></div>
+    <div class="story-bg-glow" id="story-bg-glow"></div>
+  </div>
+
+  <section class="story-hero">
+    <p class="story-eyebrow">STORY</p>
+    <h1 class="story-headline">
+      <span class="story-headline-line" data-typewriter="&gt; Building systems since {{ $first.year }}"></span>
+      <span class="story-headline-line story-headline-accent" data-typewriter="&gt; Still shipping in {{ now.Year }}_"></span>
+    </h1>
+    <p class="story-intro">
+      このページでは、{{ $first.year }}年に新卒でエンジニアの道を歩み始めてから今日までのキャリア、
+      そこで積み重ねてきた役割・技術・学びをまとめています。一度きりの人生を、なにかで残すつもりで綴ります。
+    </p>
+    <div class="story-hero-meta">
+      <span class="story-hero-chip"><span>chapters</span> {{ len $chapters }}</span>
+      <span class="story-hero-chip"><span>since</span> {{ $first.year }}</span>
+      <span class="story-hero-chip"><span>location</span> {{ site.Params.location }}</span>
+    </div>
+    <a class="story-scroll-hint" href="#story-timeline" aria-label="年表へスクロール">
+      <span>SCROLL</span>
+      <span class="story-scroll-hint-arrow">↓</span>
+    </a>
+  </section>
+
+  <section class="story-timeline" id="story-timeline">
+    <div class="story-timeline-progress" aria-hidden="true"></div>
+
+    {{ range $idx, $c := $chapters }}
+    <article class="story-chapter" data-year="{{ $c.year }}" data-index="{{ $idx }}">
+      <aside class="story-chapter-side">
+        <div class="story-chapter-year">
+          <span class="story-chapter-year-ghost" aria-hidden="true">{{ $c.year }}</span>
+          <span class="story-chapter-year-num">{{ $c.year }}</span>
+          <span class="story-chapter-year-period">{{ $c.period }}</span>
+        </div>
+      </aside>
+      <div class="story-chapter-body">
+        <header class="story-chapter-header">
+          <span class="story-chapter-chip">Ch. {{ add $idx 1 }}</span>
+          <h2 class="story-chapter-title">{{ $c.title }}</h2>
+        </header>
+        <div class="story-chapter-text">
+          {{ range $c.descriptions }}
+          <p>{{ . }}</p>
+          {{ end }}
+        </div>
+        {{ with $c.skills }}
+        <ul class="story-chapter-skills" aria-label="この期間で使った技術・経験">
+          {{ range . }}
+          <li>{{ . }}</li>
+          {{ end }}
+        </ul>
+        {{ end }}
+      </div>
+    </article>
+    {{ end }}
+  </section>
+
+  <section class="story-highlights">
+    <header class="story-section-head">
+      <p class="story-eyebrow">HIGHLIGHTS</p>
+      <h2 class="story-section-title">特に印象に残っている仕事</h2>
+      <p class="story-section-lead">横断的な取り組みをいくつかピックアップしました。</p>
+    </header>
+    <div class="story-highlights-grid">
+      {{ range sort site.Data.highlights "weight" }}
+      <article class="story-highlight-card">
+        <div class="story-highlight-card-index" aria-hidden="true">{{ printf "%02d" .weight }}</div>
+        <h3>{{ .title }}</h3>
+        <p>{{ .summary }}</p>
+        <ul class="story-highlight-tags">
+          {{ range .tags }}
+          <li>{{ . }}</li>
+          {{ end }}
+        </ul>
+      </article>
+      {{ end }}
+    </div>
+  </section>
+
+  <section class="story-now">
+    <div class="story-now-inner">
+      <p class="story-eyebrow">NOW</p>
+      <h2 class="story-now-title">ここからも、作る。</h2>
+      <p class="story-now-lead">技術で価値を生み出し、より良い体験を届けるために。<br>良ければこの先も覗いていってください。</p>
+      <div class="story-now-ctas">
+        <a class="btn btn-primary" href="/writings/">最近の投稿 →</a>
+        <a class="btn btn-outline" href="/#contact">連絡を取る</a>
+        <a class="btn btn-outline story-now-terminal" href="#" data-open-terminal>ターミナルで見る &gt;_</a>
+      </div>
+    </div>
+  </section>
+</div>
+
 {{ end }}
