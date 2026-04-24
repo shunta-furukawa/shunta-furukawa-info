@@ -27,7 +27,7 @@
     </div>
     <div class="hero-visual">
       <div class="hero-visual-frame">
-        <img src="/images/hero-illustration.png" alt="{{ site.Params.author }} のイラスト" loading="lazy">
+        <img src="/images/hero-illustration.png" alt="{{ site.Params.author }} のイラスト" width="1536" height="1024" loading="eager" fetchpriority="high" decoding="async">
       </div>
     </div>
   </div>
@@ -37,7 +37,7 @@
   <div class="about-grid">
     <aside class="about-profile">
       <div class="about-avatar">
-        <img src="/images/logo.jpg" alt="{{ site.Params.author }}">
+        <img src="/images/logo.jpg" alt="{{ site.Params.author }}" width="399" height="399" loading="lazy" decoding="async">
       </div>
       <h3 class="about-name">{{ site.Params.author }}</h3>
       <p class="about-role">{{ site.Params.role }}</p>
@@ -138,7 +138,7 @@
   {{ if $writings }}
   <div class="blog-grid">
     {{ range first 3 $writings }}
-    <a class="blog-card" href="{{ .url }}" target="_blank" rel="noopener">
+    <a class="blog-card" href="{{ .url }}" target="_blank" rel="noopener noreferrer">
       <div class="blog-card-thumb" aria-hidden="true">
         <span class="blog-card-thumb-emoji">{{ or .emoji "📝" }}</span>
       </div>

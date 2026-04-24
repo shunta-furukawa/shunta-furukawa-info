@@ -2,7 +2,7 @@
 {{- $description := or .Description site.Params.description }}
 {{- $ogImage := absURL (or .Params.image site.Params.og_image) }}
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{ $title }}</title>
 
 <meta name="description" content="{{ $description }}">
@@ -49,6 +49,7 @@
   {{- with .github }}{{ $sameAs = $sameAs | append . }}{{ end }}
   {{- with .linkedin }}{{ $sameAs = $sameAs | append . }}{{ end }}
   {{- with .facebook }}{{ $sameAs = $sameAs | append . }}{{ end }}
+  {{- with .zenn }}{{ $sameAs = $sameAs | append . }}{{ end }}
 {{- end }}
 {{- $person := dict
   "@context" "https://schema.org"
@@ -59,6 +60,16 @@
   "description" site.Params.description
   "sameAs" $sameAs
 }}
+{{- with site.Params.role }}{{ $person = merge $person (dict "jobTitle" .) }}{{ end }}
+{{- with site.Params.contact_email }}{{ $person = merge $person (dict "email" (printf "mailto:%s" .)) }}{{ end }}
+{{- with site.Params.location }}
+  {{- $locality := trim (index (split . ",") 0) " " }}
+  {{- $address := dict "@type" "PostalAddress" "addressLocality" $locality "addressCountry" "JP" }}
+  {{- $person = merge $person (dict "address" $address) }}
+{{- end }}
+{{- with site.Params.about }}
+  {{- with .tags }}{{ $person = merge $person (dict "knowsAbout" .) }}{{ end }}
+{{- end }}
 <script type="application/ld+json">{{ $person | jsonify | safeJS }}</script>
 {{- end }}
 
