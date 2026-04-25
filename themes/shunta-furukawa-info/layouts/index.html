@@ -27,7 +27,22 @@
     </div>
     <div class="hero-visual">
       <div class="hero-visual-frame">
-        <img src="/images/hero-illustration.png" alt="{{ site.Params.author }} のイラスト" width="1536" height="1024" loading="eager" fetchpriority="high" decoding="async">
+        {{- $hero := resources.Get "images/hero-illustration.png" -}}
+        {{- if $hero -}}
+          {{- $sm := $hero.Resize "480x webp q80" -}}
+          {{- $md := $hero.Resize "768x webp q82" -}}
+          {{- $lg := $hero.Resize "1280x webp q85" -}}
+          <img
+            src="{{ $lg.RelPermalink }}"
+            srcset="{{ $sm.RelPermalink }} 480w, {{ $md.RelPermalink }} 768w, {{ $lg.RelPermalink }} 1280w"
+            sizes="(max-width: 960px) 88vw, 520px"
+            alt="{{ site.Params.author }} のイラスト"
+            width="{{ $hero.Width }}"
+            height="{{ $hero.Height }}"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async">
+        {{- end -}}
       </div>
     </div>
   </div>
