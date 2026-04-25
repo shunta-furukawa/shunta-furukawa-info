@@ -47,6 +47,23 @@ ul { list-style: none; }
 img { max-width: 100%; height: auto; }
 section { scroll-margin-top: 84px; }
 
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 250;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary-color), #ff5ea7);
+  box-shadow: 0 0 12px rgba(255, 59, 141, 0.55);
+  transform-origin: left center;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .scroll-progress { transition: none; box-shadow: none; }
+}
+
 .container { width: min(var(--container-max), calc(100% - var(--container-pad) * 2)); margin: 0 auto; }
 
 .panel {
