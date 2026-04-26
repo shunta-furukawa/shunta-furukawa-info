@@ -1,0 +1,48 @@
+{{- /*
+  Renders inline SVG icons for well-known tech in skill chips.
+  Falls back to nothing (caller renders a plain dot) when the skill
+  name doesn't match a known logo.
+
+  Input: a skill name string (e.g. "Golang", "GCP / AWS").
+  Output: zero or more <svg ... data-skill-icon="<slug>" style="color:#XXX">
+  fragments concatenated; safe to embed directly in HTML.
+*/ -}}
+{{- $name := . -}}
+
+{{- $slugs := dict
+  "Golang" (slice "go")
+  "Kubernetes" (slice "kubernetes")
+  "Terraform" (slice "terraform")
+  "GCP / AWS" (slice "googlecloud" "aws")
+  "Ruby on Rails" (slice "rubyonrails")
+  "HTML (Pug, Haml)" (slice "html5")
+  "CSS (Sass, Less)" (slice "sass")
+  "JavaScript (Vue.js, JSX, GAS)" (slice "javascript")
+  "Docker" (slice "docker")
+-}}
+
+{{- $colors := dict
+  "go" "#00ADD8"
+  "kubernetes" "#326CE5"
+  "terraform" "#7B42BC"
+  "googlecloud" "#4285F4"
+  "aws" "#FF9900"
+  "rubyonrails" "#D30001"
+  "html5" "#E34F26"
+  "sass" "#CC6699"
+  "javascript" "#F7DF1E"
+  "docker" "#2496ED"
+-}}
+
+{{- with index $slugs $name -}}
+  {{- range . -}}
+    {{- $slug := . -}}
+    {{- with resources.Get (printf "icons/skills/%s.svg" $slug) -}}
+      {{- $color := index $colors $slug -}}
+      {{- $svg := .Content -}}
+      {{- $svg = replace $svg "<svg " (printf "<svg data-skill-icon=%q style=\"color:%s\" " $slug $color) -}}
+      {{- $svg = replace $svg "<path " "<path fill=\"currentColor\" " -}}
+      {{- $svg | safeHTML -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}

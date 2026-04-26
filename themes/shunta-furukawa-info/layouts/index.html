@@ -115,14 +115,19 @@
       <h3 class="skills-col-title">{{ .category }}</h3>
       <ul class="skills-col-items">
         {{ range .items }}
+        {{- $icons := partial "skill_icon.html" .name -}}
         <li>
-          <button type="button" class="skill-chip"
+          <button type="button" class="skill-chip{{ if $icons }} skill-chip--has-icon{{ end }}"
             data-name="{{ .name }}"
             data-years="{{ .years }}"
             data-max-years="{{ $maxYears }}"
             data-desc="{{ .description }}"
             aria-expanded="false">
+            {{- if $icons -}}
+            <span class="skill-chip-icon" aria-hidden="true">{{ $icons | safeHTML }}</span>
+            {{- else -}}
             <span class="skill-chip-dot" aria-hidden="true"></span>
+            {{- end }}
             <span class="skill-chip-name">{{ .name }}</span>
             {{ with .years }}<span class="skill-chip-years">{{ . }}y</span>{{ end }}
           </button>

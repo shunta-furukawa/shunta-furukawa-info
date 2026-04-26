@@ -115,6 +115,22 @@
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.04);
   flex-shrink: 0;
 }
+.skill-chip-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.skill-chip-icon svg {
+  width: 14px;
+  height: 14px;
+  display: block;
+}
+/* Subtle desaturation when chip is idle so the icons don't shout;
+   bring full saturation back on hover/active for a "wake-up" feel. */
+.skill-chip-icon svg { filter: saturate(0.78); transition: filter 0.2s ease; }
+.skill-chip:hover .skill-chip-icon svg,
+.skill-chip[aria-expanded="true"] .skill-chip-icon svg { filter: saturate(1); }
 .skill-chip-name { color: inherit; }
 .skill-chip-years {
   color: var(--muted-text);
