@@ -159,4 +159,50 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    /* アンカーメニューの現在位置ハイライト（IntersectionObserver） */
+    (function () {
+        const navLinks = Array.from(document.querySelectorAll(".menu-links--desktop a, .menu-links--drawer a"));
+        if (!navLinks.length) return;
+
+        // href="/#xxx" や "#xxx" を持つアンカーリンクのみ対象
+        const targets = new Map(); // sectionId -> [<a>, ...]
+        navLinks.forEach((a) => {
+            const href = a.getAttribute("href") || "";
+            const m = href.match(/#([^?]+)$/);
+            if (!m) return;
+            let id = m[1];
+            // HOME は /#top（ヘッダーID）→ ページ内の #hero に紐付ける
+            if (id === "top") id = "hero";
+            if (!document.getElementById(id)) return;
+            if (!targets.has(id)) targets.set(id, []);
+            targets.get(id).push(a);
+        });
+        if (!targets.size) return;
+
+        // 全部のアンカーリンクから active を一旦剥がして、対象だけ付ける
+        const allTrackedLinks = new Set();
+        targets.forEach((links) => links.forEach((a) => allTrackedLinks.add(a)));
+
+        const setActive = (id) => {
+            allTrackedLinks.forEach((a) => a.classList.remove("active"));
+            const list = targets.get(id);
+            if (list) list.forEach((a) => a.classList.add("active"));
+        };
+
+        // ビューポート上中央の細い帯にセクション top が入った時に切り替え
+        const io = new IntersectionObserver(
+            (entries) => {
+                const visible = entries
+                    .filter((e) => e.isIntersecting)
+                    .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+                if (visible[0]) setActive(visible[0].target.id);
+            },
+            { rootMargin: "-40% 0px -55% 0px", threshold: 0 }
+        );
+        targets.forEach((_, id) => {
+            const el = document.getElementById(id);
+            if (el) io.observe(el);
+        });
+    })();
+
 });
