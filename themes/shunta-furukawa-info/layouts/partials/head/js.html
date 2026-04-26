@@ -1,4 +1,4 @@
-{{- $jsFiles := slice "js/main.js" "js/story.js" "js/terminal.js" }}
+{{- $jsFiles := slice "js/main.js" "js/skills.js" "js/story.js" "js/terminal.js" }}
 {{- range $jsFiles }}
   {{- with resources.Get . }}
     {{- if eq hugo.Environment "development" }}

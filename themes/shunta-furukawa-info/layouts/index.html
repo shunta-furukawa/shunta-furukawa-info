@@ -89,9 +89,25 @@
 </section>
 
 <section class="skills" id="skills">
+  {{- $catCount := len site.Data.skills -}}
+  {{- $itemCount := 0 -}}
+  {{- $maxYears := 0 -}}
+  {{- range site.Data.skills -}}
+    {{- range .items -}}
+      {{- $itemCount = add $itemCount 1 -}}
+      {{- with .years }}{{ if gt . $maxYears }}{{ $maxYears = . }}{{ end }}{{ end -}}
+    {{- end -}}
+  {{- end -}}
   <header class="section-head">
-    <p class="section-eyebrow">SKILLS</p>
-    <h2 class="section-title">使える技術・経験領域</h2>
+    <div>
+      <p class="section-eyebrow">SKILLS</p>
+      <h2 class="section-title">使える技術・経験領域</h2>
+    </div>
+    <p class="skills-counter" aria-label="スキル統計">
+      <span><strong>{{ $itemCount }}</strong> skills</span>
+      <span class="skills-counter-sep">·</span>
+      <span><strong>{{ $catCount }}</strong> fields</span>
+    </p>
   </header>
   <div class="skills-grid">
     {{ range sort site.Data.skills "weight" }}
@@ -99,13 +115,30 @@
       <h3 class="skills-col-title">{{ .category }}</h3>
       <ul class="skills-col-items">
         {{ range .items }}
-        <li class="skill-chip" title="{{ .description }}">
-          <span class="skill-chip-dot" aria-hidden="true"></span>
-          <span class="skill-chip-name">{{ .name }}</span>
-          {{ with .years }}<span class="skill-chip-years">{{ . }}y</span>{{ end }}
+        <li>
+          <button type="button" class="skill-chip"
+            data-name="{{ .name }}"
+            data-years="{{ .years }}"
+            data-max-years="{{ $maxYears }}"
+            data-desc="{{ .description }}"
+            aria-expanded="false">
+            <span class="skill-chip-dot" aria-hidden="true"></span>
+            <span class="skill-chip-name">{{ .name }}</span>
+            {{ with .years }}<span class="skill-chip-years">{{ . }}y</span>{{ end }}
+          </button>
         </li>
         {{ end }}
       </ul>
+      <div class="skills-col-detail" hidden aria-live="polite">
+        <div class="skills-col-detail-head">
+          <span class="skills-col-detail-name"></span>
+          <span class="skills-col-detail-years"></span>
+        </div>
+        <div class="skills-col-detail-bar" aria-hidden="true">
+          <span class="skills-col-detail-bar-fill"></span>
+        </div>
+        <p class="skills-col-detail-desc"></p>
+      </div>
     </div>
     {{ end }}
   </div>
