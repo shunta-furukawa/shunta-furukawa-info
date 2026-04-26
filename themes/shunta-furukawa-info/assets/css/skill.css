@@ -1,3 +1,18 @@
+.skills-counter {
+  color: var(--muted-text);
+  font-size: 1.25rem;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-left: auto;
+}
+.skills-counter strong {
+  color: var(--light-text);
+  font-weight: 900;
+  font-size: 1.5rem;
+}
+.skills-counter-sep { color: var(--line-strong); }
+
 .skills-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -10,6 +25,10 @@
   padding: 20px 18px;
   position: relative;
   overflow: hidden;
+  transition: border-color 0.25s ease;
+}
+.skills-col:has(.skill-chip[aria-expanded="true"]) {
+  border-color: var(--skill-color, var(--primary-color));
 }
 .skills-col::before {
   content: '';
@@ -32,6 +51,18 @@
   flex-wrap: wrap;
   gap: 8px;
 }
+.skills-col-items > li {
+  list-style: none;
+  /* CSS counter for stagger animation index */
+  --idx: 0;
+}
+.skills-col-items > li:nth-child(1) { --idx: 0; }
+.skills-col-items > li:nth-child(2) { --idx: 1; }
+.skills-col-items > li:nth-child(3) { --idx: 2; }
+.skills-col-items > li:nth-child(4) { --idx: 3; }
+.skills-col-items > li:nth-child(5) { --idx: 4; }
+.skills-col-items > li:nth-child(n + 6) { --idx: 5; }
+
 .skill-chip {
   display: inline-flex;
   align-items: center;
@@ -40,13 +71,41 @@
   border-radius: 999px;
   border: 1px solid var(--line);
   background: rgba(255, 255, 255, 0.02);
+  font-family: inherit;
   font-size: 1.25rem;
   color: var(--body-text);
-  transition: border-color 0.2s ease, color 0.2s ease;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.25s ease,
+    transform 0.6s ease,
+    opacity 0.6s ease;
+  /* default state (before reveal) */
+  opacity: 0;
+  transform: translateY(8px);
+}
+.skills-col.is-visible .skill-chip {
+  opacity: 1;
+  transform: none;
+  transition-delay: calc(var(--idx, 0) * 50ms);
 }
 .skill-chip:hover {
   border-color: var(--skill-color, var(--primary-color));
   color: var(--light-text);
+  background: rgba(255, 255, 255, 0.04);
+}
+.skill-chip:focus-visible {
+  outline: none;
+  border-color: var(--skill-color, var(--primary-color));
+  box-shadow: 0 0 0 3px rgba(255, 59, 141, 0.25);
+}
+.skill-chip[aria-expanded="true"] {
+  border-color: var(--skill-color, var(--primary-color));
+  background: rgba(255, 59, 141, 0.1);
+  color: var(--light-text);
+  box-shadow: 0 0 0 1px var(--skill-color, var(--primary-color)) inset, 0 6px 16px -8px var(--skill-color, var(--primary-color));
 }
 .skill-chip-dot {
   width: 8px;
@@ -54,12 +113,72 @@
   border-radius: 50%;
   background: var(--skill-color, var(--primary-color));
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.04);
+  flex-shrink: 0;
 }
 .skill-chip-name { color: inherit; }
 .skill-chip-years {
   color: var(--muted-text);
   font-size: 1.1rem;
   font-weight: 700;
+}
+.skill-chip[aria-expanded="true"] .skill-chip-years { color: var(--skill-color, var(--primary-color)); }
+
+/* Detail panel */
+.skills-col-detail {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation: skills-detail-in 0.32s ease both;
+}
+.skills-col-detail[hidden] { display: none; }
+@keyframes skills-detail-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: none; }
+}
+.skills-col-detail-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.skills-col-detail-name {
+  color: var(--light-text);
+  font-weight: 700;
+  font-size: 1.45rem;
+}
+.skills-col-detail-years {
+  color: var(--skill-color, var(--primary-color));
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+.skills-col-detail-bar {
+  height: 4px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.skills-col-detail-bar-fill {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--skill-color, var(--primary-color));
+  border-radius: inherit;
+  transition: width 0.6s cubic-bezier(0.2, 0.7, 0.1, 1);
+}
+.skills-col-detail-desc {
+  color: var(--body-text);
+  font-size: 1.3rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skill-chip { transition: none; opacity: 1; transform: none; }
+  .skills-col-detail { animation: none; }
+  .skills-col-detail-bar-fill { transition: none; }
 }
 
 /* 既存の /story/ ページ互換 (timeline skills バー) */
