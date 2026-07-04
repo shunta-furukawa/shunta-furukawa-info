@@ -2,11 +2,11 @@
 <section class="hero-container panel">
   <div class="hero-text">
     <p class="hero-kicker">こんにちは、{{ site.Params.author }}です</p>
-    <h1>技術で価値を生み出し、<br>より良い体験を届ける</h1>
-    <p>{{ site.Params.description | safeHTML }}</p>
+    <h1>動画広告の配信基盤をつくり、<br>その内側を書いています。</h1>
+    <p>アドテクの仕組み、広告効果測定、AI による分析の自動化。<br>エンジニアリングの現場から見えたことを Zenn にまとめています。</p>
     <div class="hero-actions">
-      <a href="/story/" class="btn btn-primary">ストーリーを見る →</a>
-      <a href="/writings/" class="btn btn-secondary">最近の投稿を見る →</a>
+      <a href="{{ site.Params.social.zenn }}" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Zennで読む →</a>
+      <a href="{{ site.Params.social.x }}" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">Xで見る →</a>
     </div>
     <div class="hero-social-links">
       {{ partial "social_links.html" . }}
@@ -17,20 +17,40 @@
   </div>
 </section>
 
-<section class="feature-cards">
-  <article class="feature-card">
-    <h2>開発</h2>
-    <p>バックエンドからフロントエンドまで、幅広い領域を一貫して設計・実装します。</p>
-  </article>
-  <article class="feature-card">
-    <h2>インフラ・運用</h2>
-    <p>GCP / AWS を軸に、安定運用と自動化を見据えた構成をつくります。</p>
-  </article>
-  <article class="feature-card">
-    <h2>デザイン</h2>
-    <p>UI/UX まで含めて、使う人が心地よい体験を目指して改善します。</p>
-  </article>
+<section class="series-container panel">
+  <div class="section-head">
+    <h2>SERIES</h2>
+    <p class="section-lead">アドテク × 効果測定 × AI 自動化 を軸に、Zenn で連載を書き始めます。</p>
+  </div>
+  <div class="series-grid">
+    {{ range site.Data.series }}
+    <article class="series-card">
+      <div class="series-card-badge">{{ .status | default "近日公開" }}</div>
+      <h3>{{ .title }}</h3>
+      <p>{{ .summary }}</p>
+      <a class="series-card-link" href="{{ .url | default site.Params.social.zenn }}" target="_blank" rel="noopener noreferrer">
+        {{ .cta | default "Zennで読む →" }}
+      </a>
+    </article>
+    {{ end }}
+  </div>
 </section>
+
+{{ $writings := partial "writings_fetch.html" . }}
+{{ $featuredUrls := slice }}
+{{ with site.Data.featured }}
+  {{ with .urls }}{{ $featuredUrls = . }}{{ end }}
+{{ end }}
+{{ $picked := slice }}
+{{ $rest := $writings }}
+{{ if $featuredUrls }}
+  {{ $picked = where $writings "url" "in" $featuredUrls }}
+  {{ $rest = where $writings "url" "not in" $featuredUrls }}
+{{ end }}
+{{ if $picked }}
+{{ partial "writings_list.html" (dict "items" $picked "title" "PICKED UP" "showAllLink" false) }}
+{{ end }}
+{{ partial "writings_list.html" (dict "items" (first 3 $rest) "title" "RECENT POSTS" "showAllLink" true) }}
 
 <section class="tech-stack panel">
   <h2>TECH STACK</h2>
@@ -42,7 +62,4 @@
     {{ end }}
   </div>
 </section>
-
-{{ $writings := partial "writings_fetch.html" . }}
-{{ partial "writings_list.html" (dict "items" (first 3 $writings) "title" "RECENT POSTS" "showAllLink" true) }}
 {{ end }}

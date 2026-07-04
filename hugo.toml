@@ -6,7 +6,7 @@ enableRobotsTXT = true
 
 [params]
 author = 'Shunta Furukawa'
-description = 'バックエンドからフロントエンド、デザインまで。面白さとワクワクを、コードとアイデアで形にしていきます。'
+description = '動画広告の配信基盤を開発しているエンジニア。アドテクの仕組み、広告効果測定、AI による分析の自動化について Zenn に書いています。'
 twitter_handle = '@shunta_furukawa'
 og_image = '/images/og-default.jpg'
 

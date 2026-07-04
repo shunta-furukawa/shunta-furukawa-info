@@ -1,0 +1,6 @@
+# Featured Zenn articles that should appear in a "PICKED UP" block on the
+# homepage. URLs are matched case-sensitively against the fetched Zenn feed.
+# Leave `urls` empty (or comment everything out) to hide the block entirely
+# — the RECENT POSTS section will fall back to showing everything.
+urls: []
+  # - "https://zenn.dev/shunta_furukawa/articles/xxxxxxxxxxxxxx"
