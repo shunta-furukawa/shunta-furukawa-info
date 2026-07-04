@@ -1,0 +1,6 @@
+# Featured Zenn articles for the top-page "PICKED UP" block.
+# URLs are matched exactly against the fetched Zenn feed. When the list
+# is empty, the PICKED UP block is skipped and everything falls back into
+# RECENT POSTS as usual.
+urls: []
+  # - "https://zenn.dev/shunta_furukawa/articles/xxxxxxxxxxxxxx"

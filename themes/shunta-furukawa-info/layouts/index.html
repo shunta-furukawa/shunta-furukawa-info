@@ -15,14 +15,13 @@
         <span class="hero-name">{{ site.Params.author }}</span>です
       </h1>
       <p class="hero-lead">
-        <span class="hero-accent">バックエンド</span>を軸に<br>
-        プロダクトを支える<br>
-        エンジニアです。
+        <span class="hero-accent">動画広告の配信基盤</span>を、<br>
+        内側から書いています。
       </p>
       <p class="hero-desc">{{ site.Params.description | safeHTML }}</p>
       <div class="hero-actions">
-        <a href="/story/" class="btn btn-primary">ストーリーを見る →</a>
-        <a href="#about" class="btn btn-outline">ABOUT ME</a>
+        <a href="{{ site.Params.social.zenn }}" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Zenn で読む →</a>
+        <a href="{{ site.Params.social.x }}" class="btn btn-outline" target="_blank" rel="noopener noreferrer">X で見る →</a>
       </div>
     </div>
     <div class="hero-visual">
@@ -45,6 +44,29 @@
         {{- end -}}
       </div>
     </div>
+  </div>
+</section>
+
+<section class="series" id="series">
+  <header class="section-head">
+    <div>
+      <p class="section-eyebrow">SERIES</p>
+      <h2 class="section-title">アドテク × 効果測定 × AI 自動化</h2>
+      <p class="section-lead">Zenn で書き始める連載枠。配信の仕組みから測定、AI 自動化まで、軸に沿って掘っていきます。</p>
+    </div>
+    <a class="section-link" href="{{ site.Params.social.zenn }}" target="_blank" rel="noopener noreferrer">Zenn プロフィール →</a>
+  </header>
+  <div class="series-grid">
+    {{ range site.Data.series }}
+    <article class="series-card">
+      <div class="series-card-badge">{{ .status | default "近日公開" }}</div>
+      <h3 class="series-card-title">{{ .title }}</h3>
+      <p class="series-card-desc">{{ .summary }}</p>
+      <a class="series-card-link" href="{{ .url | default site.Params.social.zenn }}" target="_blank" rel="noopener noreferrer">
+        {{ .cta | default "Zenn で読む →" }}
+      </a>
+    </article>
+    {{ end }}
   </div>
 </section>
 
@@ -179,6 +201,44 @@
   </div>
 </section>
 
+{{ $writings := partial "writings_fetch.html" . }}
+{{ $featuredUrls := slice }}
+{{ with site.Data.featured }}
+  {{ with .urls }}{{ $featuredUrls = . }}{{ end }}
+{{ end }}
+{{ $picked := slice }}
+{{ $rest := $writings }}
+{{ if and $writings $featuredUrls }}
+  {{ $picked = where $writings "url" "in" $featuredUrls }}
+  {{ $rest = where $writings "url" "not in" $featuredUrls }}
+{{ end }}
+
+{{ if $picked }}
+<section class="blog blog--picked" id="picked">
+  <header class="section-head">
+    <div>
+      <p class="section-eyebrow">PICKED UP</p>
+      <h2 class="section-title">軸に沿ったピックアップ</h2>
+    </div>
+    <a class="section-link" href="{{ site.Params.social.zenn }}" target="_blank" rel="noopener noreferrer">Zenn で見る →</a>
+  </header>
+  <div class="blog-grid">
+    {{ range $picked }}
+    <a class="blog-card" href="{{ .url }}" target="_blank" rel="noopener noreferrer">
+      <div class="blog-card-thumb" aria-hidden="true">
+        <span class="blog-card-thumb-emoji">{{ or .emoji "📝" }}</span>
+      </div>
+      <div class="blog-card-body">
+        <time class="blog-card-date" datetime="{{ .date }}">{{ dateFormat "2006.01.02" .date }}</time>
+        <h3 class="blog-card-title">{{ .title }}</h3>
+        <p class="blog-card-read">Zenn で読む ↗</p>
+      </div>
+    </a>
+    {{ end }}
+  </div>
+</section>
+{{ end }}
+
 <section class="blog" id="blog">
   <header class="section-head">
     <div>
@@ -187,10 +247,9 @@
     </div>
     <a class="section-link" href="/writings/">すべての記事を見る →</a>
   </header>
-  {{ $writings := partial "writings_fetch.html" . }}
-  {{ if $writings }}
+  {{ if $rest }}
   <div class="blog-grid">
-    {{ range first 3 $writings }}
+    {{ range first 3 $rest }}
     <a class="blog-card" href="{{ .url }}" target="_blank" rel="noopener noreferrer">
       <div class="blog-card-thumb" aria-hidden="true">
         <span class="blog-card-thumb-emoji">{{ or .emoji "📝" }}</span>
