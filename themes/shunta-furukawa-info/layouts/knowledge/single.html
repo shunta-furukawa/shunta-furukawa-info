@@ -1,0 +1,57 @@
+{{ define "main" }}
+<article class="knowledge-article">
+  <header class="knowledge-article-head">
+    <p class="section-eyebrow"><a href="/knowledge/">KNOWLEDGE</a></p>
+    <h1><span class="knowledge-article-emoji" aria-hidden="true">{{ .Params.emoji }}</span>{{ .Title }}</h1>
+    <p class="knowledge-article-lead">{{ .Description }}</p>
+  </header>
+
+  {{ if eq .Params.interactive "rtb-auction" }}
+  <section class="rtb-demo panel" id="rtb-demo" aria-label="RTBオークションのインタラクティブ図解">
+    <div class="rtb-stage-wrap">
+      <svg id="rtb-stage" viewBox="0 0 920 600" role="img" aria-label="プレイヤー、SSP、DSP間のオークションフロー図"></svg>
+    </div>
+    <div class="rtb-hud">
+      <div class="rtb-clock" aria-hidden="true">
+        <span class="rtb-clock-label">ELAPSED</span>
+        <span class="rtb-clock-value" id="rtb-clock">0<small>ms</small></span>
+      </div>
+      <p class="rtb-caption" id="rtb-caption" aria-live="polite">▶ を押すと、1回の広告オークションが始まります。</p>
+    </div>
+    <div class="rtb-controls" role="group" aria-label="再生コントロール">
+      <button type="button" class="rtb-btn rtb-btn--primary" id="rtb-play">▶ 再生</button>
+      <button type="button" class="rtb-btn" id="rtb-step-prev" aria-label="前のステップ">←</button>
+      <button type="button" class="rtb-btn" id="rtb-step-next" aria-label="次のステップ">→</button>
+      <button type="button" class="rtb-btn" id="rtb-speed" aria-label="再生速度切り替え">1.0x</button>
+      <button type="button" class="rtb-btn" id="rtb-replay">↻ もう一度</button>
+    </div>
+    <div class="rtb-result" id="rtb-result" hidden>
+      <p class="rtb-result-title">オークション結果（セカンドプライス）</p>
+      <ol class="rtb-result-list" id="rtb-result-list"></ol>
+      <p class="rtb-result-note" id="rtb-result-note"></p>
+    </div>
+    <div class="rtb-nodeinfo" id="rtb-nodeinfo" hidden>
+      <p class="rtb-nodeinfo-title" id="rtb-nodeinfo-title"></p>
+      <p class="rtb-nodeinfo-desc" id="rtb-nodeinfo-desc"></p>
+    </div>
+    <p class="rtb-hint">ノードをタップすると解説が出ます。数字は毎回変わるので、何度でも競らせてみてください。</p>
+  </section>
+  {{ end }}
+
+  <div class="knowledge-article-body">
+    {{ .Content }}
+  </div>
+
+  <footer class="knowledge-article-foot">
+    <div class="knowledge-share">
+      {{ $shareText := printf "%s | %s" .Title site.Title }}
+      <a class="btn btn-outline" href="https://twitter.com/intent/tweet?{{ (querify "text" $shareText "url" .Permalink) | safeURL }}" target="_blank" rel="noopener noreferrer">X でシェアする</a>
+    </div>
+    <aside class="knowledge-zenn panel">
+      <p class="section-eyebrow">DEEP DIVE</p>
+      <p class="knowledge-zenn-lead">この仕組みのさらに奥は、Zenn の連載で書いていきます。</p>
+      <a class="btn btn-primary" href="{{ site.Params.social.zenn }}" target="_blank" rel="noopener noreferrer">Zenn で読む →</a>
+    </aside>
+  </footer>
+</article>
+{{ end }}
