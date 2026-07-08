@@ -1,0 +1,19 @@
+weight: 4
+category: "プロダクト推進"
+color: "#BAAB23"
+items:
+  - name: "プロダクトマネジメント"
+    description: "プロダクトの立ち上げから運用まで、事業要件と実装/運用をつなぐ役割を担当。"
+    years: 5
+  - name: "プロジェクト計画立案"
+    description: "要件定義、スケジュール策定、リソース配分の計画。"
+    years: 8
+  - name: "チームリーダーシップ"
+    description: "メンバー間のタスク管理、技術指導、進捗管理。"
+    years: 8
+  - name: "アジャイル開発"
+    description: "スクラム/カンバンを軸とした開発プロセスの運用。"
+    years: 5
+  - name: "ドキュメント作成"
+    description: "設計仕様書、ユーザーマニュアル、運用ドキュメントなど、知識を残す/共有する仕組み化。"
+    years: 10
