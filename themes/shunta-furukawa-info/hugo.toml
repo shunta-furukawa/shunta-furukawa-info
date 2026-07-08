@@ -21,6 +21,12 @@ title = 'SHUNTA FURUKAWA INFO'
   weight = 30
 
 [[menu.main]]
+  identifier = "knowledge"
+  name = "KNOWLEDGE"
+  url = "/knowledge/"
+  weight = 35
+
+[[menu.main]]
   identifier = "story"
   name = "STORY"
   url = "/story/"

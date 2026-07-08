@@ -1,0 +1,29 @@
+{{ define "main" }}
+<section class="knowledge-index">
+  <header class="knowledge-index-head">
+    <p class="section-eyebrow">KNOWLEDGE</p>
+    <h1>触って学ぶ、動画広告のしくみ</h1>
+    <p class="knowledge-index-lead">
+      IAB の公開仕様（OpenRTB / VAST など）をベースに、動画広告配信のアーキテクチャを
+      図解とインタラクションで学べるコンテンツ集。読むより、触るほうが早い。
+    </p>
+  </header>
+
+  <div class="knowledge-grid">
+    {{ range .Pages.ByWeight }}
+    <a class="knowledge-card" href="{{ .RelPermalink }}">
+      <span class="knowledge-card-emoji" aria-hidden="true">{{ .Params.emoji | default "📘" }}</span>
+      <h2>{{ .Title }}</h2>
+      <p>{{ .Description }}</p>
+      <span class="knowledge-card-cta">触ってみる →</span>
+    </a>
+    {{ end }}
+  </div>
+
+  <aside class="knowledge-zenn panel">
+    <p class="section-eyebrow">DEEP DIVE</p>
+    <p class="knowledge-zenn-lead">仕組みのさらに奥は、Zenn の連載で書いていきます。</p>
+    <a class="btn btn-primary" href="{{ site.Params.social.zenn }}" target="_blank" rel="noopener noreferrer">Zenn で読む →</a>
+  </aside>
+</section>
+{{ end }}
