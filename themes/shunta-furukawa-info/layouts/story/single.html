@@ -22,10 +22,9 @@
       <span class="story-headline-line" data-typewriter="&gt; Building systems since {{ $first.year }}">&gt; Building systems since {{ $first.year }}</span>
       <span class="story-headline-line story-headline-accent" data-typewriter="&gt; Still shipping in {{ now.Year }}_">&gt; Still shipping in {{ now.Year }}_</span>
     </h1>
-    <p class="story-intro">
-      このページでは、{{ $first.year }}年に新卒でエンジニアの道を歩み始めてから今日までのキャリア、
-      そこで積み重ねてきた役割・技術・学びをまとめています。一度きりの人生を、なにかで残すつもりで綴ります。
-    </p>
+    {{ with site.Params.story.statement }}
+    <p class="story-statement">{{ . }}</p>
+    {{ end }}
     <div class="story-hero-meta">
       <span class="story-hero-chip"><span>chapters</span> {{ len $chapters }}</span>
       <span class="story-hero-chip"><span>since</span> {{ $first.year }}</span>
@@ -59,6 +58,12 @@
           <p>{{ . }}</p>
           {{ end }}
         </div>
+        {{ with $c.connection }}
+        <aside class="story-chapter-connection">
+          <span class="story-chapter-connection-label">→ いまに繋がること</span>
+          <p>{{ . }}</p>
+        </aside>
+        {{ end }}
         {{ with $c.skills }}
         <ul class="story-chapter-skills" aria-label="この期間で使った技術・経験">
           {{ range . }}
@@ -96,10 +101,10 @@
   <section class="story-now">
     <div class="story-now-inner">
       <p class="story-eyebrow">NOW</p>
-      <h2 class="story-now-title">ここからも、作る。</h2>
-      <p class="story-now-lead">技術で価値を生み出し、より良い体験を届けるために。<br>良ければこの先も覗いていってください。</p>
+      <h2 class="story-now-title">作りながら、測りながら、書く。</h2>
+      <p class="story-now-lead">アドテクの仕組み、広告効果測定、AI による分析の自動化。<br>この交差点で見えたことを、Zenn に書き続けていきます。</p>
       <div class="story-now-ctas">
-        <a class="btn btn-primary" href="/writings/">最近の投稿 →</a>
+        <a class="btn btn-primary" href="{{ site.Params.social.zenn }}" target="_blank" rel="noopener noreferrer">Zenn で読む →</a>
         <a class="btn btn-outline" href="/#contact">連絡を取る</a>
         <a class="btn btn-outline story-now-terminal" href="#" data-open-terminal>ターミナルで見る &gt;_</a>
       </div>
