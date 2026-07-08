@@ -94,12 +94,15 @@
   50% { opacity: 0; }
 }
 
-.story-intro {
-  color: var(--body-text);
-  font-size: clamp(1.4rem, 1.6vw, 1.6rem);
-  line-height: 1.9;
+.story-statement {
+  color: var(--light-text);
+  font-size: clamp(1.6rem, 2vw, 2rem);
+  font-weight: 700;
+  line-height: 2;
   margin-bottom: 24px;
-  max-width: 640px;
+  max-width: 680px;
+  padding-left: 18px;
+  border-left: 3px solid var(--primary-color);
 }
 .story-hero-meta {
   display: flex;
@@ -275,6 +278,29 @@
   margin-bottom: 10px;
   line-height: 1.9;
 }
+.story-chapter-connection {
+  margin-top: 18px;
+  padding: 14px 18px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 59, 141, 0.06);
+  border: 1px solid rgba(255, 59, 141, 0.25);
+  border-left: 3px solid var(--primary-color);
+}
+.story-chapter-connection-label {
+  display: block;
+  color: var(--primary-color);
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  margin-bottom: 6px;
+}
+.story-chapter-connection p {
+  color: var(--light-text);
+  font-size: 1.4rem;
+  line-height: 1.85;
+  margin: 0;
+}
+
 .story-chapter-skills {
   display: flex;
   flex-wrap: wrap;

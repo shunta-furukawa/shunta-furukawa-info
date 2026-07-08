@@ -43,6 +43,9 @@ label = '実務経験あり'
 value = 'インフラ運用・改善'
 label = '経験あり'
 
+[params.story]
+statement = '動画広告の配信基盤を開発するエンジニア。配信の仕組みを作る側から、「広告は本当に効いているのか」を測る側まで関心を広げ、その学びを書いています。'
+
 [params.social]
 x = 'https://x.com/shunta_furukawa'
 facebook = 'https://www.facebook.com/shunta.furukawa'
