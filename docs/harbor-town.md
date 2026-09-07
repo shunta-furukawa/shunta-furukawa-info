@@ -9,3 +9,15 @@ Inspect an exhibit and choose 持ち帰る. Collected items persist in localStor
 The avatar and objects use actual Three.js geometry, flat black/white/pink materials and white silhouette shells. Eight buildings, a quay, mooring posts, radio mast and water strokes replace unrelated scenery. Existing keyboard/joystick movement, curved roads, minimap paths, camera controls and sign-to-dialog transitions remain. Collection animates the object toward the in-dialog inventory action; reduced motion skips animation. SNS links remain in both the shared header and modal toolbar.
 
 Validation: Hugo production build; movement/collision/proximity tests for all 13 exhibits; collection persistence/duplicate/unknown ID/corrupt or blocked storage/completion tests; finite model geometry and building-free exhibit approaches. Browser/device appearance and X widget rendering have not been verified locally. X embeds depend on X availability and visitor settings; a direct profile link is always present. Official embed reference: https://help.x.com/en/using-x/embed-x-feed
+
+## September 7 interaction refinement
+
+Visible branding now identifies the portfolio; harbor terminology is retained only in internal names and this implementation history. The scenery remains coastal.
+
+Content can still be read through navigation, direct links and inventory, but new acquisition requires an explicit physical inspection AND current proximity to that same exhibit. Browsing another career/work entry cannot acquire its item. Remote reading offers a map locator instead. Existing saved items are preserved; their original acquisition source was not recorded.
+
+Explicit on-site inspections persist separately as visited IDs. The minimap uses dots (unvisited), diamonds (inspected) and check marks (collected), with a permanent count, segmented progress and inspection total. In the world, collected objects disappear and leave a camera-facing 3D check mark; board labels also report inspection/acquisition state. The inventory count remains available in the modal toolbar.
+
+The modal has a compact accessible close icon, larger outside margins, and dismissal only when both pointer-down and pointer-up are outside. Escape remains supported. A monochrome artifact header, exhibit number and state lead into compact factual records. Mobile layouts preserve outside dismissal space and wrap footer labels. Reduced-motion behavior is retained.
+
+Validation also covers acquisition context/proximity, rendered ID integrity and production build. No local browser or device appearance test was performed.

@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {createCollection} from '../themes/shunta-furukawa-info/assets/js/harbor-collection.js';
+import {createCollection,canAcquire} from '../themes/shunta-furukawa-info/assets/js/harbor-collection.js';
 import items from '../themes/shunta-furukawa-info/assets/js/harbor-catalog.json' with {type:'json'};
 import * as T from '../themes/shunta-furukawa-info/assets/js/vendor/three.module.js';
 import {createArtifact,buildHarbor} from '../themes/shunta-furukawa-info/assets/js/harbor-models.js';
@@ -16,3 +16,12 @@ assert.ok(meshes>100);assert.equal(obstacles.length,8);
 // Each exhibit has a clear approach from the south, outside building collision radii.
 for(const item of items)for(const b of obstacles)assert.ok(Math.hypot(item.x*1.6-b.x,item.z*1.6+2-b.z)>b.r+.48,item.id+' approach blocked');
 console.log('Harbor: 13 unique exhibits, persistence, completion, blocked storage, finite geometry and clear exhibit approaches passed.');
+
+// A shelf/deep link has no inspection context, even when the avatar is nearby.
+assert.equal(canAcquire('profile',null,'profile'),false);
+assert.equal(canAcquire('career-0','profile','profile'),false);
+assert.equal(canAcquire('profile','profile','career-0'),false);
+assert.equal(canAcquire('profile','profile',null),false);
+assert.equal(canAcquire('profile','profile','profile'),true);
+assert.equal(canAcquire(undefined,undefined,undefined),false);
+console.log('Acquisition: remote reading, another exhibit and stale proximity cannot grant items.');
