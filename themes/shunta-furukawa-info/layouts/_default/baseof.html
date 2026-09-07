@@ -3,14 +3,18 @@
 <head>
   {{ partial "head.html" . }}
 </head>
-<body>
+<body{{ if .IsHome }} class="journey-page"{{ end }}>
+  {{ if not .IsHome }}
   <div class="scroll-progress" aria-hidden="true"></div>
   <div class="cursor-glow" aria-hidden="true"></div>
   {{ partial "header.html" . }}
+  {{ end }}
   <main id="main">
     {{ block "main" . }}{{ end }}
   </main>
+  {{ if not .IsHome }}
   {{ partial "footer.html" . }}
   {{ partial "terminal.html" . }}
+  {{ end }}
 </body>
 </html>

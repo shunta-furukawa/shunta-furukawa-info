@@ -1,0 +1,9 @@
+signal-city
+Use case: stylized-concept. Asset type: full-screen cinematic background for premium dark portfolio scroll experience. Create one 1536x1024 landscape image. A surreal near-black architectural space of floating luminous translucent media screens, streams of magenta light, deep spatial perspective. Premium sci-fi editorial art, dramatic restrained atmosphere, dimensional glass and luminous edges, rich blacks and hot pink highlights. Screens carry abstract visual light only. No legible text, no logos, no UI screenshot, no watermark.
+
+viewer-context
+Use case: photorealistic-natural. Asset type: full-screen cinematic editorial background for portfolio scroll journey about advertising as human encounters. Create one 1536x1024 landscape image. A fictional adult person seen mostly from behind in a quiet dark apartment watching a tablet, large window showing dusk city, subtle magenta practical lights, human warmth, natural composition. Cinematic editorial photography, believable candid scene, sophisticated near-black and dusk-blue palette with restrained pink highlights. Person is the receiving end of communication. No visible brands, no words or readable text, no watermark.
+
+meaningful-journey
+Use case: ads-marketing. Asset type: full-screen cinematic travel image in portfolio scroll experience. Create one 1536x1024 landscape image. A cinematic dreamlike coastal railway journey, train seen small curving beside dramatic sea cliffs at pink-blue dawn. Premium editorial travel advertisement imagery. Enormous atmospheric sea vista, nuanced pink light, blue shadows, photographic realism and striking expansive composition. No words, no logos, no watermark.
+

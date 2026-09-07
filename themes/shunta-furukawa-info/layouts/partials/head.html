@@ -74,8 +74,8 @@
 {{- end }}
 
 {{ partialCached "head/css.html" . }}
-{{ partialCached "head/js.html" . }}
+{{ if not .IsHome }}{{ partialCached "head/js.html" . }}{{ end }}
 {{ if .IsHome }}
-  {{ with resources.Get "css/encounter.css" | minify | fingerprint }}<link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous">{{ end }}
-  {{ with resources.Get "js/encounter.js" | js.Build (dict "minify" true "target" "es2020") | fingerprint }}<script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous" defer></script>{{ end }}
+  {{ with resources.Get "css/journey.css" | minify | fingerprint }}<link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous">{{ end }}
+  {{ with resources.Get "js/journey.js" | js.Build (dict "minify" true "target" "es2020") | fingerprint }}<script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous" defer></script>{{ end }}
 {{ end }}
