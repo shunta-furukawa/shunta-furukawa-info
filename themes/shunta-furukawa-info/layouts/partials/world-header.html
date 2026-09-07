@@ -1,6 +1,6 @@
 <a class="world-skip" href="#main">本文へ</a>
 <header class="world-header" id="top">
   <a class="world-brand" href="/" aria-label="Shunta Furukawa・マップへ"><img src="/images/world/avatar.png" width="52" height="52" alt="Shunta Furukawaのアバター"><span>SHUNTA FURUKAWA<small>AD PLATFORM ENGINEER</small></span></a>
-  <nav class="world-menu" aria-label="コンテンツ"><a href="/#map" data-nav-world="map">マップ</a><a href="/#philosophy" data-nav-world="philosophy">考え方と実験</a><a href="/story/" data-nav-world="career">経歴を歩く</a><a href="/#work" data-nav-world="work">技術と実績</a><a href="/knowledge/">知識をひらく</a></nav>
-  <a class="world-contact" href="mailto:{{ site.Params.contact_email }}">話す ↗</a>
+  <nav class="world-menu" aria-label="コンテンツ"><a href="/#profile" data-nav-world="profile">案内所</a><a href="/story/" data-nav-world="career">経歴</a><a href="/#work" data-nav-world="work">仕事</a><a href="/#philosophy" data-nav-world="philosophy">考え方</a><a href="/#connect" data-nav-world="connect">通信所</a></nav>
+  <details class="harbor-social"><summary>つながる ↗</summary><nav aria-label="SNSと連絡先">{{ range $key := slice "x" "github" "linkedin" "facebook" }}{{ with index site.Params.social $key }}<a href="{{ . }}" target="_blank" rel="noopener noreferrer">{{ if eq $key "x" }}X{{ else if eq $key "github" }}GitHub{{ else if eq $key "linkedin" }}LinkedIn{{ else }}Facebook{{ end }} ↗</a>{{ end }}{{ end }}<a href="mailto:{{ site.Params.contact_email }}">メール ↗</a></nav></details>
 </header>

@@ -8,7 +8,7 @@ const slid=movePlayer({x:0,z:-1.4},{x:3,z:-1},[obstacle]);assert.ok(slid.x>2,'Pl
 const edge=movePlayer({x:0,z:0},{x:100,z:100},[]);assert.ok(Math.hypot(edge.x,edge.z)<=WORLD_RADIUS-PLAYER_RADIUS+.0001,'The island boundary contains the player');
 assert.equal(nearestSign(SPAWN),null,'Cannot inspect distant signs from spawn');
 for(const s of SIGNS){assert.equal(nearestSign({x:s.x,z:s.z+2}).id,s.id);assert.notEqual(nearestSign({x:s.x,z:s.z+4})?.id,s.id);}
-console.log('Explorer: movement, camera-relative direction, collision, sliding, boundary and all 10 sign interaction ranges passed.');
+console.log('Explorer: movement, camera-relative direction, collision, sliding, boundary and all 13 sign interaction ranges passed.');
 
 assert.equal(WORLD_RADIUS,35*WORLD_SCALE);
 assert.equal(WALK_SPEED,8);assert.equal(RUN_SPEED,13);
