@@ -40,7 +40,7 @@
     <div class="story-timeline-progress" aria-hidden="true"></div>
 
     {{ range $idx, $c := $chapters }}
-    <article class="story-chapter" data-year="{{ $c.year }}" data-index="{{ $idx }}">
+    <article class="story-chapter" id="career-{{ $c.year }}" data-year="{{ $c.year }}" data-index="{{ $idx }}">
       <aside class="story-chapter-side">
         <div class="story-chapter-year">
           <span class="story-chapter-year-ghost" aria-hidden="true">{{ $c.year }}</span>
@@ -101,10 +101,10 @@
   <section class="story-now">
     <div class="story-now-inner">
       <p class="story-eyebrow">NOW</p>
-      <h2 class="story-now-title">作りながら、測りながら、書く。</h2>
-      <p class="story-now-lead">アドテクの仕組み、広告効果測定、AI による分析の自動化。<br>この交差点で見えたことを、Zenn に書き続けていきます。</p>
+      <h2 class="story-now-title">届ける技術から、出会いの設計へ。</h2>
+      <p class="story-now-lead">広告配信基盤の実務を土台に、マッチング、広告効果の最適化、生成AIへ。<br>技術と事業、そして受け手の体験が重なる場所を探究しています。</p>
       <div class="story-now-ctas">
-        <a class="btn btn-primary" href="{{ site.Params.social.zenn }}" target="_blank" rel="noopener noreferrer">Zenn で読む →</a>
+        <a class="btn btn-primary" href="/#experience">出会いのしくみを体験する →</a>
         <a class="btn btn-outline" href="/#contact">連絡を取る</a>
         <a class="btn btn-outline story-now-terminal" href="#" data-open-terminal>ターミナルで見る &gt;_</a>
       </div>
