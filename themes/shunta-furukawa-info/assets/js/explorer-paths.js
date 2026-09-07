@@ -1,7 +1,7 @@
 import {WORLD_SCALE} from './explorer-physics.js';
 // One set of rounded centerlines drives both the ground surface and the minimap.
 const routes=[
- {width:3,points:[[0,17],[0,4],[0,-7],[2,-24]]},
+ {width:3,points:[[0,23],[0,17],[0,4],[0,-7],[2,-24]]},
  {width:2.4,points:[[-9,14],[0,14],[15,13]]},
  {width:2.3,points:[[-20,7],[-8,4],[0,4],[22,1]]},
  {width:2.3,points:[[-20,7],[-23,-2],[-19,-13],[-9,-22],[2,-24]]},

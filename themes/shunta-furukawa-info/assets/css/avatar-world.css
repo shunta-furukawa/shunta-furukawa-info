@@ -275,3 +275,56 @@ body.game-ready { overflow:hidden; height:100dvh; }
 #explorer-dialog.is-closing::backdrop { animation:sign-backdrop-out .26s ease both; }
 @keyframes sign-backdrop-in { from { background:#08081000; } to { background:#080810a6; } }
 @keyframes sign-backdrop-out { from { background:#080810a6; } to { background:#08081000; } }
+
+/* Harbor exhibits and a collection shelf: white silhouettes, black surfaces, pink artifacts. */
+.harbor-social { position:relative; flex-shrink:0; font-size:1.4rem; }
+.harbor-social summary { padding:10px 14px; color:#fff; background:#292935; border-radius:6px; }
+.harbor-social>nav { position:absolute; right:0; top:52px; width:185px; padding:8px; background:#292935; border-radius:8px; display:grid; }
+.harbor-social a { padding:10px 14px; border-radius:4px; }
+.harbor-social a:hover { background:#ff3b8d; color:#111116; }
+.harbor-dialog-social { display:flex; gap:12px; margin-left:auto; font-size:1.3rem; white-space:nowrap; }
+.harbor-profile { display:flex; gap:20px; align-items:center; margin:20px 0; }
+.harbor-profile img { width:96px; height:96px; border-radius:50%; }
+.harbor-profile-facts { display:grid; grid-template-columns:90px 1fr; gap:14px 20px; font-size:1.6rem; margin:28px 0; }
+.harbor-profile-facts dt { color:#aaaabb; }
+.harbor-profile-facts dd { margin:0; color:#fff; }
+.harbor-facts { list-style:disc; margin:22px 0; padding-left:23px; }
+.harbor-facts li { margin:13px 0; color:#ececf2; font-size:1.6rem; }
+.harbor-note { padding:5px 16px; background:#292934; border-radius:8px; margin:20px 0; }
+.harbor-note p { margin:12px 0; }
+.harbor-pickup { display:flex; align-items:center; gap:16px; padding:12px 24px; min-height:100px; background:#30303d; }
+.harbor-pickup img { width:64px; height:64px; object-fit:contain; flex-shrink:0; }
+.harbor-pickup>div { display:grid; gap:4px; }
+.harbor-pickup small { color:#bcbcca; font-size:1.2rem; }
+.harbor-pickup strong { color:#fff; font-size:1.5rem; }
+.harbor-pickup button { margin-left:auto; border:0; background:#ff3b8d; color:#111116; padding:13px 20px; border-radius:7px; font-size:1.4rem; font-weight:700; white-space:nowrap; }
+.harbor-pickup button:disabled { background:#474755; color:#ceceda; cursor:default; }
+#explorer-dialog.has-pickup #explorer-reading { height:calc(100% - 165px); }
+.harbor-shelf { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
+.harbor-item { border:0; border-radius:10px; padding:15px 10px; background:#262632; color:#aaaaba; display:flex; flex-direction:column; align-items:center; gap:8px; min-height:150px; }
+.harbor-item img { width:100px; height:100px; object-fit:contain; filter:grayscale(1); opacity:.4; }
+.harbor-item strong { font-size:1.4rem; }
+.harbor-item small { font-size:1.2rem; }
+.harbor-item.is-owned { background:#343441; color:#fff; }
+.harbor-item.is-owned img { filter:none; opacity:1; }
+.harbor-item:hover { background:#444454; }
+.harbor-shelf.is-complete .harbor-item { background:#382735; }
+#harbor-count { margin-left:7px; font:1.2rem var(--font-mono); color:#ff8abd; }
+#harbor-toast { position:fixed; left:50%; top:100px; transform:translateX(-50%); z-index:100; background:#fff; color:#111116; padding:15px 22px; border-radius:8px; font-size:1.5rem; pointer-events:none; max-width:90vw; }
+#harbor-x-feed { margin:24px 0; min-height:70px; }
+#harbor-x-feed>a { color:#ff8cbd; }
+@media(max-width:720px) {
+ .harbor-social { grid-column:2; grid-row:1; } .harbor-social summary { padding:8px 11px; font-size:1.2rem; }
+ .harbor-social>nav { top:42px; }
+ .harbor-profile { gap:13px; } .harbor-profile img { width:65px; height:65px; } .game-ready #explorer-dialog .harbor-profile h2 { font-size:2.2rem; }
+ .harbor-profile-facts { grid-template-columns:64px 1fr; gap:13px; }
+ .harbor-dialog-social { gap:8px; } .explorer-dialog-bar>span { display:none; }
+ .harbor-pickup { padding:10px 12px; gap:8px; min-height:100px; }
+ .harbor-pickup img { width:44px; height:44px; }
+ .harbor-pickup strong { font-size:1.3rem; } .harbor-pickup button { padding:12px; font-size:1.3rem; }
+ .harbor-shelf { grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; }
+ #harbor-toast { top:122px; font-size:1.3rem; }
+ .explorer-tools { gap:4px; } .explorer-tools button { padding:7px 8px; }
+}
+
+#explorer-dialog #harbor-toast{position:absolute;top:70px;pointer-events:none;max-width:85%}#harbor-bag-open{white-space:nowrap} .harbor-pickup img{position:relative;z-index:3}

@@ -1,9 +1,10 @@
 import * as T from './vendor/three.module.js';
 import {WORLD_PATHS} from './explorer-paths.js';
 import {createAvatar} from './explorer-avatar.js';
+import {buildHarbor,createArtifact,whiteBoundary,artifactImages} from './harbor-models.js';
 import {BASE_SIGNS as SIGNS,WORLD_SCALE,WALK_SPEED,RUN_SPEED,SPAWN,movePlayer,movementVector,nearestSign} from './explorer-physics.js';
 
-export function createExplorer(host,{onNear,onRead,onPosition,onFailure,reduced=false}) {
+export function createExplorer(host,{onNear,onRead,onPosition,onFailure,onImages=()=>{},reduced=false}) {
  const renderer=new T.WebGLRenderer({antialias:true,alpha:false});renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.setClearColor(0x111116);host.appendChild(renderer.domElement);
  renderer.domElement.setAttribute('aria-label','アバターで歩く3D空間。WASDまたは矢印キーで移動、Fで調べる。');renderer.domElement.tabIndex=0;
  const world=new T.Scene(),environment=new T.Group();world.add(environment);const camera=new T.PerspectiveCamera(52,1,.1,150);
@@ -23,23 +24,15 @@ export function createExplorer(host,{onNear,onRead,onPosition,onFailure,reduced=
   for(const p of [points[0],points[points.length-1]]){const center=roadVertices.length/3;roadVertices.push(p[0],.009,p[1]);for(let i=0;i<=40;i++){const a=i/40*Math.PI*2;roadVertices.push(p[0]+Math.cos(a)*width/2,.009,p[1]+Math.sin(a)*width/2);if(i<40)roadIndices.push(center,center+i+2,center+i+1);}}
  }
  const roadGeometry=new T.BufferGeometry();roadGeometry.setAttribute('position',new T.Float32BufferAttribute(roadVertices,3));roadGeometry.setIndex(roadIndices);roadGeometry.computeVertexNormals();const roadSurface=mesh(environment,roadGeometry,'gray');roadSurface.material=mats.gray[2];
- const rings=[],boards=new Map();
+ const rings=[],boards=new Map(),exhibits=new Map();let collected=new Set();
  function label(text,sub){const canvas=document.createElement('canvas');canvas.width=768;canvas.height=256;const ctx=canvas.getContext('2d');ctx.fillStyle='#22222c';ctx.fillRect(0,0,768,256);ctx.fillStyle='#ff3b8d';ctx.fillRect(0,0,768,16);ctx.font='bold 33px sans-serif';ctx.fillText(sub,35,78);ctx.fillStyle='#ffffff';let size=43;ctx.font=`bold ${size}px sans-serif`;while(ctx.measureText(text).width>698&&size>24){size--;ctx.font=`bold ${size}px sans-serif`;}ctx.fillText(text,35,158);ctx.fillStyle='#c2c2ce';ctx.font='28px sans-serif';ctx.fillText('近づいて調べる',35,215);const texture=new T.CanvasTexture(canvas);texture.colorSpace=T.SRGBColorSpace;return new T.MeshBasicMaterial({map:texture,side:T.DoubleSide});}
- for(const sign of SIGNS){box(environment,sign.x,1,sign.z,.22,2,.3,'white');const signMaterial=label(sign.title,sign.short);const board=new T.Mesh(new T.BoxGeometry(3.2,1.1,.18),[solids.dark,solids.dark,solids.dark,solids.dark,signMaterial,signMaterial]);board.position.set(sign.x*WORLD_SCALE,2.15,sign.z*WORLD_SCALE);environment.add(board);boards.set(sign.id,board);
+ for(const sign of SIGNS){box(environment,sign.x,1,sign.z,.22,2,.3,'white');const signMaterial=label(sign.title,sign.short);const board=new T.Mesh(new T.BoxGeometry(3.2,1.1,.18),[solids.dark,solids.dark,solids.dark,solids.dark,signMaterial,signMaterial]);board.position.set(sign.x*WORLD_SCALE,2.15,sign.z*WORLD_SCALE);environment.add(board);boards.set(sign.id,board);const artifact=createArtifact(sign.model);artifact.position.set(sign.x*WORLD_SCALE,3.65,sign.z*WORLD_SCALE);artifact.scale.setScalar(.9);environment.add(artifact);exhibits.set(sign.id,artifact);
   const ring=mesh(environment,new T.CylinderGeometry(1.35,1.35,.045,24),'pink',sign.x,.025,sign.z);rings.push({ring,sign});ring.visible=false;
  }
- // Area landmarks, all actual 3D geometry.
- function gate(x,z,color='pink',scale=1){const g=new T.Group();g.position.set(x*WORLD_SCALE,0,z*WORLD_SCALE);environment.add(g);box(g,-2*scale,3*scale,0,.8*scale,6*scale,1.2*scale,color);box(g,2*scale,3*scale,0,.8*scale,6*scale,1.2*scale,color);box(g,0,6*scale,0,4.8*scale,.8*scale,1.2*scale,color);obstacles.push({x:x*WORLD_SCALE-2*scale,z:z*WORLD_SCALE,r:.75*scale},{x:x*WORLD_SCALE+2*scale,z:z*WORLD_SCALE,r:.75*scale});return g;}
- gate(-10,-10,'white');gate(-10,-14,'pink',.8);
- const conversationCards=[];for(let i=0;i<3;i++)conversationCards.push(box(environment,-10,2,-11-i,1,.7,.5,'pink'));
- for(let i=0;i<5;i++){const s=SIGNS[i+1];const height=1.5+i*.6;box(environment,s.x-2,height/2,s.z-3,2,height,2,i===4?'pink':'white');obstacles.push({x:(s.x-2)*WORLD_SCALE,z:(s.z-3)*WORLD_SCALE,r:1.5});}
- for(let i=0;i<6;i++){const x=12+(i%3)*2.4,z=-17-Math.floor(i/3)*2.5;box(environment,x,2.4,z,1.6,4.8,1.8,i===1?'pink':'gray');for(let j=0;j<4;j++)box(environment,x,1+j,z+.96/WORLD_SCALE,1,.17,.12,'white');obstacles.push({x:x*WORLD_SCALE,z:z*WORLD_SCALE,r:1.3});}
+ buildHarbor(environment,{scale:WORLD_SCALE,obstacles});
+ const conversationCards=Array.from({length:3},()=>box(environment,-10,2,-7,1,.7,.5,'pink'));
  const packets=Array.from({length:12},()=>box(environment,0,0,0,.4,.4,.4,'pink'));
- for(let i=0;i<3;i++){const m=box(environment,25,.7+i*1.4,-4,4,.6,3.5,i===1?'pink':'white');m.rotation.y=i*.25;}obstacles.push({x:25*WORLD_SCALE,z:-4*WORLD_SCALE,r:2.6});
- gate(16,8,'white',.9);gate(-10,10,'pink',.8);
- // Sculptural edge markers give the player distance cues without loading image scenery.
- for(let i=0;i<18;i++){const a=i*Math.PI*2/18,x=Math.sin(a)*36,z=Math.cos(a)*36;facet(environment,new T.ConeGeometry(1.8,3+(i%4),5),'gray',x,1.4,z);}
- const {player,body,limbs}=createAvatar(solids);player.position.set(SPAWN.x,0,SPAWN.z);world.add(player);
+ const {player,body,limbs}=createAvatar(solids);player.position.set(SPAWN.x,0,SPAWN.z);world.add(player);whiteBoundary(player,.018);
  const shadow=mesh(world,new T.CircleGeometry(.7,24),'black',0,.012,15);shadow.rotation.x=-Math.PI/2;
  const keys=new Set();let stick={x:0,z:0},yaw=0,pitch=0,reading=false,motionReduced=reduced,running=false,frame=0,last=0,phase=0,time=0,near=null,drag=null,failed=false;
  const target=new T.Vector3(),desired=new T.Vector3(),offset=new T.Vector3();let first=true;
@@ -71,7 +64,7 @@ export function createExplorer(host,{onNear,onRead,onPosition,onFailure,reduced=
   // Prevent scenery from hiding the avatar by shortening the camera boom.
   let boom=1;for(const o of obstacles){const dx=desired.x-target.x,dz=desired.z-target.z,t=T.MathUtils.clamp(((o.x-target.x)*dx+(o.z-target.z)*dz)/(dx*dx+dz*dz),0,1);if(t>.14&&Math.hypot(target.x+dx*t-o.x,target.z+dz*t-o.z)<o.r+.4)boom=Math.min(boom,Math.max(.28,t-.13));}desired.copy(target).addScaledVector(offset,boom);
   camera.position.lerp(desired,first||motionReduced?1:1-Math.exp(-10*dt));camera.lookAt(target);first=false;
-  const next=nearestSign(player.position);if(next?.id!==near?.id){near=next;onNear(near);}rings.forEach(({ring,sign})=>ring.visible=near?.id===sign.id);
+  const next=nearestSign(player.position);if(next?.id!==near?.id){near=next;onNear(near);}rings.forEach(({ring,sign})=>{ring.visible=near?.id===sign.id||collected.has(sign.id);ring.material=collected.has(sign.id)?solids.white:solids.pink;});exhibits.forEach((m,id)=>{m.rotation.y=motionReduced?0:Math.sin(time*.6)*.18;});
   packets.forEach((p,i)=>{p.visible=i<(simulation?12:4);p.position.set((11+(time*2+i*.6)%8)*WORLD_SCALE,3.2,(-15-(i%2))*WORLD_SCALE);});conversationCards.forEach((p,i)=>{p.visible=conversation==='repeat'||i===0;p.position.z=(conversation==='wait'?-10.4:-10-(time+i*.7)%4)*WORLD_SCALE;});
   renderer.render(world,camera);onPosition({x:player.position.x,z:player.position.z,yaw,near:near?.id});
  }
@@ -79,6 +72,6 @@ export function createExplorer(host,{onNear,onRead,onPosition,onFailure,reduced=
  function loop(t){frame=0;if(document.hidden||failed)return;const dt=Math.min((t-last)/1000,.04);last=t;draw(dt);frame=requestAnimationFrame(loop);}
  function resume(){if(!frame&&!failed&&!document.hidden){last=performance.now();frame=requestAnimationFrame(loop);}}
  document.addEventListener('visibilitychange',()=>{clearInput();resume();});canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();failed=true;clearInput();cancelAnimationFrame(frame);onFailure();});
- resize();draw(0);resume();
- return {setStick(x,z){stick={x,z};},clearInput,setReading(v){reading=v;clearInput();},interact,setReduced(v){motionReduced=v;},reset(){clearInput();player.position.set(SPAWN.x,0,SPAWN.z);yaw=0;pitch=0;first=true;},rotate(amount){yaw+=amount;},setRun(v){running=v;},setSimulate(v){simulation=v;},setConversation(v){conversation=v;},focus(){canvas.focus({preventScroll:true});}};
+ resize();draw(0);resume();setTimeout(()=>{try{onImages(artifactImages(SIGNS));}catch{}},0);
+ return {setCollected(ids){collected=new Set(ids);},setStick(x,z){stick={x,z};},clearInput,setReading(v){reading=v;clearInput();},interact,setReduced(v){motionReduced=v;},reset(){clearInput();player.position.set(SPAWN.x,0,SPAWN.z);yaw=0;pitch=0;first=true;},rotate(amount){yaw+=amount;},setRun(v){running=v;},setSimulate(v){simulation=v;},setConversation(v){conversation=v;},focus(){canvas.focus({preventScroll:true});}};
 }
