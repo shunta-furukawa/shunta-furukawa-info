@@ -25,7 +25,7 @@
 
   const C = {
     pink: "#ff3b8d", light: "#f7f8fb", body: "#c5c8d3", muted: "#8b90a1",
-    line: "#3a3f4e", surface: "#1a1d26", green: "#6ee7a3", yellow: "#ffd166", blue: "#4D9DE0",
+    line: "#3a3f4e", surface: "#1a1d26", green: "#f4f4f4", yellow: "#ff3b8d", blue: "#a6a6ab",
   };
 
   const LAYOUTS = {

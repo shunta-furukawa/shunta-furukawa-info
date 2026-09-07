@@ -1,20 +1,8 @@
 <!DOCTYPE html>
 <html lang="{{ site.Language.LanguageCode }}" dir="{{ or site.Language.LanguageDirection `ltr` }}">
-<head>
-  {{ partial "head.html" . }}
-</head>
-<body{{ if .IsHome }} class="journey-page"{{ end }}>
-  {{ if not .IsHome }}
-  <div class="scroll-progress" aria-hidden="true"></div>
-  <div class="cursor-glow" aria-hidden="true"></div>
-  {{ partial "header.html" . }}
-  {{ end }}
-  <main id="main">
-    {{ block "main" . }}{{ end }}
-  </main>
-  {{ if not .IsHome }}
-  {{ partial "footer.html" . }}
-  {{ partial "terminal.html" . }}
-  {{ end }}
-</body>
-</html>
+<head>{{ partial "head.html" . }}</head>
+<body class="avatar-site{{ if or .IsHome (eq .Type "story") }} world-page{{ else }} world-document{{ end }}">
+{{ partial "world-header.html" . }}
+<main id="main">{{ block "main" . }}{{ end }}</main>
+{{ if not (or .IsHome (eq .Type "story")) }}<footer class="world-document-footer"><a href="/#map">← マップへ戻る</a><span>© {{ now.Year }} Shunta Furukawa</span></footer>{{ end }}
+</body></html>
