@@ -407,3 +407,32 @@ body.game-ready { overflow:hidden; height:100dvh; }
 .harbor-pickup>div {min-width:0;flex:1;} .harbor-pickup strong {overflow-wrap:anywhere;} .harbor-pickup button {white-space:normal;flex-shrink:0;}
 .game-ready #explorer-dialog .work-map-caption {display:block;background:#292933;margin:0 32px 24px;border-radius:10px;}
 @media(max-width:720px){.game-ready #explorer-dialog .work-map-caption {margin:0 20px 20px;}}
+
+/* Compact navigation and a quiet entry into the playable portfolio. */
+.ui-icon{width:24px;height:24px;display:inline-block;vertical-align:middle;flex-shrink:0}
+.world-header{display:flex;justify-content:space-between;gap:14px}.world-brand{margin-right:auto}
+.world-menu-panel{position:relative}.world-menu-panel>summary,.harbor-social>summary{display:flex;align-items:center;gap:8px;list-style:none;cursor:pointer;padding:10px 14px;background:#252530;border-radius:12px;color:#fff;font-size:1.4rem}
+.world-menu-panel>summary::-webkit-details-marker,.harbor-social>summary::-webkit-details-marker{display:none}
+.world-menu-panel[open]>summary{background:#f1f1f3;color:#191923}
+.world-menu-panel>nav{position:absolute;right:0;top:56px;width:300px;padding:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;background:#191923;border-radius:16px;box-shadow:0 18px 60px #0008}
+.world-menu-panel nav a,.world-menu-panel nav button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;min-height:82px;border:0;background:#2a2a36;color:#fff;border-radius:10px;font-size:1.4rem;padding:12px;cursor:pointer}
+.world-menu-panel nav a:hover,.world-menu-panel nav button:hover{background:#ff3b8d;color:#111116}
+.world-menu-panel nav .ui-icon{width:28px;height:28px}
+.harbor-social>nav{z-index:2}.harbor-social>summary{background:#252530}
+#start-screen{border:0;background:transparent;color:#fff;width:min(520px,90vw);max-height:90dvh;padding:30px;margin:auto;text-align:center;overflow:auto}
+#start-screen::backdrop{background:#0d0d16ad;backdrop-filter:blur(3px)}
+.start-content>img{border-radius:50%;width:92px;height:92px}.start-content>p{font-size:1.4rem;color:#cccbd5;margin:18px 0}.start-content>p:first-of-type{letter-spacing:.22em;font-size:1.2rem}
+#start-title{font-size:clamp(4rem,8vw,6.4rem);font-weight:900;line-height:1.08;letter-spacing:-.045em;color:#fff;margin:18px 0 24px}
+.start-content button{display:block;width:100%;max-width:290px;margin:12px auto;border:0;border-radius:12px;padding:16px;font-size:1.6rem;cursor:pointer;background:#292933;color:#fff}
+#start-play{background:#ff3b8d;color:#111116;font-weight:800}#start-play span{margin-left:14px}#start-save{display:block;font-size:1.3rem;color:#c7c7d3;margin-top:20px}
+.at-start .explorer-ui{visibility:hidden}
+#first-hint{position:absolute;left:50%;bottom:160px;transform:translateX(-50%);padding:12px 18px;background:#f1f1f3;color:#191923;border-radius:12px;font-size:1.4rem;max-width:80vw;white-space:nowrap}
+.explorer-status{font-size:1.3rem!important;max-width:60vw}.explorer-actions button#explorer-inspect{font-size:1.4rem}
+#visited-count{display:none}#collection-hud .ui-icon{width:21px;height:21px;justify-self:end;align-self:center}
+#settings .explorer-tools{position:static;display:grid;grid-template-columns:repeat(2,1fr);gap:10px;pointer-events:auto;padding:0;margin:0}
+#settings .explorer-tools button{display:flex;align-items:center;justify-content:center;gap:8px;min-height:60px;font-size:1.4rem;background:#30303c;border:0}
+.control-guide>p{display:grid;grid-template-columns:30px 55px 1fr;align-items:start;gap:12px;padding:16px 0}.control-guide span{font-size:1.4rem;line-height:1.8}
+.save-settings{margin-top:30px;background:#242430;padding:20px;border-radius:12px}.save-settings button{background:#3a3a48;color:#fff;border:0;border-radius:8px;padding:12px 18px;font-size:1.4rem;margin:6px}#reset-accept{background:#ff3b8d;color:#111116}#reset-confirm{margin-top:14px;padding:12px;background:#171720;border-radius:10px}
+.harbor-item.has-image strong,.harbor-item.has-image small{display:none}.harbor-item.has-image{min-height:125px;position:relative}.harbor-item.has-image.is-owned::after{content:'✓';position:absolute;top:8px;right:10px;color:#fff;font-size:1.6rem}.harbor-item:focus-visible,.world-menu-panel a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid #ff3b8d;outline-offset:4px}
+@media(max-width:720px){.world-header{padding:10px 12px;gap:8px}.world-brand img{width:40px;height:40px}.world-brand span{font-size:1.1rem}.world-brand small{display:none}.world-menu-panel>summary,.harbor-social>summary{padding:10px;gap:5px}.world-menu-panel>summary span,.harbor-social>summary span{font-size:1.2rem}.world-menu-panel>nav{right:-70px;top:53px;width:min(310px,calc(100vw - 24px))}#first-hint{bottom:180px;white-space:normal;width:max-content;text-align:center}.harbor-social>nav{right:0}.control-guide>p{grid-template-columns:28px 1fr}.control-guide span{grid-column:2}.harbor-item.has-image{min-height:110px}.harbor-shelf{grid-template-columns:repeat(3,minmax(0,1fr))}.harbor-item img{width:80px;height:80px}.start-content>img{width:72px;height:72px}}
+@media(prefers-reduced-motion:no-preference){.world-menu-panel[open]>nav{animation:menu-enter .18s ease-out}@keyframes menu-enter{from{opacity:0;transform:translateY(-8px) scale(.97)}to{opacity:1;transform:none}}}

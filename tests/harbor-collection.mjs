@@ -25,3 +25,7 @@ assert.equal(canAcquire('profile','profile',null),false);
 assert.equal(canAcquire('profile','profile','profile'),true);
 assert.equal(canAcquire(undefined,undefined,undefined),false);
 console.log('Acquisition: remote reading, another exhibit and stale proximity cannot grant items.');
+let resetSaved='["profile"]';const resetStore={getItem:()=>resetSaved,setItem:(_,value)=>resetSaved=value};
+const resetCollection=createCollection(items,resetStore);assert.equal(resetCollection.count,1);assert.equal(resetCollection.reset(),true);assert.equal(resetCollection.count,0);assert.equal(resetCollection.complete,false);assert.equal(createCollection(items,resetStore).count,0);assert.equal(resetCollection.collect('profile'),true);
+const blockedReset=createCollection(items,{getItem:()=> '["profile"]',setItem:()=>{throw Error('blocked')}});assert.equal(blockedReset.reset(),false);assert.equal(blockedReset.count,0);
+console.log('Reset: collection cleared in memory and storage, replay acquisition and failed persistence passed.');
