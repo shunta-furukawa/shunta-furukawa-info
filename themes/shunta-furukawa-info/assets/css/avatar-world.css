@@ -24,8 +24,8 @@ body.avatar-site { background:#111116; font-size:1.6rem; }
 #avatar-canvas canvas { display:block; width:100%; height:100%; pointer-events:auto; touch-action:pan-y; }
 .world-static-mascot { position:absolute; right:16%; top:14%; height:65%; width:auto; object-fit:contain; }
 .world-rendered .world-static-mascot { display:none; }
-.world-motion-off #avatar-canvas { display:none; }
-.world-motion-off .world-static-mascot { display:block; }
+.world-motion-off #avatar-canvas { display:block; }
+.world-motion-off.world-rendered .world-static-mascot { display:none; }
 .world-zone { min-height:100svh; margin:0; padding:130px 7vw 90px; position:relative; scroll-margin-top:0; }
 .zone-content { max-width:590px; padding:28px; background:#111116; border-radius:10px; }
 .world-kicker { font:1.2rem/1.5 var(--font-mono); letter-spacing:.1em; color:#ff72ae; margin-bottom:18px; }
@@ -157,3 +157,26 @@ body.avatar-site { background:#111116; font-size:1.6rem; }
 .world-motion-off .zone-content { transition:none; }
 
 .avatar-site .writing-cover,.avatar-site .writing-cover::before,.avatar-site .writing-cover::after { background:#25252c; box-shadow:none; }
+
+/* The world occupies a real viewport; illustrations accompany rather than cover it. */
+.world-ready .world-visual-caption[data-visual-caption="philosophy"] { left:48%; right:3%; bottom:70px; display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:12px; }
+.world-ready .world-visual-caption[data-visual-caption="philosophy"]>img { width:110px; height:74px; object-fit:cover; }
+.world-ready .world-visual-caption[data-visual-caption="philosophy"] .ad-token { margin:0; }
+.world-ready .world-visual-caption[data-visual-caption="philosophy"]>p { width:100%; padding:0; }
+.world-ready .career-map-caption>span { font-size:clamp(3rem,4vw,5rem); }
+.world-ready .map-pins a { min-width:145px; padding:9px 12px; }
+.world-ready .map-pins a small { display:none; }
+#avatar-canvas canvas { cursor:grab; }
+#avatar-canvas canvas:active { cursor:grabbing; }
+@media(max-width:720px) {
+ .world-ready .world-visual-caption[data-visual-caption="philosophy"] { top:auto; bottom:calc(48dvh + 77px); left:5vw; right:5vw; gap:5px; overflow:visible; }
+ .world-ready .world-visual-caption[data-visual-caption="philosophy"]>img { display:none; }
+ .world-ready .world-visual-caption[data-visual-caption="philosophy"]>p { display:none; }
+ .world-ready .career-map-caption,.world-ready .work-map-caption { top:auto; bottom:calc(48dvh + 77px); max-height:75px; }
+ .world-ready .career-map-caption>span { font-size:2.8rem; }
+ .world-ready .career-map-caption p,.world-ready .work-map-caption p { padding:4px 0; }
+ .world-ready .map-pins a { min-width:114px; padding:7px 9px; }
+ .map-pins a strong { font-size:1.3rem; }
+ .world-hud>span { display:none; }
+ .world-hud button { font-size:1.1rem; }
+}
