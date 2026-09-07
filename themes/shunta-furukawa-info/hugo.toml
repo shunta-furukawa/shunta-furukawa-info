@@ -11,13 +11,13 @@ title = 'SHUNTA FURUKAWA INFO'
 [[menu.main]]
   identifier = "about"
   name = "ABOUT"
-  url = "/#about"
+  url = "/#next"
   weight = 20
 
 [[menu.main]]
   identifier = "skills"
   name = "SKILLS"
-  url = "/#skills"
+  url = "/#reliability"
   weight = 30
 
 [[menu.main]]
@@ -35,13 +35,13 @@ title = 'SHUNTA FURUKAWA INFO'
 [[menu.main]]
   identifier = "work"
   name = "WORK"
-  url = "/#work"
+  url = "/#reliability"
   weight = 50
 
 [[menu.main]]
   identifier = "contact"
   name = "CONTACT"
-  url = "/#contact"
+  url = "/#next"
   weight = 60
 
 [module]
