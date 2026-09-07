@@ -1,5 +1,6 @@
 baseURL = 'https://shunta-furukawa.info'
 languageCode = 'ja'
+defaultContentLanguage = 'ja'
 title = 'SHUNTA FURUKAWA INFO'
 theme = 'shunta-furukawa-info'
 enableRobotsTXT = true
@@ -8,17 +9,15 @@ enableRobotsTXT = true
 author = 'Shunta Furukawa'
 role = '広告配信基盤エンジニア'
 location = 'Tokyo, Japan'
-description = '動画広告の配信基盤を開発するエンジニア。配信の仕組みを作る側から、「広告は本当に効いているのか」を測る側まで関心を広げ、その学びを Zenn に書いています。'
+description = 'ABEMAの広告プラットフォームでバックエンドを開発。大規模配信の信頼性、広告業務を理解した設計、運用改善を軸に、マッチング・効果最適化・生成AIへ。意味のある出会いを技術でつくる、Shunta Furukawaのポートフォリオ。'
 twitter_handle = '@shunta_furukawa'
 og_image = '/images/og-default.jpg'
 contact_email = 'contact@shunta-furukawa.info'
 
 [params.about]
-lead = '動画広告の配信基盤を、内側から書いています。'
-body = '''動画広告の配信基盤の設計・運用に携わっているエンジニアです。
-アドテクの仕組み、広告効果測定、AI による分析の自動化を軸に、
-「作る側」と「測る側」を横断する立ち位置で日々の学びを Zenn に書き溜めています。
-記事の本拠地は Zenn、コミュニケーションは X が中心です。'''
+lead = '人の体験から、システムの内側へ。'
+body = '''広告業務の理解とバックエンドの設計・運用をつなぎ、堅牢な広告配信基盤をつくっています。
+配信を支える実務を土台に、文脈に合うマッチング、広告効果の最適化、生成AIによる意味理解と分析の自動化を探究しています。'''
 tags = [
   'アドテク',
   '広告配信基盤',
@@ -44,7 +43,7 @@ value = 'インフラ運用・改善'
 label = '経験あり'
 
 [params.story]
-statement = '動画広告の配信基盤を開発するエンジニア。配信の仕組みを作る側から、「広告は本当に効いているのか」を測る側まで関心を広げ、その学びを書いています。'
+statement = '人の体験を設計する仕事から、広告の事業要件を支えるバックエンドへ。UI・UX、マーケティング、システム設計の経験が、現在の広告配信基盤の開発につながっています。'
 
 [params.social]
 x = 'https://x.com/shunta_furukawa'

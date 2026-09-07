@@ -33,9 +33,9 @@ title = 'SHUNTA FURUKAWA INFO'
   weight = 40
 
 [[menu.main]]
-  identifier = "blog"
-  name = "BLOG"
-  url = "/writings/"
+  identifier = "work"
+  name = "WORK"
+  url = "/#work"
   weight = 50
 
 [[menu.main]]

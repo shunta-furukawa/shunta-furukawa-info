@@ -43,6 +43,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     menuToggle.addEventListener("click", openMenu);
     menuClose.addEventListener("click", closeMenu);
+    menuDrawer.querySelectorAll("a[href]").forEach(link => {
+        link.addEventListener("click", closeMenu);
+    });
 
     document.addEventListener("click", (event) => {
         if (!menuDrawer.contains(event.target) && !menuToggle.contains(event.target)) {
