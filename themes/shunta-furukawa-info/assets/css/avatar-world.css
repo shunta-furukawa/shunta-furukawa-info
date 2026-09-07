@@ -180,3 +180,89 @@ body.avatar-site { background:#111116; font-size:1.6rem; }
  .world-hud>span { display:none; }
  .world-hud button { font-size:1.1rem; }
 }
+
+/* Playable third-person world. Reading is a modal action, not scroll travel. */
+body.game-ready { overflow:hidden; height:100dvh; }
+.game-ready #main,.game-ready #avatar-world { width:100%; height:100dvh; margin:0; padding:0; }
+.game-ready .world-stage { inset:90px 0 0; z-index:0; pointer-events:auto; }
+.game-ready #avatar-canvas canvas { touch-action:none; cursor:grab; }
+.game-ready .world-static-mascot { display:none; }
+.game-ready .world-zone { display:none; }
+.explorer-ui { position:fixed; inset:90px 0 0; z-index:5; pointer-events:none; }
+.explorer-ui button,.explorer-joystick { pointer-events:auto; }
+.explorer-intro { position:absolute; left:28px; top:22px; padding:12px 16px; background:#111116e8; border-radius:8px; max-width:480px; }
+.explorer-intro>span { color:#ff65a4; font:1.2rem var(--font-mono); letter-spacing:.08em; }
+.explorer-intro>p { color:#fff; font-weight:700; font-size:2rem; margin:4px 0; }
+.explorer-intro>small { color:#bebeca; font-size:1.3rem; line-height:1.8; }
+.touch-help { display:none; }
+.explorer-minimap { position:absolute; right:26px; top:22px; width:142px; text-align:center; }
+.explorer-minimap canvas { display:block; width:100%; height:auto; }
+.explorer-minimap span { font-size:1.2rem; background:#111116; color:#bcbcc8; padding:3px 7px; border-radius:4px; }
+.explorer-status { position:absolute; left:50%; bottom:130px; transform:translateX(-50%); width:max-content; max-width:80vw; background:#111116ed; padding:10px 18px; border-radius:6px; font-size:1.5rem; color:#fff; text-align:center; }
+.explorer-actions { position:absolute; right:28px; bottom:66px; display:flex; gap:10px; align-items:center; }
+.explorer-actions button { border:0; font:700 1.5rem var(--font-body); border-radius:12px; min-width:62px; min-height:54px; background:#343441; color:#fff; padding:12px 20px; touch-action:manipulation; user-select:none; }
+#explorer-inspect { background:#ff3b8d; color:#111116; min-width:145px; }
+#explorer-inspect:disabled { background:#32323e; color:#aaaab8; cursor:default; }
+#explorer-inspect kbd { font:1.2rem var(--font-mono); padding:4px 7px; background:#111116; color:#fff; margin-left:12px; border-radius:4px; }
+#explorer-run[aria-pressed=true] { background:#f2f2f5; color:#111116; }
+.explorer-joystick { display:none; position:absolute; left:26px; bottom:65px; width:130px; height:130px; border-radius:50%; background:#343440dc; touch-action:none; user-select:none; -webkit-user-select:none; }
+.explorer-joystick>span { position:absolute; left:calc(50% - 25px); top:calc(50% - 25px); width:50px; height:50px; border-radius:50%; background:#fafafa; pointer-events:none; }
+.explorer-joystick small { position:absolute; bottom:-24px; width:100%; text-align:center; color:#ccc; font:1.2rem var(--font-mono); }
+.explorer-tools { position:absolute; bottom:max(12px,env(safe-area-inset-bottom)); left:22px; right:22px; display:flex; gap:8px; }
+.explorer-tools button { border:0; border-radius:5px; background:#20202bed; color:#e2e2e9; padding:10px 14px; font-size:1.3rem; min-height:40px; }
+.explorer-tools button:last-child { margin-left:auto; background:#f2f2f6; color:#111116; }
+#explorer-dialog { inset:0; margin:auto; width:min(860px,92vw); max-width:none; height:min(820px,88dvh); max-height:88dvh; padding:0; border:0; border-radius:14px; background:#1c1c25; color:#d4d4de; overflow:hidden; }
+#explorer-dialog::backdrop { background:#080810a6; }
+.explorer-dialog-bar { display:flex; align-items:center; justify-content:space-between; gap:15px; padding:15px 24px; background:#292933; min-height:65px; }
+.explorer-dialog-bar>span { font-size:1.4rem; color:#e7e7ee; }
+.explorer-dialog-bar button { border:0; background:#ff3b8d; color:#111116; border-radius:6px; padding:10px 14px; font-size:1.4rem; font-weight:700; }
+#explorer-reading { height:calc(100% - 65px); overflow:auto; overscroll-behavior:contain; padding:8px 18px 30px; }
+.game-ready #explorer-dialog .world-zone.is-open { display:block; height:auto; min-height:0; margin:0; padding:0; }
+.game-ready #explorer-dialog .zone-content { max-width:none; width:auto; padding:24px; background:transparent; }
+.game-ready #explorer-dialog .zone-content h1,.game-ready #explorer-dialog .zone-content h2 { font-size:clamp(2.6rem,3vw,3.8rem); }
+.game-ready #explorer-dialog p { font-size:1.6rem; }
+.game-ready #explorer-dialog .world-note { font-size:1.3rem; }
+.game-ready #explorer-dialog .world-visual-caption { position:static; max-width:100%; margin:0 24px; padding:20px; background:#252530; border-radius:8px; }
+.game-ready #explorer-dialog .world-visual-caption>img { max-height:230px; object-fit:contain; }
+.game-ready #explorer-dialog .career-map-caption { display:none; }
+.game-ready #explorer-dialog .world-visual-caption p { font-size:1.4rem; }
+.game-ready #explorer-dialog .map-direct { display:grid; gap:10px; }
+.game-ready #explorer-dialog .map-direct a { background:#292933; padding:16px; color:#fff; border-radius:6px; font-size:1.6rem; }
+.game-ready #explorer-dialog .world-skill summary,.game-ready #explorer-dialog .world-skill p { font-size:1.4rem; }
+.game-ready #explorer-dialog .choice-row button { font-size:1.4rem; }
+#work-flow-labels span { position:relative; overflow:hidden; }
+#work-flow-labels.is-flowing span::after { content:''; position:absolute; width:12px; height:7px; background:#ff3b8d; left:0; bottom:0; animation:flow-request 1.6s linear infinite; }
+#work-flow-labels.is-flowing span:nth-child(2)::after { animation-delay:-1s; }
+#work-flow-labels.is-flowing span:nth-child(3)::after { animation-delay:-.5s; }
+@keyframes flow-request { to { left:100%; } }
+.game-unavailable .world-static-mascot { display:block; height:55%; top:20%; right:25%; }
+.game-unavailable .explorer-minimap { display:none; }
+.game-unavailable .explorer-tools button:not(:last-child) { display:none; }
+.world-motion-off #work-flow-labels span::after { animation:none; left:50%; }
+@media(pointer:coarse) { .explorer-joystick { display:block; } .desktop-help { display:none; } .touch-help { display:block; } #explorer-inspect kbd { display:none; } }
+@media(max-width:720px) {
+ .game-ready .world-stage,.explorer-ui { top:114px; }
+ .explorer-intro { left:12px; top:12px; padding:8px 11px; max-width:calc(100% - 125px); }
+ .explorer-intro>span { font-size:1.1rem; } .explorer-intro>p { font-size:1.5rem; } .explorer-intro>small { font-size:1.2rem; }
+ .explorer-minimap { right:12px; top:12px; width:94px; } .explorer-minimap span { display:none; }
+ .explorer-status { bottom:222px; max-width:92vw; font-size:1.3rem; padding:8px 12px; }
+ .explorer-joystick { width:116px; height:116px; left:22px; bottom:88px; display:block; }
+ .explorer-actions { right:20px; bottom:88px; flex-direction:column; align-items:flex-end; gap:9px; }
+ .explorer-actions button { min-height:46px; font-size:1.4rem; padding:10px 16px; }
+ #explorer-inspect { min-width:118px; min-height:64px; } #explorer-inspect kbd { display:none; }
+ .explorer-tools { bottom:max(12px,env(safe-area-inset-bottom)); left:12px; right:12px; gap:5px; flex-wrap:wrap; }
+ .explorer-tools button { font-size:1.2rem; min-height:36px; padding:7px 10px; }
+ .explorer-tools button:last-child { margin-left:0; }
+ #explorer-dialog { width:96vw; height:90dvh; max-height:90dvh; border-radius:10px; }
+ .explorer-dialog-bar { padding:12px; } .explorer-dialog-bar button { font-size:1.3rem; }
+ #explorer-reading { padding:0 4px 25px; }
+ .game-ready #explorer-dialog .zone-content { padding:20px 14px; }
+ .game-ready #explorer-dialog .world-visual-caption { margin:0 14px; padding:14px; }
+ .game-ready #explorer-dialog .world-skill-grid { grid-template-columns:1fr; }
+}
+@media(max-height:520px) and (pointer:coarse) {
+ .explorer-intro>small,.explorer-minimap { display:none; } .explorer-intro>p { margin:0; }
+ .explorer-status { top:15px; bottom:auto; left:auto; right:15px; transform:none; max-width:45%; }
+ .explorer-joystick { width:90px; height:90px; bottom:58px; }
+ .explorer-actions { bottom:58px; flex-direction:row; }
+}
