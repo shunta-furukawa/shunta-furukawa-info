@@ -328,3 +328,82 @@ body.game-ready { overflow:hidden; height:100dvh; }
 }
 
 #explorer-dialog #harbor-toast{position:absolute;top:70px;pointer-events:none;max-width:85%}#harbor-bag-open{white-space:nowrap} .harbor-pickup img{position:relative;z-index:3}
+
+/* Exhibit records: the same monochrome objects and pink accents as the world. */
+#explorer-dialog {width:min(820px,calc(100vw - 40px));height:min(790px,82dvh);max-height:82dvh;background:#191923;border-radius:18px;}
+#explorer-dialog[open] {display:flex;flex-direction:column;}
+#explorer-dialog::backdrop {background:#08081094;backdrop-filter:blur(3px);}
+.explorer-dialog-bar {flex:none;min-height:60px;padding:8px 16px;gap:12px;background:#191923;}
+.explorer-dialog-bar>span {margin-right:auto;font-size:1.4rem;}
+.explorer-dialog-bar button {background:transparent;color:#eeeef2;padding:8px;font-size:1.4rem;}
+#explorer-close {width:44px;height:44px;padding:0;font-size:2.8rem;font-weight:400;line-height:1;background:#30303c;border-radius:50%;flex-shrink:0;}
+#explorer-dialog #explorer-reading,#explorer-dialog.has-pickup #explorer-reading {height:auto;min-height:0;flex:1;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;}
+#exhibit-heading {display:grid;grid-template-columns:160px 1fr;align-items:center;gap:24px;margin:0 24px 8px;padding:18px 24px;background:#f1f1f3;color:#191923;border-radius:12px;}
+#exhibit-heading[hidden] {display:none;}
+#exhibit-heading img {width:160px;height:160px;object-fit:contain;}
+#exhibit-heading small {font-size:1.3rem;letter-spacing:.04em;}
+#exhibit-heading h2 {font-size:2.4rem;line-height:1.4;margin:10px 0;font-weight:800;color:#191923;}
+#explorer-dialog #exhibit-state {font-size:1.4rem;margin:0;color:#575764;}
+.game-ready #explorer-dialog .zone-content {padding:24px 32px;}
+.game-ready #explorer-dialog .zone-content h1,.game-ready #explorer-dialog .zone-content h2 {font-size:2.3rem;line-height:1.5;letter-spacing:-.025em;margin:0 0 18px;}
+.game-ready #explorer-dialog .zone-content h2 br {display:none;}
+.game-ready #explorer-dialog .zone-content h3 {font-size:1.8rem;line-height:1.5;}
+.game-ready #explorer-dialog .world-kicker {display:none;}
+.game-ready #explorer-dialog .zone-lead {line-height:1.8;}
+.game-ready #explorer-dialog .harbor-facts {padding-left:20px;line-height:1.9;}
+.game-ready #explorer-dialog .harbor-facts li {padding:5px 0;}
+.game-ready #explorer-dialog .career-stops {gap:6px;margin:16px 0;}
+.game-ready #explorer-dialog .career-stops button {background:#292933;border:0;border-radius:6px;}
+.game-ready #explorer-dialog .career-stops button[aria-pressed="true"] {background:#f1f1f3;color:#191923;}
+.game-ready #explorer-dialog .career-stops button small {color:inherit;}
+.game-ready #explorer-dialog .world-tags li {background:#30303c;border:0;border-radius:4px;color:#dddde5;}
+.game-ready #explorer-dialog .world-skill {background:#292933;border:0;border-radius:8px;}
+.game-ready #explorer-dialog .work-map-caption {display:none;}
+.game-ready #explorer-dialog .world-visual-caption[data-visual-caption="philosophy"] {margin:0 32px 24px;background:#f1f1f3;color:#191923;}
+.game-ready #explorer-dialog .world-visual-caption[data-visual-caption="philosophy"] p {color:#393946;}
+.game-ready #explorer-dialog .philosophy-lab {background:#23232f;padding:20px;border-radius:10px;}
+.game-ready #explorer-dialog .map-direct {grid-template-columns:repeat(2,minmax(0,1fr));}
+.harbor-pickup {flex:none;min-height:92px;height:auto;padding:12px 24px;background:#292933;}
+.harbor-pickup button {font-size:1.4rem;max-width:155px;}
+.harbor-pickup img {width:56px;height:56px;}
+.harbor-dialog-social a {font-size:1.4rem;}
+.explorer-minimap {width:158px;}
+#collection-hud {pointer-events:auto;display:grid;grid-template-columns:1fr auto;gap:4px;width:100%;border:0;padding:9px 10px;background:#191923;color:#fff;border-radius:8px;margin-top:6px;cursor:pointer;}
+#collection-hud strong {font-size:1.8rem;text-align:left;}
+#collection-hud small {font-size:1.1rem;align-self:center;letter-spacing:.03em;}
+#collection-marks {grid-column:1/-1;display:flex!important;gap:3px;background:none;padding:3px 0;}
+#collection-marks i {height:5px;flex:1;border-radius:2px;background:#535361;}
+#collection-marks i.is-visited {background:#fff;}
+#collection-marks i.is-owned {background:#ff3b8d;}
+#visited-count {display:block;background:#191923;font-size:1.2rem;color:#d0d0da;padding:4px;}
+.map-legend {font-size:1.1rem;color:#d0d0da;background:#191923;padding:3px;white-space:nowrap;}
+@media(max-width:720px){
+ #explorer-dialog {width:calc(100vw - 32px);height:82dvh;max-height:82dvh;}
+ .explorer-dialog-bar {gap:8px;padding:8px;}
+ .explorer-dialog-bar>span {display:none;}
+ #harbor-bag-open {margin-right:auto;}
+ #exhibit-heading {grid-template-columns:90px 1fr;gap:12px;margin:0 12px;padding:12px;}
+ #exhibit-heading img {width:90px;height:100px;}
+ #exhibit-heading h2 {font-size:1.9rem;margin:6px 0;}
+ #exhibit-heading small {font-size:1.2rem;}
+ .game-ready #explorer-dialog .zone-content {padding:20px;}
+ .game-ready #explorer-dialog .zone-content h2 {font-size:2rem;}
+ .game-ready #explorer-dialog .map-direct {grid-template-columns:1fr;}
+ .game-ready #explorer-dialog .world-visual-caption[data-visual-caption="philosophy"] {margin:0 20px 20px;}
+ .harbor-pickup {padding:10px 12px;gap:8px;}
+ .harbor-pickup img {width:40px;height:40px;}
+ .harbor-pickup strong {font-size:1.3rem;}
+ .harbor-pickup button {max-width:120px;font-size:1.3rem;padding:10px;}
+ .explorer-minimap {display:block;width:110px;top:12px;right:10px;}
+ #collection-hud {padding:6px;}
+ #collection-hud strong {font-size:1.5rem;}
+ #collection-hud small {font-size:1rem;}
+ .map-legend {white-space:normal;font-size:1rem;}
+ #visited-count {font-size:1.1rem;}
+ .explorer-intro {max-width:calc(100% - 140px);}
+}
+@media(max-height:500px){.explorer-minimap {width:100px;} .explorer-minimap canvas {width:72px;margin:auto;} .map-legend,#visited-count {display:none;} }
+
+.harbor-pickup>div {min-width:0;flex:1;} .harbor-pickup strong {overflow-wrap:anywhere;} .harbor-pickup button {white-space:normal;flex-shrink:0;}
+.game-ready #explorer-dialog .work-map-caption {display:block;background:#292933;margin:0 32px 24px;border-radius:10px;}
+@media(max-width:720px){.game-ready #explorer-dialog .work-map-caption {margin:0 20px 20px;}}
