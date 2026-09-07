@@ -266,3 +266,12 @@ body.game-ready { overflow:hidden; height:100dvh; }
  .explorer-joystick { width:90px; height:90px; bottom:58px; }
  .explorer-actions { bottom:58px; flex-direction:row; }
 }
+
+/* The reading surface grows out of the projected sign, then returns to it. */
+#explorer-dialog { transform-origin:center; }
+#explorer-dialog.is-opening,#explorer-dialog.is-closing { will-change:transform,opacity; }
+#explorer-dialog.is-closing { pointer-events:none; }
+#explorer-dialog.is-opening::backdrop { animation:sign-backdrop-in .44s ease both; }
+#explorer-dialog.is-closing::backdrop { animation:sign-backdrop-out .26s ease both; }
+@keyframes sign-backdrop-in { from { background:#08081000; } to { background:#080810a6; } }
+@keyframes sign-backdrop-out { from { background:#080810a6; } to { background:#08081000; } }
