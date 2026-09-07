@@ -1,4 +1,6 @@
 import * as T from './vendor/three.module.js';
+import {WORLD_PATHS} from './explorer-paths.js';
+import {createAvatar} from './explorer-avatar.js';
 import {SIGNS,movePlayer,movementVector,nearestSign} from './explorer-physics.js';
 
 export function createExplorer(host,{onNear,onRead,onPosition,onFailure,reduced=false}) {
@@ -13,9 +15,14 @@ export function createExplorer(host,{onNear,onRead,onPosition,onFailure,reduced=
  function facet(g,geo,color,x=0,y=0,z=0){const b=geo.index?geo.toNonIndexed():geo,n=b.getAttribute('normal'),p=palettes[color].map(v=>new T.Color(v)),v=[];for(let i=0;i<n.count;i+=3){const c=p[n.getY(i)>.35?2:n.getX(i)>.2||n.getZ(i)<-.2?1:0];for(let j=0;j<3;j++)v.push(c.r,c.g,c.b);}b.setAttribute('color',new T.Float32BufferAttribute(v,3));const m=new T.Mesh(b,new T.MeshBasicMaterial({vertexColors:true}));m.position.set(x,y,z);g.add(m);return m;}
  const obstacles=SIGNS.map(s=>({x:s.x,z:s.z,r:.55}));
  facet(world,new T.CylinderGeometry(38,34,4,48),'dark',0,-2.05,0);
- // Broad, solid paths, not outlines. The five career signs form a walkable route.
- function path(points,width=2.5,color='gray'){for(let i=1;i<points.length;i++){const a=points[i-1],b=points[i],d=Math.hypot(b[0]-a[0],b[1]-a[1]);const m=box(world,(a[0]+b[0])/2,-.015,(a[1]+b[1])/2,width,.05,d,color);m.rotation.y=Math.atan2(b[0]-a[0],b[1]-a[1]);}}
- path([[0,17],[0,4],[0,-7],[2,-23]],3);path([[-9,14],[0,14],[15,13]],2.4);path([[-20,7],[-8,4],[0,4],[22,1]],2.3);path([[-20,7],[-23,-2],[-19,-13],[-9,-22],[2,-24]],2.3);path([[0,-7],[-9,-4]],2.3);path([[0,-7],[14,-11],[22,1],[15,13]],2.3);
+ // Continuous ribbons with round caps; one opaque material hides crossing seams.
+ const roadVertices=[],roadIndices=[];
+ for(const {points,width} of WORLD_PATHS){
+  const base=roadVertices.length/3;
+  points.forEach((p,i)=>{const a=points[Math.max(0,i-1)],b=points[Math.min(points.length-1,i+1)],dx=b[0]-a[0],dz=b[1]-a[1],len=Math.hypot(dx,dz),nx=-dz/len*width/2,nz=dx/len*width/2;roadVertices.push(p[0]+nx,.009,p[1]+nz,p[0]-nx,.009,p[1]-nz);if(i<points.length-1){const v=base+i*2;roadIndices.push(v,v+2,v+1,v+1,v+2,v+3);}});
+  for(const p of [points[0],points[points.length-1]]){const center=roadVertices.length/3;roadVertices.push(p[0],.009,p[1]);for(let i=0;i<=40;i++){const a=i/40*Math.PI*2;roadVertices.push(p[0]+Math.cos(a)*width/2,.009,p[1]+Math.sin(a)*width/2);if(i<40)roadIndices.push(center,center+i+2,center+i+1);}}
+ }
+ const roadGeometry=new T.BufferGeometry();roadGeometry.setAttribute('position',new T.Float32BufferAttribute(roadVertices,3));roadGeometry.setIndex(roadIndices);roadGeometry.computeVertexNormals();const roadSurface=mesh(world,roadGeometry,'gray');roadSurface.material=mats.gray[2];
  const rings=[];
  function label(text,sub){const canvas=document.createElement('canvas');canvas.width=768;canvas.height=256;const ctx=canvas.getContext('2d');ctx.fillStyle='#22222c';ctx.fillRect(0,0,768,256);ctx.fillStyle='#ff3b8d';ctx.fillRect(0,0,768,16);ctx.font='bold 33px sans-serif';ctx.fillText(sub,35,78);ctx.fillStyle='#ffffff';let size=43;ctx.font=`bold ${size}px sans-serif`;while(ctx.measureText(text).width>698&&size>24){size--;ctx.font=`bold ${size}px sans-serif`;}ctx.fillText(text,35,158);ctx.fillStyle='#c2c2ce';ctx.font='28px sans-serif';ctx.fillText('近づいて調べる',35,215);const texture=new T.CanvasTexture(canvas);texture.colorSpace=T.SRGBColorSpace;return new T.MeshBasicMaterial({map:texture,side:T.DoubleSide});}
  for(const sign of SIGNS){box(world,sign.x,1,sign.z,.22,2,.3,'white');const signMaterial=label(sign.title,sign.short);const board=new T.Mesh(new T.BoxGeometry(3.2,1.1,.18),[solids.dark,solids.dark,solids.dark,solids.dark,signMaterial,signMaterial]);board.position.set(sign.x,2.15,sign.z);world.add(board);
@@ -32,20 +39,7 @@ export function createExplorer(host,{onNear,onRead,onPosition,onFailure,reduced=
  gate(16,8,'white',.9);gate(-10,10,'pink',.8);
  // Sculptural edge markers give the player distance cues without loading image scenery.
  for(let i=0;i<18;i++){const a=i*Math.PI*2/18,x=Math.sin(a)*36,z=Math.cos(a)*36;facet(world,new T.ConeGeometry(1.8,3+(i%4),5),'gray',x,1.4,z);}
- // Logo-inspired, fully volumetric hoodie avatar; no camera-facing sprite.
- const player=new T.Group();player.position.set(0,0,15);world.add(player);const body=new T.Group();player.add(body);
- facet(body,new T.CylinderGeometry(.48,.57,.95,8),'black',0,1.22,0);
- const hood=facet(body,new T.SphereGeometry(.66,12,8),'black',0,1.7,-.1);hood.scale.set(1,.8,.8);
- const head=new T.Group();head.position.y=2.02;body.add(head);
- const face=mesh(head,new T.SphereGeometry(.5,14,10),'white',0,.12,.13);face.scale.set(.9,1,.8);
- mesh(head,new T.SphereGeometry(.57,12,8,0,Math.PI*2,0,1.7),'black',0,.27,0);
- const back=mesh(head,new T.SphereGeometry(.58,12,8),'black',0,.02,-.2);back.scale.set(1,1.1,.65);
- for(const side of [-1,1]){const lock=mesh(head,new T.CylinderGeometry(.16,.12,.65,6),'black',side*.45,-.05,.02);lock.rotation.z=side*.1;mesh(head,new T.SphereGeometry(.065,8,6),'black',side*.17,.16,.5);}
- const fringeShape=new T.Shape();fringeShape.moveTo(-.48,.48);fringeShape.lineTo(.46,.5);fringeShape.lineTo(.22,.15);fringeShape.lineTo(-.13,-.02);fringeShape.lineTo(-.34,.13);fringeShape.closePath();const fringe=mesh(head,new T.ExtrudeGeometry(fringeShape,{depth:.13,bevelEnabled:false}),'black',0,0,.42);fringe.rotation.z=-.1;
- const smileCurve=new T.CatmullRomCurve3([new T.Vector3(-.13,-.09,.51),new T.Vector3(0,-.14,.54),new T.Vector3(.13,-.09,.51)]);mesh(head,new T.TubeGeometry(smileCurve,8,.022,5,false),'black');
- const limbs=[];for(const side of [-1,1]){const leg=new T.Group();leg.position.set(side*.23,.83,0);body.add(leg);box(leg,0,-.32,0,.3,.67,.35,'black');box(leg,0,-.72,.13,.37,.2,.65,'white');const arm=new T.Group();arm.position.set(side*.62,1.62,0);body.add(arm);facet(arm,new T.CylinderGeometry(.18,.15,.7,7),'black',0,-.3,0);mesh(arm,new T.SphereGeometry(.15,8,6),'white',0,-.68,0);limbs.push({side,leg,arm});}
- for(const side of [-1,1])box(body,side*.14,1.45,.49,.04,.35,.04,'white');box(body,0,1.02,.51,.53,.06,.035,'gray');
- player.rotation.y=Math.PI;
+ const {player,body,limbs}=createAvatar(solids);player.position.set(0,0,15);world.add(player);
  const shadow=mesh(world,new T.CircleGeometry(.7,24),'black',0,.012,15);shadow.rotation.x=-Math.PI/2;
  const keys=new Set();let stick={x:0,z:0},yaw=0,pitch=0,reading=false,motionReduced=reduced,running=false,frame=0,last=0,phase=0,time=0,near=null,drag=null,failed=false;
  const target=new T.Vector3(),desired=new T.Vector3(),offset=new T.Vector3();let first=true;
