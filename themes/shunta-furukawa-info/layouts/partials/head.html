@@ -73,9 +73,11 @@
 <script type="application/ld+json">{{ $person | jsonify | safeJS }}</script>
 {{- end }}
 
-{{ partialCached "head/css.html" . }}
-{{ if not .IsHome }}{{ partialCached "head/js.html" . }}{{ end }}
-{{ if .IsHome }}
-  {{ with resources.Get "css/journey.css" | minify | fingerprint }}<link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous">{{ end }}
-  {{ with resources.Get "js/journey.js" | js.Build (dict "minify" true "target" "es2020") | fingerprint }}<script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous" defer></script>{{ end }}
+{{ range slice "css/main.css" "css/knowledge.css" "css/writings.css" "css/notfound.css" "css/avatar-world.css" }}
+{{ with resources.Get . | minify | fingerprint }}<link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous">{{ end }}
+{{ end }}
+{{ if or .IsHome (eq .Type "story") }}
+{{ with resources.Get "js/avatar-world.js" | js.Build (dict "minify" true "target" "es2020") | fingerprint }}<script src="{{ .RelPermalink }}" defer integrity="{{ .Data.Integrity }}" crossorigin="anonymous"></script>{{ end }}
+{{ else }}
+{{ with resources.Get "js/knowledge-rtb.js" | js.Build (dict "minify" true "target" "es2020") | fingerprint }}<script src="{{ .RelPermalink }}" defer integrity="{{ .Data.Integrity }}" crossorigin="anonymous"></script>{{ end }}
 {{ end }}
