@@ -77,3 +77,13 @@ Each solved item's collection bit also represents its completed puzzle state, pr
 Each non-profile location now has a physical miniature device. Before completion it is static with a gray status lamp. Completion lights the lamp in the slot accent, animates the device and changes the sign to 稼働中. Reset or slot restoration updates these states from the saved collection.
 
 Validation: all twelve puzzles start incomplete and have reachable solutions; alternate valid load allocation; exhaustive 256 pipe arrangements; completed-item URL round trip; save/jump tests; Hugo production build and HTML controller targets. Browser/device rendering and interaction have not been checked locally.
+
+## SVG direct manipulation and river route
+
+Puzzle controls now render as SVG machines: swappable illustrated command discs, rotary pipe fittings with connected water paths, cable plugs and sockets, request bundles in server bays, sorting bins, circuit levers, radio dials and conversation sliders. All share the original puzzle predicates. Pointer capture supports mouse and touch dragging, drop target selection and cancel rollback; taps and Enter/Space/arrow keys remain alternatives. Cable dragging previews the wire, and working circuits/pipe flows use SVG motion with reduced-motion support.
+
+A curved river now occupies the eastern optional route, with a bridge and stepping stone. Water blocks ground movement; airborne avatars can cross. A failed landing restores the last safe shore without deducting coins. Saved poses update only on safe ground, and old water-overlapping poses restore at the entrance. The minimap includes the river and bridge.
+
+Coin IDs and count remain 0–100 for existing save/URL compatibility. The last 24 coins relocate to the optional river route; twelve are airborne and require jumping to collect. Old road coins that intersect water move to a nearby bank. Existing collected IDs remain collected. Enough ground coins remain to unlock all exhibits using the bridge route.
+
+Validation: SVG swap/drop/dial mapping, all prior puzzle predicates, stable coin IDs and URL round trip, grounded versus airborne pickup, bridge/water collision, and successful river crossings at walking/dash speeds across 30/60/120 fps. Hugo build, camera/movement tests and HTML controller integrity pass. Local browser/device visual or pointer-interaction testing was not performed.
