@@ -1,11 +1,13 @@
 import * as T from './vendor/three.module.js';
-const colors={black:0x191923,white:0xf5f5f7,pink:0xff3b8d,gray:0x636374};
-const materials=Object.fromEntries(Object.entries(colors).map(([k,color])=>[k,new T.MeshBasicMaterial({color})]));
+import {rounded,batchStatic} from './world-shapes.js';
+const colors={black:0x1b1c26,white:0xe6e7ee,pink:0xff3b8d,gray:0x484b5d};
+const materials=Object.fromEntries(Object.entries(colors).map(([k,color])=>[k,new T.MeshStandardMaterial({color,roughness:k==='white'?.42:.68,metalness:.16})]));
+materials.pink.emissive.set(colors.pink);materials.pink.emissiveIntensity=.65;
+const lampMaterial=new T.MeshBasicMaterial({color:0xffffff,toneMapped:false});
 const shellMaterial=new T.MeshBasicMaterial({color:0xffffff,side:T.BackSide});
 export function whiteBoundary(group,width=.025){const meshes=[];group.traverse(m=>{if(m.isMesh&&!m.userData.boundary)meshes.push(m);});for(const m of meshes){if(!m.geometry.attributes.normal)continue;const g=m.geometry.clone(),p=g.attributes.position,n=g.attributes.normal;for(let i=0;i<p.count;i++)p.setXYZ(i,p.getX(i)+n.getX(i)*width,p.getY(i)+n.getY(i)*width,p.getZ(i)+n.getZ(i)*width);p.needsUpdate=true;const shell=new T.Mesh(g,shellMaterial);shell.userData.boundary=true;m.add(shell);}return group;}
-function rounded(w,h,d,r=.1){r=Math.min(r,w/3,h/3,d/3);const s=new T.Shape(),x=-w/2,y=-h/2;s.moveTo(x+r,y);s.lineTo(x+w-r,y);s.quadraticCurveTo(x+w,y,x+w,y+r);s.lineTo(x+w,y+h-r);s.quadraticCurveTo(x+w,y+h,x+w-r,y+h);s.lineTo(x+r,y+h);s.quadraticCurveTo(x,y+h,x,y+h-r);s.lineTo(x,y+r);s.quadraticCurveTo(x,y,x+r,y);const g=new T.ExtrudeGeometry(s,{depth:d-2*r,bevelEnabled:true,bevelSize:r*.45,bevelThickness:r,bevelSegments:5,curveSegments:12});g.translate(0,0,-d/2+r);return g;}
-function add(g,geo,color,x=0,y=0,z=0){const m=new T.Mesh(geo,materials[color]);m.position.set(x,y,z);g.add(m);return m;}
-function block(g,w,h,d,c,x=0,y=0,z=0){return add(g,rounded(w,h,d),c,x,y,z);}
+function add(g,geo,color,x=0,y=0,z=0){const m=new T.Mesh(geo,materials[color]);m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;g.add(m);return m;}
+function block(g,w,h,d,c,x=0,y=0,z=0){return add(g,Math.min(w,h,d)<.08?new T.BoxGeometry(w,h,d):rounded(w,h,d),c,x,y,z);}
 export function createArtifact(type){const g=new T.Group();
  if(['card','phone','console','chart','broadcast'].includes(type)){const phone=type==='phone',w=phone?.85:1.55,h=phone?1.6:1.05;block(g,w,h,.24,'black');block(g,w-.18,h-.2,.04,'white',0,0,.15);
   if(type==='card'){add(g,new T.SphereGeometry(.18,24,16),'pink',-.4,.08,.23);block(g,.55,.06,.03,'black',.2,.16,.2);block(g,.7,.05,.03,'gray',.14,-.08,.2);}
@@ -18,18 +20,69 @@ export function createArtifact(type){const g=new T.Group();
  else if(type==='wrench'){block(g,.25,1.15,.2,'white',0,-.2,0);const ring=add(g,new T.TorusGeometry(.37,.13,16,40,Math.PI*1.55),'pink',0,.5,0);ring.rotation.z=.72;add(g,new T.TorusGeometry(.14,.075,12,32),'white',0,-.76,0);}
  else if(type==='toolbox'){block(g,1.6,1,.8,'black');block(g,1.65,.18,.85,'pink',0,.28,0);block(g,.18,.35,.1,'white',0,.05,.47);const handle=add(g,new T.TorusGeometry(.32,.075,12,32,Math.PI),'white',0,.55,0);}
  else if(type==='radio'){block(g,1.6,1.05,.6,'black');add(g,new T.CylinderGeometry(.29,.29,.08,40),'white',-.35,-.03,.35).rotation.x=Math.PI/2;block(g,.55,.25,.08,'pink',.38,.18,.36);add(g,new T.SphereGeometry(.12,24,16),'white',.42,-.23,.37);add(g,new T.CylinderGeometry(.025,.025,1,16),'white',.52,.96,0).rotation.z=-.3;}
- return whiteBoundary(g,.022);
-}
-export function buildHarbor(environment,{scale,obstacles}){const g=new T.Group();environment.add(g);
- add(g,new T.CylinderGeometry(110,110,.15,96),'black',0,-.35,0);
- // Water strokes, quay and mooring posts make the island read as a working harbor.
- for(let i=0;i<24;i++){const a=i/24*Math.PI*2,r=67+i%3*6;const wave=add(g,new T.TorusGeometry(2,.025,6,32,Math.PI*.8),'gray',Math.sin(a)*r,-.24,Math.cos(a)*r);wave.rotation.x=-Math.PI/2;wave.rotation.z=a;}
- block(g,7,.18,18,'gray',0,.06,45);for(let z=37;z<=53;z+=4)for(const x of [-3.2,3.2])add(g,new T.CylinderGeometry(.17,.2,1.5,24),'white',x,.7,z);
- function house(x,z,w,d,title){x*=scale;z*=scale;const house=new T.Group();house.position.set(x,0,z);g.add(house);block(house,w,3.3,d,'black',0,1.65,0);const roof=block(house,w+.4,.6,d+.4,'white',0,3.45,0);block(house,w*.48,1.9,.15,'pink',0,1.5,d/2+.05);for(const dx of [-w*.34,w*.34])block(house,.35,2.1,.2,'white',dx,1.55,d/2+.14);whiteBoundary(house,.035);obstacles.push({x,z,r:Math.max(w,d)*.52});}
- house(0,12.5,6,4,'案内所');house(-26,3,4.8,3.5,'記録');house(-26,-10,4.8,3.5,'記録');house(-9,-27,6,3.5,'記録');house(16,-20,11,5,'工房');house(-10,-10,6,4,'書斎');house(19,18,5,4,'資料室');house(-10,10.5,6,4,'通信所');
- const mast=add(g,new T.CylinderGeometry(.1,.16,8,32),'white',-10*scale,4,8*scale);for(const y of [5.6,6.5]){const arc=add(g,new T.TorusGeometry(y===5.6?1:1.5,.06,12,40,Math.PI),'pink',-10*scale,y,8*scale);arc.rotation.z=.1;}
  return g;
 }
-export function artifactImages(items){const renderer=new T.WebGLRenderer({alpha:true,antialias:true,preserveDrawingBuffer:true});renderer.setSize(144,144);renderer.setPixelRatio(1);const scene=new T.Scene(),camera=new T.PerspectiveCamera(35,1,.1,20);camera.position.set(2,1.5,4.5);camera.lookAt(0,0,0);const images={};for(const item of items){const object=createArtifact(item.model);scene.add(object);renderer.render(scene,camera);images[item.id]=renderer.domElement.toDataURL('image/png');scene.remove(object);object.traverse(m=>{if(m.isMesh)m.geometry.dispose();});}renderer.dispose();renderer.forceContextLoss();return images;}
+// Architecture stays inside the original exhibit layout and collision footprints.
+export function buildHarbor(environment,{scale,obstacles}){
+ const g=new T.Group();environment.add(g);g.name='night-plaza';
+ const water=new T.Mesh(new T.CylinderGeometry(110,110,.15,128),new T.MeshStandardMaterial({color:0x0b111d,roughness:.3,metalness:.4}));water.position.y=-.35;g.add(water);
+ for(let i=0;i<24;i++){const a=i/24*Math.PI*2,r=67+i%3*6;const wave=add(g,new T.TorusGeometry(2,.018,5,24,Math.PI*.8),'gray',Math.sin(a)*r,-.24,Math.cos(a)*r);wave.rotation.x=-Math.PI/2;wave.rotation.z=a;}
+ block(g,7,.18,18,'gray',0,.06,45);
+ for(const x of [-3.2,3.2]){
+  for(let z=37;z<=53;z+=4)block(g,.12,1.35,.12,'black',x,.68,z);
+  block(g,.15,.12,16,'gray',x,1.34,45);block(g,.06,.035,16,'white',x,1.41,45);
+  for(let z=38;z<=52;z+=4)block(g,.07,.05,1.8,'pink',x,.14,z);
+ }
+ function lamp(parent,x,z){
+  block(parent,.45,.25,.45,'black',x,.14,z);
+  block(parent,.16,4.7,.18,'gray',x,2.40,z);
+  block(parent,.68,.20,.52,'black',x,4.76,z);
+  const panel=new T.Mesh(rounded(.56,.10,.40,.024),lampMaterial);panel.position.set(x,4.70,z);parent.add(panel);
+  // A translucent pool grounds the lamp without a shadow-casting light per pole.
+  const pool=new T.Mesh(new T.CircleGeometry(1.8,32),new T.MeshBasicMaterial({color:0xcbd2eb,transparent:true,opacity:.035,depthWrite:false}));pool.rotation.x=-Math.PI/2;pool.position.set(x,.024,z);parent.add(pool);
+ }
+ function house(x,z,w,d,index){
+  x*=scale;z*=scale;const h=new T.Group();h.position.set(x,0,z);g.add(h);
+  const height=index===4?4.3:3.6;
+  block(h,w+.15,.24,d+.15,'gray',0,.12,0);
+  block(h,w,height,d,'black',0,height/2+.16,0);
+  block(h,w+.23,.17,d+.23,'gray',0,height+.20,0);
+  block(h,w+.16,.045,d+.16,'white',0,height+.31,0);
+  // Recessed face, vertical jambs, a lit lintel and tiny panel fasteners.
+  block(h,w*.48,2.25,.09,'gray',0,1.55,d/2+.03);
+  block(h,w*.43,2.12,.10,'black',0,1.53,d/2+.09);
+  for(const dx of [-w*.25,w*.25]){block(h,.055,2.22,.045,'pink',dx,1.56,d/2+.16);block(h,.12,2.35,.12,'gray',dx*1.12,1.57,d/2+.06);}
+  block(h,w*.5,.055,.05,'pink',0,2.70,d/2+.14);
+  block(h,w*.92,.043,.045,'pink',0,.31,d/2+.08);
+  block(h,.042,.045,d*.85,'pink',-w/2-.035,.31,0);
+  for(let i=0;i<4;i++)block(h,w*.17,.05,.035,'gray',w*.32,1.23+i*.14,d/2+.055);
+  for(const dx of [-w*.45,w*.45])for(const y of [.65,height-.35]){const bolt=add(h,new T.CylinderGeometry(.025,.025,.025,8),'white',dx,y,d/2+.035);bolt.rotation.x=Math.PI/2;}
+  // Roof equipment provides a readable industrial silhouette at oblique angles.
+  block(h,w*.38,.48,d*.35,'gray',-w*.13,height+.53,-d*.13);
+  for(let i=0;i<5;i++)block(h,w*.28,.035,.07,'black',-w*.13,height+.79,-d*.21+i*.12);
+  lamp(h,w*.37,d*.28);
+  obstacles.push({x,z,r:Math.max(w,d)*.52});
+ }
+ [[0,12.5,6,4],[-26,3,4.8,3.5],[-26,-10,4.8,3.5],[-9,-27,6,3.5],[16,-20,11,5],[-10,-10,6,4],[19,18,5,4],[-10,10.5,6,4]].forEach((p,i)=>house(...p,i));
+ const mast=add(g,new T.CylinderGeometry(.075,.12,8,24),'gray',-10*scale,4,8*scale);
+ for(const y of [5.6,6.5]){const arc=add(g,new T.TorusGeometry(y===5.6?1:1.5,.04,8,40,Math.PI),'pink',-10*scale,y,8*scale);arc.rotation.z=.1;}
+ // Boundary promenades and a distant skyline frame a traversable, open center.
+ for(let i=0;i<36;i++){
+  const a=i/36*Math.PI*2,r=57.3,x=Math.sin(a)*r,z=Math.cos(a)*r;
+  const segment=new T.Group();segment.position.set(x,0,z);segment.rotation.y=a;g.add(segment);
+  block(segment,7.5,.70,.42,'black',0,.36,0);block(segment,7.6,.09,.5,'gray',0,.76,0);
+  for(const dx of [-3.6,3.6])block(segment,.12,.67,.14,'gray',dx,1.04,0);
+  block(segment,7.5,.085,.13,'white',0,1.37,0);block(segment,3.0,.046,.047,'pink',0,.17,-.24);
+ }
+ for(let i=0;i<22;i++){
+  const a=i/22*Math.PI*2,r=77+(i%3)*6,h=8+(i%5)*3;
+  const tower=new T.Group();tower.position.set(Math.sin(a)*r,-.2,Math.cos(a)*r);tower.rotation.y=a;g.add(tower);
+  block(tower,4+i%3,h,5,'black',0,h/2,0);
+  block(tower,.05,h*.75,.06,'gray',-1.5,h*.5,-2.53);
+  if(i%3===0)block(tower,2,.04,.05,'pink',0,h*.72,-2.54);
+ }
+ return batchStatic(g);
+}
+export function artifactImages(items){const renderer=new T.WebGLRenderer({alpha:true,antialias:true,preserveDrawingBuffer:true});renderer.setSize(144,144);renderer.setPixelRatio(1);renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;const scene=new T.Scene(),camera=new T.PerspectiveCamera(35,1,.1,20);camera.position.set(2,1.5,4.5);camera.lookAt(0,0,0);scene.add(new T.HemisphereLight(0xe9ecff,0x333144,2));const key=new T.DirectionalLight(0xffffff,3);key.position.set(-3,5,4);scene.add(key);const images={};for(const item of items){const object=createArtifact(item.model);scene.add(object);renderer.render(scene,camera);images[item.id]=renderer.domElement.toDataURL('image/png');scene.remove(object);object.traverse(m=>{if(m.isMesh)m.geometry.dispose();});}renderer.dispose();renderer.forceContextLoss();return images;}
 
-export function setArtifactColor(color){materials.pink.color.set(color);}
+export function setArtifactColor(color){materials.pink.color.set(color);materials.pink.emissive.set(color);}
