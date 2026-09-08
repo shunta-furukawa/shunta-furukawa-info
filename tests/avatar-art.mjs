@@ -3,6 +3,7 @@ import * as T from '../themes/shunta-furukawa-info/assets/js/vendor/three.module
 import {createAvatar} from '../themes/shunta-furukawa-info/assets/js/explorer-avatar.js';
 import {buildHarbor,createArtifact,setArtifactColor} from '../themes/shunta-furukawa-info/assets/js/harbor-models.js';
 import {batchStatic} from '../themes/shunta-furukawa-info/assets/js/world-shapes.js';
+import {faceZ,faceGeometry,facePatch,hairLock,fabricTube} from '../themes/shunta-furukawa-info/assets/js/avatar-surfaces.js';
 import {plazaLighting} from '../themes/shunta-furukawa-info/assets/js/plaza-art.js';
 
 function geometryStats(root){
@@ -40,3 +41,20 @@ const newBounds=new T.Box3().setFromObject(root);
 assert.ok(oldBounds.min.distanceTo(newBounds.min)<1e-5&&oldBounds.max.distanceTo(newBounds.max)<1e-5);
 assert.equal(preserved.children.length,1);assert.equal(geometryStats(root).meshes,2);
 console.log('Art: finite geometry, camera proportions, moving joints, accent propagation, batching transforms and mobile geometry budgets passed.',stats,architecture);
+
+// Facial overlays stay fitted to the skin instead of becoming floating eyeballs.
+for(const [x,y] of [[-.192,.025],[.192,.025],[0,-.24]]){
+ const geo=facePatch(x,y,.10,.10,.006),p=geo.attributes.position;
+ for(let i=0;i<p.count;i++)assert.ok(Math.abs(p.getZ(i)-faceZ(p.getX(i),p.getY(i))-.006)<1e-6);
+}
+const headSurface=faceGeometry();for(const attribute of [headSurface.attributes.position,headSurface.attributes.normal])for(const value of attribute.array)assert.ok(Number.isFinite(value));
+// A broad lock remains shallow, even when the sweep changes direction.
+const lock=hairLock([[.4,.4,0],[.1,.45,0],[-.2,.25,0],[-.5,.1,0]],.17,.024);
+const lockPositions=lock.geometry.attributes.position;let minZ=Infinity,maxZ=-Infinity;
+for(let i=0;i<lockPositions.count;i++){minZ=Math.min(minZ,lockPositions.getZ(i));maxZ=Math.max(maxZ,lockPositions.getZ(i));}
+assert.ok(maxZ-minZ<.10,'thin hair leaf rather than a circular section');
+// Garment surfaces face outwards; ends are closed before being batched.
+const sleeve=fabricTube([[0,0,0],[0,1,0]],[1,1],[1,1],{fold:0});
+assert.equal(sleeve.caps.length,2);const p=sleeve.geometry.attributes.position,n=sleeve.geometry.attributes.normal;
+for(let i=0;i<p.count;i++)if(p.getY(i)>.1&&p.getY(i)<.9)assert.ok(p.getX(i)*n.getX(i)+p.getZ(i)*n.getZ(i)>.9);
+console.log('Sculpted surfaces: fitted face overlays, thin hair leaves, outward garment normals and closed garment ends passed.');
