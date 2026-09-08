@@ -1,9 +1,10 @@
+import {adventureCoins} from './explorer-river.js';
 import {SIGNS,SPAWN} from './explorer-physics.js';
 import {WORLD_PATHS} from './explorer-paths.js';
 const houses=[[0,12.5,3.12],[-26,3,2.5],[-26,-10,2.5],[-9,-27,3.12],[16,-20,5.72],[-10,-10,3.12],[19,18,2.6],[-10,10.5,3.12]];
 const points=[[0,32],[0,30],[0,28]];
 for(const route of WORLD_PATHS)for(const [x,z] of route.points){if(Math.hypot(x,z)>53||points.some(p=>Math.hypot(p[0]-x,p[1]-z)<2.8)||houses.some(([a,b,r])=>Math.hypot(a*1.6-x,b*1.6-z)<r+1)||SIGNS.some(s=>Math.hypot(s.x-x,s.z-z)<1))continue;points.push([x,z]);}
-export const COINS=points.slice(0,128).map(([x,z],id)=>({id,x,z}));
+export const COINS=adventureCoins(points.slice(0,128).map(([x,z],id)=>({id,x,z})));
 export const blankSave=()=>({items:[],visited:[],unlocked:[],coins:[],color:'#ff3b8d',position:{...SPAWN},yaw:Math.PI,updated:Date.now()});
 export function normalizeSave(s){if(!s||typeof s!=='object')throw Error('Invalid save');const clean=blankSave();for(const k of ['items','visited','unlocked'])clean[k]=[...new Set((Array.isArray(s[k])?s[k]:[]).filter(id=>SIGNS.some(x=>x.id===id)))];clean.coins=[...new Set((Array.isArray(s.coins)?s.coins:[]).filter(id=>Number.isInteger(id)&&id>=0&&id<COINS.length))];if(/^#[0-9a-f]{6}$/i.test(s.color))clean.color=s.color;if(Number.isFinite(s.position?.x)&&Number.isFinite(s.position?.z)&&Math.hypot(s.position.x,s.position.z)<=54)clean.position={x:s.position.x,z:s.position.z};if(Number.isFinite(s.yaw))clean.yaw=Math.atan2(Math.sin(s.yaw),Math.cos(s.yaw));if(Number.isFinite(s.updated))clean.updated=s.updated;if(clean.coins.length<clean.unlocked.length*3)throw Error('Invalid balance');return clean;}
 export const balance=s=>s.coins.length-s.unlocked.length*3;

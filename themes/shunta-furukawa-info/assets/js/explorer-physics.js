@@ -9,8 +9,8 @@ export const PLAYER_RADIUS=.48;
 export const BASE_SIGNS=catalog;
 export const SIGNS=BASE_SIGNS.map(s=>({...s,x:s.x*WORLD_SCALE,z:s.z*WORLD_SCALE}));
 export function movementVector(x,z,yaw){const n=Math.max(1,Math.hypot(x,z));return {x:(x*Math.cos(yaw)+z*Math.sin(yaw))/n,z:(-x*Math.sin(yaw)+z*Math.cos(yaw))/n};}
-export function movePlayer(position,delta,obstacles){let {x,z}=position;const steps=Math.max(1,Math.ceil(Math.hypot(delta.x,delta.z)/.2));
- const valid=(a,b)=>Math.hypot(a,b)<=WORLD_RADIUS-PLAYER_RADIUS&&!obstacles.some(o=>Math.hypot(a-o.x,b-o.z)<o.r+PLAYER_RADIUS);
+export function movePlayer(position,delta,obstacles,terrain=()=>true){let {x,z}=position;const steps=Math.max(1,Math.ceil(Math.hypot(delta.x,delta.z)/.2));
+ const valid=(a,b)=>terrain(a,b)&&Math.hypot(a,b)<=WORLD_RADIUS-PLAYER_RADIUS&&!obstacles.some(o=>Math.hypot(a-o.x,b-o.z)<o.r+PLAYER_RADIUS);
  for(let i=0;i<steps;i++){const nx=x+delta.x/steps;if(valid(nx,z))x=nx;const nz=z+delta.z/steps;if(valid(x,nz))z=nz;}
  return {x,z};
 }
