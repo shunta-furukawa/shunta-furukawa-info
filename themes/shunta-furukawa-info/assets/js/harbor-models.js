@@ -31,3 +31,5 @@ export function buildHarbor(environment,{scale,obstacles}){const g=new T.Group()
  return g;
 }
 export function artifactImages(items){const renderer=new T.WebGLRenderer({alpha:true,antialias:true,preserveDrawingBuffer:true});renderer.setSize(144,144);renderer.setPixelRatio(1);const scene=new T.Scene(),camera=new T.PerspectiveCamera(35,1,.1,20);camera.position.set(2,1.5,4.5);camera.lookAt(0,0,0);const images={};for(const item of items){const object=createArtifact(item.model);scene.add(object);renderer.render(scene,camera);images[item.id]=renderer.domElement.toDataURL('image/png');scene.remove(object);object.traverse(m=>{if(m.isMesh)m.geometry.dispose();});}renderer.dispose();renderer.forceContextLoss();return images;}
+
+export function setArtifactColor(color){materials.pink.color.set(color);}
