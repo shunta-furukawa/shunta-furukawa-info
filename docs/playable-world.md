@@ -65,3 +65,15 @@ A/B/C use version-1 binary bitsets (34 bytes / 46 base64url characters each). It
 Dash is held, not toggled (touch pointer capture or Shift). Pointer cancel/release, blur and UI pause clear the action. Space/touch jump uses anticipation, airborne leg/arm pose and landing compression; ground collisions remain enforced. Save restoration rejects scenery-overlapping positions in favor of the entrance. Accent is applied to UI, map, live 3D materials, sign textures and collectible thumbnails; original raster illustrations/portrait remain unchanged.
 
 Validation: all prior movement/camera/collection tests; 3-slot codec round trip and malformed input; one-time coin expenditure; jump phases at 30/60/120 fps; Hugo production build and HTML controller targets. Browser/device interaction and rendered appearance were not tested locally.
+
+## Exhibit puzzles
+
+Profile retains its end-of-content goal. The other twelve exhibits now require a solved puzzle on site, after the existing coin unlock. Reading to the end, toggling an unrelated technology detail, or using the old philosophy demo no longer grants those items. A solve callback is checked against the active exhibit and physical proximity before collection.
+
+The twelve scenarios use switches, two-tap permutation swaps, relationship connections, condition sorting, physically connected rotating pipes, capacity-aware load routing, conversation controls and antenna alignment. Every puzzle includes its fictional model rules, two hint levels, feedback and a retry action. There are no timers or failure charges. Keyboard buttons and tap interactions are available throughout; reduced motion suppresses running animations.
+
+Each solved item's collection bit also represents its completed puzzle state, preserving the existing three-slot URL format. Completed puzzles reopen in their solved state and can be replayed without another item or coin cost. Existing collected items remain completed. In-progress arrangements last within the page session and are cleared on slot change/reset; partial arrangements are not exported.
+
+Each non-profile location now has a physical miniature device. Before completion it is static with a gray status lamp. Completion lights the lamp in the slot accent, animates the device and changes the sign to 稼働中. Reset or slot restoration updates these states from the saved collection.
+
+Validation: all twelve puzzles start incomplete and have reachable solutions; alternate valid load allocation; exhaustive 256 pipe arrangements; completed-item URL round trip; save/jump tests; Hugo production build and HTML controller targets. Browser/device rendering and interaction have not been checked locally.
