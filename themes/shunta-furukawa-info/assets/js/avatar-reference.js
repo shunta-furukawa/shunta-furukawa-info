@@ -8,8 +8,14 @@ export const REFERENCE_FACE=Object.freeze({
  eyeWidth:.30,
  eyeHeight:.24,
  irisOffset:.014,
- irisRadiusX:.103,
- irisRadiusY:.111,
+ // NORMAL eye close-up: the dark iris meets the lids, leaving white crescents
+ // at the corners. One small upper-left catchlight, without a lower white dot.
+ irisRadiusX:.111,
+ irisRadiusY:.130,
+ pupilRadiusX:.082,
+ pupilRadiusY:.103,
+ catchlightRadiusX:.010,
+ catchlightRadiusY:.012,
  headScale:.92,
  hairWidthScale:1.45,
  hairCrownScale:1.34,

@@ -22,7 +22,7 @@ createAvatar({onHeadBuilt({head,face,eyes,hair}){
 }});
 for(const side of [-1,1]){
  const x=side*F.eyeCenterX,y=F.eyeCenterY,iris=referenceIrisPatch(x,y,side),p=iris.attributes.position;
- const outline=Array.from({length:64},(_,i)=>{const q=referenceEyeOutline(i/64);return [x+q.x*F.eyeWidth*.5*.925,y+q.y*F.eyeHeight/1.85*.925];});
+ const outline=Array.from({length:64},(_,i)=>{const q=referenceEyeOutline(i/64);return [x+q.x*F.eyeWidth*.5,y+q.y*F.eyeHeight/1.85];});
  for(let i=0;i<p.count;i++){
   const px=x+side*(p.getX(i)-x),py=p.getY(i);assert.ok(Number.isFinite(p.getZ(i)));
   for(let j=0;j<outline.length;j++){const a=outline[j],b=outline[(j+1)%outline.length];assert.ok((b[0]-a[0])*(py-a[1])-(b[1]-a[1])*(px-a[0])<1e-6,'iris stays within the lid');}

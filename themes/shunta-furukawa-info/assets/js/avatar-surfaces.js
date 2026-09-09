@@ -59,20 +59,32 @@ export function fabricTube(points,widths,depths,{fold=.008,segments=28}={}){
 // A rounded upper lid, a shallower lower lid and mirrored inner/outer corners.
 // This is intentionally asymmetric vertically; a scaled circle/almond loses the likeness.
 const eyeCurves=[
- [[-1,-.02],[-.89,.60],[-.43,1.02],[.06,1]],
- [[.06,1],[.55,.99],[.94,.57],[1,.035]],
- [[1,.035],[.88,-.52],[.40,-.85],[-.04,-.85]],
- [[-.04,-.85],[-.46,-.84],[-.84,-.48],[-1,-.02]]
+ [[-1,-.08],[-.94,.54],[-.52,.99],[-.06,1]],
+ [[-.06,1],[.53,1.02],[.96,.63],[1,.02]],
+ [[1,.02],[.92,-.57],[.45,-.85],[.02,-.85]],
+ [[.02,-.85],[-.48,-.85],[-.90,-.57],[-1,-.08]]
 ].map(points=>new T.CubicBezierCurve(...points.map(p=>new T.Vector2(...p))));
 export function referenceEyeOutline(t){const q=Math.min(3.999999,t*4),i=Math.floor(q);return eyeCurves[i].getPoint(q-i);}
 export function referenceEyePatch(cx,cy,side,scale=1,depth=.006){
  return surfaceGeometry((r,t)=>{const q=referenceEyeOutline(t),x=cx+side*q.x*F.eyeWidth*.5*scale*r,y=cy+q.y*F.eyeHeight/1.85*scale*r;return new T.Vector3(x,y,faceZ(x,y)+depth);},8,48,new T.Vector3(0,0,1));
 }
 
-// Clip the iris at the eyelids, so the large dark iris never sits on top of a lid.
-export function referenceIrisPatch(cx,cy,side){
- const boundary=Array.from({length:64},(_,i)=>{const p=referenceEyeOutline(i/64);return [cx+p.x*F.eyeWidth*.5*.925,cy+p.y*F.eyeHeight/1.85*.925];});
- let polygon=Array.from({length:48},(_,i)=>{const a=i/48*Math.PI*2;return [cx-F.irisOffset+Math.cos(a)*F.irisRadiusX,cy+.005+Math.sin(a)*F.irisRadiusY];});
+// Only the upper edge has a dark eyelid. A tapered ribbon follows that edge;
+// no enlarged dark eye-shaped backing can leak out around the lower sclera.
+export function referenceUpperLidPatch(cx,cy,side){
+ return surfaceGeometry((u,v)=>{
+  const t=u*.5,q=referenceEyeOutline(t),a=referenceEyeOutline(Math.max(0,t-.0001)),b=referenceEyeOutline(Math.min(.5,t+.0001));
+  const normal=new T.Vector2(-(b.y-a.y)*F.eyeHeight/1.85,(b.x-a.x)*F.eyeWidth*.5).normalize();
+  const width=.014*Math.sin(Math.PI*u)**.65*(.75+.25*u),x=cx+side*(q.x*F.eyeWidth*.5+normal.x*width*v),y=cy+q.y*F.eyeHeight/1.85+normal.y*width*v;
+  return new T.Vector3(x,y,faceZ(x,y)+.012);
+ },48,2,new T.Vector3(0,0,1));
+}
+
+// Clip both the iris and pupil to the opening. The iris can meet the unlined
+// lower edge naturally, but never spill onto the cheek or form a black border.
+export function referenceIrisPatch(cx,cy,side,{rx=F.irisRadiusX,ry=F.irisRadiusY,depth=.008}={}){
+ const boundary=Array.from({length:64},(_,i)=>{const p=referenceEyeOutline(i/64);return [cx+p.x*F.eyeWidth*.5,cy+p.y*F.eyeHeight/1.85];});
+ let polygon=Array.from({length:48},(_,i)=>{const a=i/48*Math.PI*2;return [cx-F.irisOffset+Math.cos(a)*rx,cy+.005+Math.sin(a)*ry];});
  const cross=(a,b,p)=>(b[0]-a[0])*(p[1]-a[1])-(b[1]-a[1])*(p[0]-a[0]);
  for(let i=0;i<boundary.length;i++){
   const a=boundary[i],b=boundary[(i+1)%boundary.length],input=polygon;polygon=[];if(!input.length)break;
@@ -81,5 +93,5 @@ export function referenceIrisPatch(cx,cy,side){
   }
  }
  const center=polygon.reduce((sum,p)=>[sum[0]+p[0]/polygon.length,sum[1]+p[1]/polygon.length],[0,0]);
- return surfaceGeometry((r,t)=>{const q=t*polygon.length,i=Math.min(polygon.length-1,Math.floor(q)),a=polygon[i],b=polygon[(i+1)%polygon.length],f=q-i,px=center[0]+(a[0]+(b[0]-a[0])*f-center[0])*r,x=cx+side*(px-cx),y=center[1]+(a[1]+(b[1]-a[1])*f-center[1])*r;return new T.Vector3(x,y,faceZ(x,y)+.010);},8,64,new T.Vector3(0,0,1));
+ return surfaceGeometry((r,t)=>{const q=t*polygon.length,i=Math.min(polygon.length-1,Math.floor(q)),a=polygon[i],b=polygon[(i+1)%polygon.length],f=q-i,px=center[0]+(a[0]+(b[0]-a[0])*f-center[0])*r,x=cx+side*(px-cx),y=center[1]+(a[1]+(b[1]-a[1])*f-center[1])*r;return new T.Vector3(x,y,faceZ(x,y)+depth);},8,64,new T.Vector3(0,0,1));
 }
