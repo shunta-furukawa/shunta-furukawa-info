@@ -32,23 +32,42 @@ function jawSection(y){
  const t=T.MathUtils.clamp((-.14-y)/.36,0,1),blend=t*t*(3-2*t),v=(y-.035)/.535;
  // Move the underside forward into a chin, rather than collapsing the bottom
  // of a sphere back into the neck. The front remains continuous with the lips.
- return {center:.035+.205*blend,front:.435*Math.sqrt(Math.max(0,1-v*v))*(1-.45*blend),back:.43*Math.sqrt(Math.max(0,1-v*v))*(1-.45*blend)};
+ return {center:.035+.205*blend,front:.435*Math.sqrt(Math.max(0,1-v*v))*(1-.45*blend),back:.516*Math.sqrt(Math.max(0,1-v*v))*(1-.45*blend)};
 }
 // Nose, cheeks, eye sockets and chin belong to one continuous face surface.
 export function faceZ(x,y){
  const w=faceWidth(y),section=jawSection(y),round=w>1e-8?Math.sqrt(Math.max(0,1-(x/w)**2)):0,gauss=(a,b,sx,sy)=>Math.exp(-(((x-a)/sx)**2+((y-b)/sy)**2));
- return section.center+section.front*round+.044*gauss(0,-.095,.07,.125)+.012*(gauss(.24,-.11,.13,.12)+gauss(-.24,-.11,.13,.12))-.016*(gauss(F.eyeCenterX,F.eyeCenterY,.16,.13)+gauss(-F.eyeCenterX,F.eyeCenterY,.16,.13));
+ // A narrow bridge joins the rounded nose tip; the underside retreats before
+ // the lips. These belong to the skin surface, not separate spherical beads.
+ const nose=.028*gauss(0,-.025,.052,.105)+.100*gauss(0,-.105,.068,.043)+.017*(gauss(-.045,-.126,.027,.025)+gauss(.045,-.126,.027,.025));
+ const mouth=.034*gauss(0,-.235,.105,.045)-.013*gauss(0,-.294,.115,.024),chin=.074*gauss(0,-.355,.145,.066);
+ return section.center+section.front*round+nose+mouth+chin+.012*(gauss(.24,-.11,.13,.12)+gauss(-.24,-.11,.13,.12))-.016*(gauss(F.eyeCenterX,F.eyeCenterY,.16,.13)+gauss(-F.eyeCenterX,F.eyeCenterY,.16,.13));
 }
 export function faceGeometry(){
- const geo=new T.SphereGeometry(1,64,48),p=geo.attributes.position;
+ const geo=new T.SphereGeometry(1,64,64),p=geo.attributes.position;
  for(let i=0;i<p.count;i++){
-  const y=.035+p.getY(i)*.535,ring=Math.hypot(p.getX(i),p.getZ(i)),x=ring>1e-8?p.getX(i)/ring*faceWidth(y):0,section=jawSection(y);
+  const y=.035+p.getY(i)*.535,ring=Math.hypot(p.getX(i),p.getZ(i)),u=ring>1e-8?p.getX(i)/ring:0,front=p.getZ(i)>=0;
+  // More samples across the nose and lips, without increasing draw calls.
+  const x=(front?.65*u+.35*u**3:u)*faceWidth(y),section=jawSection(y);
   const z=p.getZ(i)>=0?faceZ(x,y):section.center+(ring>1e-8?p.getZ(i)/ring*section.back:0);p.setXYZ(i,x,y,z);
  }
  geo.computeVertexNormals();return geo;
 }
 export function facePatch(cx,cy,rx,ry,depth=.006,almond=false){
  return surfaceGeometry((r,t)=>{const a=t*Math.PI*2,x=cx+Math.cos(a)*rx*r,y=cy+Math.sin(a)*ry*r*(almond?(.72+.28*Math.abs(Math.sin(a))):1);return new T.Vector3(x,y,faceZ(x,y)+depth);},8,40,new T.Vector3(0,0,1));
+}
+
+// An ear faces sideways: a shallow bowl surrounded by a raised helix, with a
+// closed back. Its recess is geometry, so it remains legible in profile.
+export function earSurfaces(side){
+ function sample(r,t,lift=0){
+  const a=t*Math.PI*2,rim=.072*Math.exp(-(((r-.78)/.16)**2))*(1-r)**.25;
+  return new T.Vector3(side*(.535+.020*(1-r*r)+rim+lift),-.025+.136*Math.sin(a)*r,.035+(.090*Math.cos(a)+.018*Math.sin(a))*r);
+ }
+ const out=new T.Vector3(side,0,0),shell=surfaceGeometry(sample,16,32,out);
+ const back=surfaceGeometry((r,t)=>{const p=sample(r,t);p.x=side*(.535-.025*Math.sqrt(Math.max(0,1-r*r)));return p;},8,32,out.clone().negate());
+ const concha=surfaceGeometry((r,t)=>sample(r*.48,t,.001),8,24,out);
+ return {shell,back,concha,sample};
 }
 
 // A thin, cranial-surface-following lock, with a broad root and a sharp tip.
