@@ -34,14 +34,14 @@ function jawSection(y){
  // of a sphere back into the neck. The front remains continuous with the lips.
  return {center:.035+.205*blend,front:.435*Math.sqrt(Math.max(0,1-v*v))*(1-.45*blend),back:.516*Math.sqrt(Math.max(0,1-v*v))*(1-.45*blend)};
 }
-// Nose, cheeks, eye sockets and chin belong to one continuous face surface.
+// The cheek/jaw cross sections provide all non-nose volume. Separate lip,
+// chin and socket bumps would put alternating highlights and dents on the face.
 export function faceZ(x,y){
  const w=faceWidth(y),section=jawSection(y),round=w>1e-8?Math.sqrt(Math.max(0,1-(x/w)**2)):0,gauss=(a,b,sx,sy)=>Math.exp(-(((x-a)/sx)**2+((y-b)/sy)**2));
  // A narrow bridge joins the rounded nose tip; the underside retreats before
  // the lips. These belong to the skin surface, not separate spherical beads.
  const nose=.028*gauss(0,-.025,.052,.105)+.100*gauss(0,-.105,.068,.043)+.017*(gauss(-.045,-.126,.027,.025)+gauss(.045,-.126,.027,.025));
- const mouth=.034*gauss(0,-.235,.105,.045)-.013*gauss(0,-.294,.115,.024),chin=.074*gauss(0,-.355,.145,.066);
- return section.center+section.front*round+nose+mouth+chin+.012*(gauss(.24,-.11,.13,.12)+gauss(-.24,-.11,.13,.12))-.016*(gauss(F.eyeCenterX,F.eyeCenterY,.16,.13)+gauss(-F.eyeCenterX,F.eyeCenterY,.16,.13));
+ return section.center+section.front*round+nose;
 }
 export function faceGeometry(){
  const geo=new T.SphereGeometry(1,64,64),p=geo.attributes.position;
@@ -51,7 +51,17 @@ export function faceGeometry(){
   const x=(front?.65*u+.35*u**3:u)*faceWidth(y),section=jawSection(y);
   const z=p.getZ(i)>=0?faceZ(x,y):section.center+(ring>1e-8?p.getZ(i)/ring*section.back:0);p.setXYZ(i,x,y,z);
  }
- geo.computeVertexNormals();return geo;
+ geo.computeVertexNormals();
+ // SphereGeometry duplicates its seam and pole vertices for UVs. Average their
+ // normals after sculpting so those shared positions do not leave a shade seam.
+ const n=geo.attributes.normal,shared=new Map(),keys=[];
+ for(let i=0;i<p.count;i++){
+  const key=[p.getX(i),p.getY(i),p.getZ(i)].map(v=>Math.round(v*1e6)).join(',');keys.push(key);
+  if(!shared.has(key))shared.set(key,new T.Vector3());shared.get(key).add(new T.Vector3().fromBufferAttribute(n,i));
+ }
+ for(const normal of shared.values())normal.normalize();
+ for(let i=0;i<n.count;i++){const normal=shared.get(keys[i]);n.setXYZ(i,normal.x,normal.y,normal.z);}
+ return geo;
 }
 export function facePatch(cx,cy,rx,ry,depth=.006,almond=false){
  return surfaceGeometry((r,t)=>{const a=t*Math.PI*2,x=cx+Math.cos(a)*rx*r,y=cy+Math.sin(a)*ry*r*(almond?(.72+.28*Math.abs(Math.sin(a))):1);return new T.Vector3(x,y,faceZ(x,y)+depth);},8,40,new T.Vector3(0,0,1));
