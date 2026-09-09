@@ -1,21 +1,21 @@
-// Front/normal views in the supplied character sheet (1122 × 1402).
-// Measurements are approximate because the sheet mixes perspective and poses.
+// Refined against the supplied front-view black-hoodie reference crop.
+// Approximate proportions allow for its perspective and low image resolution.
 // Normalize by the skull's cheek/temple width, not the outside of the hair.
 export const REFERENCE_FACE=Object.freeze({
  width:1.07,
- eyeCenterX:.2675,
- eyeCenterY:.015,
- eyeWidth:.30,
- eyeHeight:.24,
- irisOffset:.014,
+ eyeCenterX:.245,
+ eyeCenterY:.010,
+ eyeWidth:.255,
+ eyeHeight:.210,
+ irisOffset:.012,
  // NORMAL eye close-up: the dark iris meets the lids, leaving white crescents
  // at the corners. One small upper-left catchlight, without a lower white dot.
- irisRadiusX:.111,
- irisRadiusY:.130,
- pupilRadiusX:.082,
- pupilRadiusY:.103,
- catchlightRadiusX:.010,
- catchlightRadiusY:.012,
+ irisRadiusX:.094,
+ irisRadiusY:.114,
+ pupilRadiusX:.070,
+ pupilRadiusY:.090,
+ catchlightRadiusX:.009,
+ catchlightRadiusY:.010,
  headScale:.92,
  hairWidthScale:1.45,
  hairCrownScale:1.34,

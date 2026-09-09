@@ -9,8 +9,17 @@ createAvatar({onHeadBuilt({head,face,hair,ears}){
  const nose=profileAt(-.105),bridge=profileAt(-.025),philtrum=profileAt(-.19),lips=profileAt(-.235),fold=profileAt(-.294),chin=profileAt(-.355);
  assert.ok(nose-bridge>.055,'nose tip projects beyond the bridge in the built mesh');
  assert.ok(nose-lips>.09,'nose has a distinct underside before the mouth');
- assert.ok(lips-philtrum>.004,'lips have a small projection');
- assert.ok(lips-fold>.02&&chin-fold>.015,'lower lip, fold and chin are distinct');
+ // The reference has a soft lower face, without separate lip/chin lobes or a
+ // groove between them. Check the actual mesh from below the nose to the tip.
+ const lowerRows=[...rows].filter(([y])=>y<-.19).sort((a,b)=>b[0]-a[0]);
+ for(let i=1;i<lowerRows.length;i++)assert.ok(lowerRows[i][1]<lowerRows[i-1][1],'mouth-to-chin silhouette recedes smoothly without a projecting chin bump');
+ assert.ok(philtrum>lips&&lips>fold&&fold>chin,'no alternating lip/chin bulges');
+ // Duplicated seam and pole positions must also share their shading normals.
+ const normals=face.geometry.attributes.normal,shared=new Map();
+ for(let i=0;i<vertices.count;i++){
+  const key=[vertices.getX(i),vertices.getY(i),vertices.getZ(i)].map(v=>Math.round(v*1e6)).join(','),normal=new T.Vector3().fromBufferAttribute(normals,i);
+  if(shared.has(key))assert.ok(normal.distanceTo(shared.get(key))<1e-6,'continuous shading across the skin seam');else shared.set(key,normal);
+ }
  const faceSize=new T.Box3().setFromObject(face).getSize(new T.Vector3()),hairSize=new T.Box3().setFromObject(hair).getSize(new T.Vector3());
  assert.ok(faceSize.z/faceSize.x>.94&&faceSize.z/faceSize.x<1.08,'rounded cranium has real front-to-back depth');
  assert.ok(hairSize.z/hairSize.x>.72,'rear haircut follows the deeper cranium');
@@ -28,5 +37,5 @@ createAvatar({onHeadBuilt({head,face,hair,ears}){
   const hit=new T.Raycaster(target.clone().addScaledVector(out,3),out.clone().negate()).intersectObject(head,true)[0];
   assert.equal(hit?.object,face,'nose forms the visible side silhouette');
  }
- console.log('Profile: sculpted nose/lips/chin, cranium depth and exposed ears on both sides passed.',{nose,bridge,lips,fold,chin});
+ console.log('Profile: distinct nose, smooth lower face and shading, cranium depth and exposed ears on both sides passed.',{nose,bridge,lips,fold,chin});
 }});

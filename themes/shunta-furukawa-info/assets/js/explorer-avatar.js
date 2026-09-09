@@ -54,9 +54,9 @@ export function createAvatar({onHeadBuilt}={}){
   const pupilX=x-side*F.irisOffset;
   const pupil=eyePart('pupil',referenceIrisPatch(x,y,side,{rx:F.pupilRadiusX,ry:F.pupilRadiusY,depth:.010}),'eye');
   const lid=eyePart('upper-lid',referenceUpperLidPatch(x,y,side),'eye');
-  const glint=eyePart('catchlight',facePatch(pupilX-.035,y+.051,F.catchlightRadiusX,F.catchlightRadiusY,.014),shine);
+  const glint=eyePart('catchlight',facePatch(pupilX-F.eyeWidth*.117,y+F.eyeHeight*.213,F.catchlightRadiusX,F.catchlightRadiusY,.014),shine);
   eyeDetails.push({side,sclera,iris,pupil,lid,glint});
-  const brow=[[-.115,.181],[-.01,.233],[.10,.189]].map(([dx,dy])=>{const bx=x+side*dx;return [bx,dy,faceZ(bx,dy)+.009];});line(head,brow,.016,'hairShade');
+  const brow=[[-.383,.692],[-.033,.908],[.333,.725]].map(([dx,dy])=>{const bx=x+side*dx*F.eyeWidth,by=y+dy*F.eyeHeight;return [bx,by,faceZ(bx,by)+.009];});line(head,brow,.014,'hairShade');
  }
  const smile=[[-.11,-.220],[-.04,-.245],[.032,-.246],[.108,-.218]].map(([x,y])=>[x,y,faceZ(x,y)+.006]);line(head,smile,.008,'mouth');
  // Small sculpted nostril creases, rather than a separate bead-shaped nose.

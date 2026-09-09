@@ -5,14 +5,14 @@ import {REFERENCE_FACE as F} from '../themes/shunta-furukawa-info/assets/js/avat
 import {faceZ,referenceEyeOutline,referenceIrisPatch} from '../themes/shunta-furukawa-info/assets/js/avatar-surfaces.js';
 
 // Check the built geometry in a front projection, not merely the input constants.
-// Ranges reflect the supplied FRONT/NORMAL views and their perspective differences.
+// Ranges reflect the new front-view crop: smaller eyes and more cheek margin.
 let measured;
 createAvatar({onHeadBuilt({head,face,eyes,hair}){
  const faceBox=new T.Box3().setFromObject(face),hairBox=new T.Box3().setFromObject(hair),faceWidth=faceBox.max.x-faceBox.min.x;
  const boxes=eyes.map(eye=>new T.Box3().setFromObject(eye)),centers=boxes.map(b=>b.getCenter(new T.Vector3()));
  const eyeWidth=boxes[0].max.x-boxes[0].min.x,eyeHeight=boxes[0].max.y-boxes[0].min.y,line=new T.Vector3(0,F.eyeCenterY,0).applyMatrix4(head.matrixWorld);
  measured={eyeWidth:eyeWidth/faceWidth,eyeAspect:eyeHeight/eyeWidth,eyeSpacing:(centers[1].x-centers[0].x)/faceWidth,eyeFromChin:(line.y-faceBox.min.y)/faceWidth,hairWidth:(hairBox.max.x-hairBox.min.x)/faceWidth,crownAboveEyes:(hairBox.max.y-line.y)/faceWidth};
- for(const [name,min,max] of [['eyeWidth',.27,.30],['eyeAspect',.76,.84],['eyeSpacing',.48,.52],['eyeFromChin',.46,.51],['hairWidth',1.52,1.64],['crownAboveEyes',.89,1.02]])assert.ok(measured[name]>=min&&measured[name]<=max,`${name}: ${measured[name]}`);
+ for(const [name,min,max] of [['eyeWidth',.23,.25],['eyeAspect',.79,.85],['eyeSpacing',.445,.475],['eyeFromChin',.46,.50],['hairWidth',1.52,1.64],['crownAboveEyes',.89,1.02]])assert.ok(measured[name]>=min&&measured[name]<=max,`${name}: ${measured[name]}`);
  // Hair volume must not place the scalp in front of either pupil. Test straight
  // on and slightly from above, the two viewpoints used by the reference sheet.
  for(const tilt of [0,.2])for(const side of [-1,1]){

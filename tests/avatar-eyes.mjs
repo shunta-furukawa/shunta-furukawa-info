@@ -24,9 +24,9 @@ createAvatar({onHeadBuilt({head,face,eyeDetails}){
    const p=referenceEyeOutline(t),a=referenceEyeOutline(t-.001),b=referenceEyeOutline(t+.001),out=new T.Vector2(-(b.y-a.y)*F.eyeHeight/1.85,(b.x-a.x)*F.eyeWidth*.5).normalize();
    assert.equal(hit(cx+side*(p.x*F.eyeWidth*.5+out.x*.005),cy+p.y*F.eyeHeight/1.85+out.y*.005),face,'no dark outline below the eye');
   }
-  // The white crescents stay visible beside the enlarged iris; the top rim is
+  // The white crescents stay visible beside the iris; the top rim is
   // a separate lid, not a black border framing the entire opening.
-  for(const localX of [-.128,.130])assert.equal(hit(cx+side*localX,cy-.004),sclera,'white at the corners');
+  for(const localX of [-.427,.433])assert.ok(hit(cx+side*localX*F.eyeWidth,cy-.004)===sclera,'white at the corners');
   assert.equal(hit(cx-side*F.irisOffset,cy),pupil,'dark center of the iris');
   const q=referenceEyeOutline(.25);assert.equal(hit(cx+side*q.x*F.eyeWidth*.5,cy+q.y*F.eyeHeight/1.85+.004),lid,'upper lid remains visible');
   const irisShare=projectedArea(iris.geometry)/projectedArea(sclera.geometry),glintShare=projectedArea(glint.geometry)/projectedArea(iris.geometry);
