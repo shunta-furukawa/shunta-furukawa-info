@@ -7,8 +7,8 @@ createAvatar({onHeadBuilt({head,face,hair,ears}){
  for(let i=0;i<vertices.count;i++){const y=vertices.getY(i);rows.set(y,Math.max(rows.get(y)??-Infinity,vertices.getZ(i)));}
  const profileAt=y=>[...rows].reduce((a,b)=>Math.abs(b[0]-y)<Math.abs(a[0]-y)?b:a)[1];
  const nose=profileAt(-.105),bridge=profileAt(-.025),philtrum=profileAt(-.19),lips=profileAt(-.235),fold=profileAt(-.294),chin=profileAt(-.355);
- assert.ok(nose-bridge>.055,'nose tip projects beyond the bridge in the built mesh');
- assert.ok(nose-lips>.09,'nose has a distinct underside before the mouth');
+ assert.ok(nose-bridge>.025&&nose-bridge<.040,'lower nose tip still projects gently beyond the bridge');
+ assert.ok(nose-lips>.08&&nose-lips<.11,'half-height nose keeps a gentle underside before the mouth');
  // The reference has a soft lower face, without separate lip/chin lobes or a
  // groove between them. Check the actual mesh from below the nose to the tip.
  const lowerRows=[...rows].filter(([y])=>y<-.19).sort((a,b)=>b[0]-a[0]);
@@ -21,7 +21,8 @@ createAvatar({onHeadBuilt({head,face,hair,ears}){
   if(shared.has(key))assert.ok(normal.distanceTo(shared.get(key))<1e-6,'continuous shading across the skin seam');else shared.set(key,normal);
  }
  const faceSize=new T.Box3().setFromObject(face).getSize(new T.Vector3()),hairSize=new T.Box3().setFromObject(hair).getSize(new T.Vector3());
- assert.ok(faceSize.z/faceSize.x>.94&&faceSize.z/faceSize.x<1.08,'rounded cranium has real front-to-back depth');
+ // These bounds include the nose tip, so the shorter nose reduces total depth.
+ assert.ok(faceSize.z/faceSize.x>.90&&faceSize.z/faceSize.x<1.02,'rounded head retains depth with the shorter nose');
  assert.ok(hairSize.z/hairSize.x>.72,'rear haircut follows the deeper cranium');
  for(const {side,ear} of ears){
   const size=new T.Box3().setFromObject(ear).getSize(new T.Vector3());assert.ok(size.x>.07,'ear has a raised outer rim and recessed bowl');
