@@ -41,7 +41,8 @@ export function faceZ(x,y){
  // A narrow bridge joins the rounded nose tip; the underside retreats before
  // the lips. These belong to the skin surface, not separate spherical beads.
  const nose=.028*gauss(0,-.025,.052,.105)+.100*gauss(0,-.105,.068,.043)+.017*(gauss(-.045,-.126,.027,.025)+gauss(.045,-.126,.027,.025));
- return section.center+section.front*round+nose;
+ // Reduce the complete nose relief together, keeping its footprint and blend.
+ return section.center+section.front*round+nose*.5;
 }
 export function faceGeometry(){
  const geo=new T.SphereGeometry(1,64,64),p=geo.attributes.position;
