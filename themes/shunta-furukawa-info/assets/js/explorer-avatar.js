@@ -1,8 +1,9 @@
 import * as T from './vendor/three.module.js';
+import {REFERENCE_FACE as F,referenceHairY} from './avatar-reference.js';
 import {rounded,batchStatic} from './world-shapes.js';
-import {surfaceGeometry,faceGeometry,faceZ,facePatch,hairLock,fabricTube} from './avatar-surfaces.js';
+import {surfaceGeometry,faceGeometry,faceZ,facePatch,hairLock,fabricTube,referenceEyePatch,referenceIrisPatch} from './avatar-surfaces.js';
 
-export function createAvatar(){
+export function createAvatar({onHeadBuilt}={}){
  const player=new T.Group(),body=new T.Group();player.add(body);player.name='explorer';
  const material=(color,roughness=.8)=>new T.MeshStandardMaterial({color,roughness,metalness:0});
  const m={cloth:material(0x292a35,.96),rib:material(0x20212b,.98),seam:material(0x343641,.92),hair:material(0x22232e,.76),hairRidge:material(0x292b37,.80),hairShade:material(0x1b1c26,.80),white:material(0xecebf0,.8),skin:material(0xffe7df,.8),ear:material(0xe4bcb7,.9),sclera:material(0xe9d9d8,.82),iris:material(0x342931,.56),eye:material(0x17141d,.55),mouth:material(0x63414b,.9),sole:material(0xe4e4eb,.92),leather:material(0x242530,.82),pink:material(0xff3b8d,.7),lining:material(0x8d174d,.96)};
@@ -39,30 +40,33 @@ export function createAvatar(){
   line(body,[[x,1.76,.284],[x*1.08,1.56,.347],[x*1.25,1.33,.38]],.016,'white');
   block(body,.035,.078,.036,'pink',x*1.25,1.295,.38,.01);
  }
- const head=new T.Group();head.position.set(0,2.28,.005);body.add(head);part(head,faceGeometry(),'skin');
+ const head=new T.Group();head.position.set(0,2.28,.005);head.scale.setScalar(F.headScale);body.add(head);const face=part(head,faceGeometry(),'skin'),eyes=[];
  for(const side of [-1,1]){
   oval(head,'skin',side*.495,-.015,.015,.172,.245,.17);
   oval(head,'ear',side*.526,-.015,.094,.052,.11,.016);
-  const x=side*.192,y=.025;
-  // Fitted almond-shaped eyes: all layers lie on the face instead of protruding spheres.
-  part(head,facePatch(x,y,.125,.119,.004,true),'eye');
-  part(head,facePatch(x,y-.006,.114,.107,.006,true),'sclera');
-  part(head,facePatch(x-side*.006,y,.083,.101,.010),'iris');
-  part(head,facePatch(x-side*.006,y+.004,.055,.080,.012),'eye');
-  const glint=part(head,facePatch(x-.025,y+.050,.017,.020,.015),shine);glint.castShadow=false;
-  const glintSmall=part(head,facePatch(x+.030,y-.037,.006,.008,.014),shine);glintSmall.castShadow=false;
-  const brow=[[-.10,.193],[-.02,.217],[.075,.207]].map(([dx,dy])=>[x+dx,dy,faceZ(x+dx,dy)+.009]);line(head,brow,.014,'hairShade');
+  const x=side*F.eyeCenterX,y=F.eyeCenterY;
+  eyes.push(part(head,referenceEyePatch(x,y,side,1,.004),'eye'));
+  part(head,referenceEyePatch(x,y,side,.925,.006),'sclera');
+  part(head,referenceIrisPatch(x,y,side),'iris');
+  const pupilX=x-side*F.irisOffset;
+  part(head,facePatch(pupilX,y+.004,.071,.083,.012),'eye');
+  const glint=part(head,facePatch(pupilX-.025,y+.051,.019,.022,.015),shine);glint.castShadow=false;
+  const glintSmall=part(head,facePatch(pupilX+.033,y-.035,.007,.008,.014),shine);glintSmall.castShadow=false;
+  const brow=[[-.115,.181],[-.01,.233],[.10,.189]].map(([dx,dy])=>{const bx=x+side*dx;return [bx,dy,faceZ(bx,dy)+.009];});line(head,brow,.016,'hairShade');
  }
  const smile=[[-.11,-.220],[-.04,-.245],[.032,-.246],[.108,-.218]].map(([x,y])=>[x,y,faceZ(x,y)+.006]);line(head,smile,.008,'mouth');
  // Small sculpted nostril creases, rather than a separate bead-shaped nose.
  for(const side of [-1,1]){const x=side*.03,y=-.127;part(head,facePatch(x,y,.012,.0045,.003),'ear');}
- const capGeo=new T.SphereGeometry(1,48,32,0,Math.PI*2,0,1.94),cp=capGeo.attributes.position;
- for(let i=0;i<cp.count;i++)cp.setXYZ(i,cp.getX(i)*.555,.155+cp.getY(i)*.545,-.045+cp.getZ(i)*.485);capGeo.computeVertexNormals();part(head,capGeo,'hairShade');
+ const hair=new T.Group();hair.scale.set(F.hairWidthScale,1,F.hairDepthScale);head.add(hair);
+ // The front edge of the scalp stops above the brows; side/back volume can grow
+ // without a spherical cap covering the enlarged, wider-set eyes.
+ const capGeo=surfaceGeometry((u,v)=>{const phi=v*Math.PI*2,front=Math.sin(phi),edge=front>0?1.96-.59*front**3:1.96-.23*front,theta=u*edge;return new T.Vector3(-Math.cos(phi)*Math.sin(theta)*.555,.155+Math.cos(theta)*.545,-.045+Math.sin(phi)*Math.sin(theta)*.485);},32,48);
+ part(hair,capGeo,'hairShade');
  function lock(points,width,depth=.024,outward=[0,0,1],key='hair',highlight=false){
-  const leaf=hairLock(points,width,depth,outward);const mesh=part(head,leaf.geometry,key);mesh.castShadow=false;
+  const leaf=hairLock(points,width,depth,outward);const mesh=part(hair,leaf.geometry,key);mesh.castShadow=false;
   // Shallow secondary ridges read as combed strands, not additional thick locks.
-  for(const v of [.29,.46,.69]){const ridge=surfaceGeometry((u,w)=>leaf.sample(.09+u*.85,v+(w-.5)*.016,.0015),24,2,leaf.out);part(head,ridge,'hairRidge').castShadow=false;}
-  if(highlight){const ribbon=surfaceGeometry((u,v)=>leaf.sample(.07+u*.86,.32+(v-.5)*.12*Math.sin(Math.PI*u),.003),32,4,leaf.out);part(head,ribbon,'white').castShadow=false;}
+  for(const v of [.29,.46,.69]){const ridge=surfaceGeometry((u,w)=>leaf.sample(.09+u*.85,v+(w-.5)*.016,.0015),24,2,leaf.out);part(hair,ridge,'hairRidge').castShadow=false;}
+  if(highlight){const ribbon=surfaceGeometry((u,v)=>leaf.sample(.07+u*.86,.32+(v-.5)*.12*Math.sin(Math.PI*u),.003),32,4,leaf.out);part(hair,ribbon,'white').castShadow=false;}
  }
  // A layered side sweep with a few broad leaves; the tips thin into the silhouette.
  lock([[.40,.48,.23],[.22,.57,.365],[-.15,.50,.425],[-.52,.285,.26]],.166,.024,[0,0,1],'hair',true);
@@ -80,6 +84,9 @@ export function createAvatar(){
   }
   lock([[side*.38,.46,-.12],[side*.52,.26,-.21],[side*.56,.01,-.19],[side*.43,-.21,-.12]],.12,.017,[side,0,-.3]);
  }
+ // Expand the cap and the existing layers as one silhouette, without thickening
+ // individual strands into tubes or lifting the fringe away from the eyebrows.
+ hair.traverse(object=>{if(!object.isMesh)return;const p=object.geometry.attributes.position;for(let i=0;i<p.count;i++)p.setY(i,referenceHairY(p.getY(i)));p.needsUpdate=true;object.geometry.computeVertexNormals();});
  // Shoulder straps and a sculpted backpack: its circle is legible from the chase camera.
  for(const side of [-1,1]){
   line(body,[[side*.31,1.14,-.42],[side*.37,1.63,-.42],[side*.34,1.80,-.04],[side*.31,1.50,.34],[side*.33,1.14,.38]],.044,'leather');
@@ -124,6 +131,7 @@ export function createAvatar(){
   oval(arm,'skin',side*.008,-.582,.277,.078,.12,.075);
   limbs.push({side,leg,arm});
  }
+ if(onHeadBuilt){player.updateWorldMatrix(true,true);onHeadBuilt({head,face,eyes,hair});}
  const joints=new Set(limbs.flatMap(({leg,arm})=>[leg,arm]));batchStatic(body,joints);for(const joint of joints)batchStatic(joint);
  player.rotation.y=Math.PI;
  function setAccent(color){m.pink.color.set(color);m.pink.emissive.set(color);m.lining.color.set(color).multiplyScalar(.32);}
