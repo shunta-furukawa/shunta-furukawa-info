@@ -1,13 +1,19 @@
-weight: 2
-category: "フロントエンド開発"
+weight: 5
+category: "デザイン・フロントエンド"
 color: "#E15554"
 items:
   - name: "HTML (Pug, Haml)"
-    description: "モバイルアプリやWebページの構造設計。"
-    years: 10
+    description: "モバイルアプリや Web ページの構造設計。現職以降は使用頻度低め。"
+    years: 7
   - name: "CSS (Sass, Less)"
-    description: "レスポンシブデザインやモダンCSSフレームワークの活用。"
-    years: 10
+    description: "レスポンシブデザイン、モダン CSS フレームワークの活用。"
+    years: 7
   - name: "JavaScript (Vue.js, JSX, GAS)"
-    description: "フロントエンドロジックや動的UIの実装、SPA開発。"
-    years: 8
+    description: "前職の Web サービスでフロントエンドや Vue.js を中心に SPA 開発。今は周辺ツール用途中心。"
+    years: 5
+  - name: "UI/UXデザイン"
+    description: "アプリや Web プロダクトでの UI 設計、ユーザー体験向上のための改善提案。"
+    years: 5
+  - name: "グラフィックデザイン"
+    description: "iPhone 向けアプリのビジュアルデザインを担当。"
+    years: 3
