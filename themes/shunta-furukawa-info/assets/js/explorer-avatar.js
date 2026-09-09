@@ -1,12 +1,15 @@
 import * as T from './vendor/three.module.js';
 import {REFERENCE_FACE as F,referenceHairY} from './avatar-reference.js';
 import {rounded,batchStatic} from './world-shapes.js';
-import {surfaceGeometry,faceGeometry,faceZ,facePatch,hairLock,fabricTube,referenceEyePatch,referenceIrisPatch} from './avatar-surfaces.js';
+import {surfaceGeometry,faceGeometry,faceZ,facePatch,hairLock,fabricTube,referenceEyePatch,referenceIrisPatch,referenceUpperLidPatch} from './avatar-surfaces.js';
 
 export function createAvatar({onHeadBuilt}={}){
  const player=new T.Group(),body=new T.Group();player.add(body);player.name='explorer';
  const material=(color,roughness=.8)=>new T.MeshStandardMaterial({color,roughness,metalness:0});
- const m={cloth:material(0x292a35,.96),rib:material(0x20212b,.98),seam:material(0x343641,.92),hair:material(0x22232e,.76),hairRidge:material(0x292b37,.80),hairShade:material(0x1b1c26,.80),white:material(0xecebf0,.8),skin:material(0xffe7df,.8),ear:material(0xe4bcb7,.9),sclera:material(0xe9d9d8,.82),iris:material(0x342931,.56),eye:material(0x17141d,.55),mouth:material(0x63414b,.9),sole:material(0xe4e4eb,.92),leather:material(0x242530,.82),pink:material(0xff3b8d,.7),lining:material(0x8d174d,.96)};
+ // Diffuse eye surfaces keep the single designed catchlight legible. Specular
+ // lobes would create extra white spots as the character turns under the lamps.
+ const diffuse=color=>new T.MeshLambertMaterial({color});
+ const m={cloth:material(0x292a35,.96),rib:material(0x20212b,.98),seam:material(0x343641,.92),hair:material(0x22232e,.76),hairRidge:material(0x292b37,.80),hairShade:material(0x1b1c26,.80),white:material(0xecebf0,.8),skin:material(0xffe7df,.8),ear:material(0xe4bcb7,.9),sclera:diffuse(0xfff3ef),iris:diffuse(0x211a23),eye:diffuse(0x15121b),mouth:material(0x63414b,.9),sole:material(0xe4e4eb,.92),leather:material(0x242530,.82),pink:material(0xff3b8d,.7),lining:material(0x8d174d,.96)};
  for(const key of ['hair','hairRidge','hairShade'])m[key].side=T.DoubleSide;
  m.pink.emissive.set(0xff3b8d);m.pink.emissiveIntensity=.38;
  // Fine woven relief belongs to cloth only, rather than glossy molded surfaces.
@@ -40,18 +43,19 @@ export function createAvatar({onHeadBuilt}={}){
   line(body,[[x,1.76,.284],[x*1.08,1.56,.347],[x*1.25,1.33,.38]],.016,'white');
   block(body,.035,.078,.036,'pink',x*1.25,1.295,.38,.01);
  }
- const head=new T.Group();head.position.set(0,2.28,.005);head.scale.setScalar(F.headScale);body.add(head);const face=part(head,faceGeometry(),'skin'),eyes=[];
+ const head=new T.Group();head.position.set(0,2.28,.005);head.scale.setScalar(F.headScale);body.add(head);const face=part(head,faceGeometry(),'skin'),eyes=[],eyeDetails=[];
  for(const side of [-1,1]){
   oval(head,'skin',side*.495,-.015,.015,.172,.245,.17);
   oval(head,'ear',side*.526,-.015,.094,.052,.11,.016);
   const x=side*F.eyeCenterX,y=F.eyeCenterY;
-  eyes.push(part(head,referenceEyePatch(x,y,side,1,.004),'eye'));
-  part(head,referenceEyePatch(x,y,side,.925,.006),'sclera');
-  part(head,referenceIrisPatch(x,y,side),'iris');
+  function eyePart(name,geometry,key){const mesh=part(head,geometry,key);mesh.name=`eye-${side}-${name}`;mesh.castShadow=false;mesh.receiveShadow=false;return mesh;}
+  const sclera=eyePart('sclera',referenceEyePatch(x,y,side,1,.006),'sclera');eyes.push(sclera);
+  const iris=eyePart('iris',referenceIrisPatch(x,y,side),'iris');
   const pupilX=x-side*F.irisOffset;
-  part(head,facePatch(pupilX,y+.004,.071,.083,.012),'eye');
-  const glint=part(head,facePatch(pupilX-.025,y+.051,.019,.022,.015),shine);glint.castShadow=false;
-  const glintSmall=part(head,facePatch(pupilX+.033,y-.035,.007,.008,.014),shine);glintSmall.castShadow=false;
+  const pupil=eyePart('pupil',referenceIrisPatch(x,y,side,{rx:F.pupilRadiusX,ry:F.pupilRadiusY,depth:.010}),'eye');
+  const lid=eyePart('upper-lid',referenceUpperLidPatch(x,y,side),'eye');
+  const glint=eyePart('catchlight',facePatch(pupilX-.035,y+.051,F.catchlightRadiusX,F.catchlightRadiusY,.014),shine);
+  eyeDetails.push({side,sclera,iris,pupil,lid,glint});
   const brow=[[-.115,.181],[-.01,.233],[.10,.189]].map(([dx,dy])=>{const bx=x+side*dx;return [bx,dy,faceZ(bx,dy)+.009];});line(head,brow,.016,'hairShade');
  }
  const smile=[[-.11,-.220],[-.04,-.245],[.032,-.246],[.108,-.218]].map(([x,y])=>[x,y,faceZ(x,y)+.006]);line(head,smile,.008,'mouth');
@@ -131,7 +135,7 @@ export function createAvatar({onHeadBuilt}={}){
   oval(arm,'skin',side*.008,-.582,.277,.078,.12,.075);
   limbs.push({side,leg,arm});
  }
- if(onHeadBuilt){player.updateWorldMatrix(true,true);onHeadBuilt({head,face,eyes,hair});}
+ if(onHeadBuilt){player.updateWorldMatrix(true,true);onHeadBuilt({head,face,eyes,hair,eyeDetails});}
  const joints=new Set(limbs.flatMap(({leg,arm})=>[leg,arm]));batchStatic(body,joints);for(const joint of joints)batchStatic(joint);
  player.rotation.y=Math.PI;
  function setAccent(color){m.pink.color.set(color);m.pink.emissive.set(color);m.lining.color.set(color).multiplyScalar(.32);}
