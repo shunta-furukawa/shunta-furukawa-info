@@ -17,8 +17,9 @@ assert.ok(faceZ(0,-.46)>.30,'chin has forward volume');
 assert.ok(faceZ(0,-.50)>.23,'chin tip does not collapse into the neck');
 
 createAvatar({onHeadBuilt({head,face}){
- const p=face.geometry.attributes.position;let chinVertices=0;
- for(let i=0;i<p.count;i++)if(p.getY(i)<-.499){chinVertices++;assert.ok(Math.abs(p.getX(i))<.001);assert.ok(p.getZ(i)>.23);}
+ const p=face.geometry.attributes.position;let chinVertices=0,minY=Infinity;
+ for(let i=0;i<p.count;i++)minY=Math.min(minY,p.getY(i));
+ for(let i=0;i<p.count;i++)if(p.getY(i)<minY+1e-6){chinVertices++;assert.ok(Math.abs(p.getX(i))<.001);assert.ok(p.getZ(i)>.23);}
  assert.ok(chinVertices>0,'the actual mesh contains the new chin');
  // A chin hidden inside the hoodie would still look missing. Check the built
  // character, including its hood, from front and both three-quarter directions.

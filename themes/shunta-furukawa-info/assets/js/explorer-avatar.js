@@ -1,7 +1,7 @@
 import * as T from './vendor/three.module.js';
 import {REFERENCE_FACE as F,referenceHairY} from './avatar-reference.js';
 import {rounded,batchStatic} from './world-shapes.js';
-import {surfaceGeometry,faceGeometry,faceZ,facePatch,hairLock,fabricTube,referenceEyePatch,referenceIrisPatch,referenceUpperLidPatch} from './avatar-surfaces.js';
+import {surfaceGeometry,faceGeometry,faceZ,facePatch,hairLock,fabricTube,referenceEyePatch,referenceIrisPatch,referenceUpperLidPatch,earSurfaces} from './avatar-surfaces.js';
 
 export function createAvatar({onHeadBuilt}={}){
  const player=new T.Group(),body=new T.Group();player.add(body);player.name='explorer';
@@ -43,10 +43,10 @@ export function createAvatar({onHeadBuilt}={}){
   line(body,[[x,1.76,.284],[x*1.08,1.56,.347],[x*1.25,1.33,.38]],.016,'white');
   block(body,.035,.078,.036,'pink',x*1.25,1.295,.38,.01);
  }
- const head=new T.Group();head.position.set(0,2.28,.005);head.scale.setScalar(F.headScale);body.add(head);const face=part(head,faceGeometry(),'skin'),eyes=[],eyeDetails=[];
+ const head=new T.Group();head.position.set(0,2.28,.005);head.scale.setScalar(F.headScale);body.add(head);const face=part(head,faceGeometry(),'skin'),eyes=[],eyeDetails=[],ears=[];
  for(const side of [-1,1]){
-  oval(head,'skin',side*.495,-.015,.015,.172,.245,.17);
-  oval(head,'ear',side*.526,-.015,.094,.052,.11,.016);
+  const ear=new T.Group(),earShape=earSurfaces(side);head.add(ear);ear.name=`ear-${side}`;
+  part(ear,earShape.shell,'skin');part(ear,earShape.back,'skin');part(ear,earShape.concha,'ear');ears.push({side,ear});
   const x=side*F.eyeCenterX,y=F.eyeCenterY;
   function eyePart(name,geometry,key){const mesh=part(head,geometry,key);mesh.name=`eye-${side}-${name}`;mesh.castShadow=false;mesh.receiveShadow=false;return mesh;}
   const sclera=eyePart('sclera',referenceEyePatch(x,y,side,1,.006),'sclera');eyes.push(sclera);
@@ -60,11 +60,11 @@ export function createAvatar({onHeadBuilt}={}){
  }
  const smile=[[-.11,-.220],[-.04,-.245],[.032,-.246],[.108,-.218]].map(([x,y])=>[x,y,faceZ(x,y)+.006]);line(head,smile,.008,'mouth');
  // Small sculpted nostril creases, rather than a separate bead-shaped nose.
- for(const side of [-1,1]){const x=side*.03,y=-.127;part(head,facePatch(x,y,.012,.0045,.003),'ear');}
+ for(const side of [-1,1]){const x=side*.037,y=-.140;part(head,facePatch(x,y,.012,.0045,.003),'ear');}
  const hair=new T.Group();hair.scale.set(F.hairWidthScale,1,F.hairDepthScale);head.add(hair);
  // The front edge of the scalp stops above the brows; side/back volume can grow
  // without a spherical cap covering the enlarged, wider-set eyes.
- const capGeo=surfaceGeometry((u,v)=>{const phi=v*Math.PI*2,front=Math.sin(phi),edge=front>0?1.96-.59*front**3:1.96-.23*front,theta=u*edge;return new T.Vector3(-Math.cos(phi)*Math.sin(theta)*.555,.155+Math.cos(theta)*.545,-.045+Math.sin(phi)*Math.sin(theta)*.485);},32,48);
+ const capGeo=surfaceGeometry((u,v)=>{const phi=v*Math.PI*2,front=Math.sin(phi),edge=front>0?1.43-.10*front**3:1.43-.77*front,theta=u*edge;return new T.Vector3(-Math.cos(phi)*Math.sin(theta)*.555,.155+Math.cos(theta)*.545,-.045+Math.sin(phi)*Math.sin(theta)*.485);},32,48);
  part(hair,capGeo,'hairShade');
  function lock(points,width,depth=.024,outward=[0,0,1],key='hair',highlight=false){
   const leaf=hairLock(points,width,depth,outward);const mesh=part(hair,leaf.geometry,key);mesh.castShadow=false;
@@ -77,8 +77,9 @@ export function createAvatar({onHeadBuilt}={}){
  lock([[.40,.39,.29],[.21,.435,.452],[-.14,.31,.493],[-.48,.13,.335]],.155,.023,[0,0,1],'hair');
  lock([[.30,.31,.35],[.18,.27,.460],[-.055,.165,.49],[-.28,.045,.424]],.126,.022,[0,0,1],'hairShade');
  lock([[.20,.60,.08],[-.04,.69,.19],[-.32,.545,.30],[-.57,.365,.12]],.118,.025,[0,0,1],'hair',true);
- lock([[.36,.475,.12],[.495,.35,.20],[.53,.145,.12],[.45,-.13,.055]],.12,.018,[1,0,.2],'hair');
- lock([[-.37,.37,.04],[-.515,.23,.07],[-.52,.01,.10],[-.435,-.19,.02]],.115,.018,[-1,0,.15],'hairShade');
+ // Short sideburns sit in front of the ears; the rear layers sit behind them.
+ lock([[.36,.475,.12],[.46,.38,.24],[.48,.19,.285],[.43,-.105,.255]],.080,.018,[1,0,.2],'hair');
+ lock([[-.37,.37,.04],[-.48,.25,.235],[-.48,.065,.26],[-.42,-.12,.23]],.080,.018,[-1,0,.15],'hairShade');
  lock([[.12,.63,-.13],[.28,.735,-.12],[.38,.675,-.045],[.38,.505,.105]],.083,.012,[0,.6,1],'hair');
  // A full rear haircut with fine tapered tips above the hood and behind the ears.
  for(const side of [-1,1]){
@@ -86,11 +87,11 @@ export function createAvatar({onHeadBuilt}={}){
    const x=side*(.06+i*.126);
    lock([[x*.60,.61-i*.035,-.225],[x,.38,-.455+i*.040],[x*1.04,.07,-.49+i*.05],[x*1.05,-.23+i*.045,-.30+i*.025]],.125-i*.008,.018,[side*.25,0,-1],i%2?'hairShade':'hair');
   }
-  lock([[side*.38,.46,-.12],[side*.52,.26,-.21],[side*.56,.01,-.19],[side*.43,-.21,-.12]],.12,.017,[side,0,-.3]);
+  lock([[side*.38,.46,-.24],[side*.52,.26,-.33],[side*.56,.01,-.32],[side*.43,-.21,-.24]],.12,.017,[side,0,-.3]);
  }
  // Expand the cap and the existing layers as one silhouette, without thickening
  // individual strands into tubes or lifting the fringe away from the eyebrows.
- hair.traverse(object=>{if(!object.isMesh)return;const p=object.geometry.attributes.position;for(let i=0;i<p.count;i++)p.setY(i,referenceHairY(p.getY(i)));p.needsUpdate=true;object.geometry.computeVertexNormals();});
+ hair.traverse(object=>{if(!object.isMesh)return;const p=object.geometry.attributes.position;for(let i=0;i<p.count;i++){p.setY(i,referenceHairY(p.getY(i)));const z=p.getZ(i);if(z<-.08)p.setZ(i,-.08+(z+.08)*1.24);}p.needsUpdate=true;object.geometry.computeVertexNormals();});
  // Shoulder straps and a sculpted backpack: its circle is legible from the chase camera.
  for(const side of [-1,1]){
   line(body,[[side*.31,1.14,-.42],[side*.37,1.63,-.42],[side*.34,1.80,-.04],[side*.31,1.50,.34],[side*.33,1.14,.38]],.044,'leather');
@@ -135,7 +136,7 @@ export function createAvatar({onHeadBuilt}={}){
   oval(arm,'skin',side*.008,-.582,.277,.078,.12,.075);
   limbs.push({side,leg,arm});
  }
- if(onHeadBuilt){player.updateWorldMatrix(true,true);onHeadBuilt({head,face,eyes,hair,eyeDetails});}
+ if(onHeadBuilt){player.updateWorldMatrix(true,true);onHeadBuilt({head,face,eyes,hair,eyeDetails,ears});}
  const joints=new Set(limbs.flatMap(({leg,arm})=>[leg,arm]));batchStatic(body,joints);for(const joint of joints)batchStatic(joint);
  player.rotation.y=Math.PI;
  function setAccent(color){m.pink.color.set(color);m.pink.emissive.set(color);m.lining.color.set(color).multiplyScalar(.32);}
