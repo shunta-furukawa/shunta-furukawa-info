@@ -12,15 +12,39 @@ export function surfaceGeometry(sample,rows=32,columns=24,outward=null){
  const geo=new T.BufferGeometry();geo.setAttribute('position',new T.Float32BufferAttribute(positions,3));geo.setAttribute('uv',new T.Float32BufferAttribute(uv,2));geo.setIndex(indices);geo.computeVertexNormals();return geo;
 }
 
+// Keep the established upper face, but give the lower face its own silhouette:
+// broad cheeks, a softened jaw corner, diagonal jawline and a rounded chin tip.
+// Points are [height, half-width]; matching tangents avoid visible corners.
+function cranialWidth(y){const v=(y-.035)/.535,t=T.MathUtils.clamp((v+1)/.8,0,1);return .535*(.76+.24*t*t*(3-2*t))*Math.sqrt(Math.max(0,1-v*v));}
+const jawStart=cranialWidth(-.14);
+const jawCurves=[
+ [[-.14,jawStart],[-.19,jawStart-.024],[-.245,.472],[-.29,.418]],
+ [[-.29,.418],[-.335,.364],[-.433,.203],[-.475,.11]],
+ [[-.475,.11],[-.491,.0746],[-.50,.045],[-.50,0]]
+].map(points=>new T.CubicBezierCurve(...points.map(p=>new T.Vector2(...p))));
+export function faceWidth(y){
+ if(y>=-.14)return cranialWidth(y);if(y<=-.50)return 0;
+ const curve=jawCurves.find(c=>y>=c.v3.x);let lo=0,hi=1;
+ for(let i=0;i<24;i++){const mid=(lo+hi)*.5;if(curve.getPoint(mid).x>y)lo=mid;else hi=mid;}
+ return curve.getPoint((lo+hi)*.5).y;
+}
+function jawSection(y){
+ const t=T.MathUtils.clamp((-.14-y)/.36,0,1),blend=t*t*(3-2*t),v=(y-.035)/.535;
+ // Move the underside forward into a chin, rather than collapsing the bottom
+ // of a sphere back into the neck. The front remains continuous with the lips.
+ return {center:.035+.205*blend,front:.435*Math.sqrt(Math.max(0,1-v*v))*(1-.45*blend),back:.43*Math.sqrt(Math.max(0,1-v*v))*(1-.45*blend)};
+}
 // Nose, cheeks, eye sockets and chin belong to one continuous face surface.
-export function faceWidth(y){const v=(y-.035)/.535,t=T.MathUtils.clamp((v+1)/.8,0,1);return .535*(.76+.24*t*t*(3-2*t));}
 export function faceZ(x,y){
- const v=(y-.035)/.535,w=faceWidth(y),ellipse=Math.max(0,1-v*v-(x/w)**2),gauss=(a,b,sx,sy)=>Math.exp(-(((x-a)/sx)**2+((y-b)/sy)**2));
- return .035+.435*Math.sqrt(ellipse)+.044*gauss(0,-.095,.07,.125)+.012*(gauss(.24,-.11,.13,.12)+gauss(-.24,-.11,.13,.12))-.016*(gauss(F.eyeCenterX,F.eyeCenterY,.16,.13)+gauss(-F.eyeCenterX,F.eyeCenterY,.16,.13));
+ const w=faceWidth(y),section=jawSection(y),round=w>1e-8?Math.sqrt(Math.max(0,1-(x/w)**2)):0,gauss=(a,b,sx,sy)=>Math.exp(-(((x-a)/sx)**2+((y-b)/sy)**2));
+ return section.center+section.front*round+.044*gauss(0,-.095,.07,.125)+.012*(gauss(.24,-.11,.13,.12)+gauss(-.24,-.11,.13,.12))-.016*(gauss(F.eyeCenterX,F.eyeCenterY,.16,.13)+gauss(-F.eyeCenterX,F.eyeCenterY,.16,.13));
 }
 export function faceGeometry(){
  const geo=new T.SphereGeometry(1,64,48),p=geo.attributes.position;
- for(let i=0;i<p.count;i++){const y=.035+p.getY(i)*.535,x=p.getX(i)*faceWidth(y),z=p.getZ(i)>=0?faceZ(x,y):.035+p.getZ(i)*.43;p.setXYZ(i,x,y,z);}
+ for(let i=0;i<p.count;i++){
+  const y=.035+p.getY(i)*.535,ring=Math.hypot(p.getX(i),p.getZ(i)),x=ring>1e-8?p.getX(i)/ring*faceWidth(y):0,section=jawSection(y);
+  const z=p.getZ(i)>=0?faceZ(x,y):section.center+(ring>1e-8?p.getZ(i)/ring*section.back:0);p.setXYZ(i,x,y,z);
+ }
  geo.computeVertexNormals();return geo;
 }
 export function facePatch(cx,cy,rx,ry,depth=.006,almond=false){
