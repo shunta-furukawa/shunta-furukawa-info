@@ -1,0 +1,75 @@
+/* ==========================================================================
+   Works — side projects list (/works/)
+   ========================================================================== */
+
+.works-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 18px;
+  margin-bottom: 40px;
+}
+.works-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--surface-panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  scroll-margin-top: 96px;
+}
+.works-card:target { border-color: var(--primary-line); }
+.works-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 960 / 504;
+  object-fit: cover;
+}
+.works-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+  padding: 20px 22px 24px;
+}
+.works-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  color: var(--body-text);
+  font-size: 1.25rem;
+}
+.works-card-status {
+  padding: 2px 10px;
+  border: 1px solid var(--primary-line);
+  border-radius: 999px;
+  color: var(--primary-color);
+  font-weight: 700;
+}
+.works-card h2 {
+  color: var(--light-text);
+  font-size: 1.9rem;
+  line-height: 1.45;
+}
+.works-card-body > p:not(.works-card-meta) {
+  color: var(--body-text);
+  font-size: 1.35rem;
+  line-height: 1.75;
+  flex: 1;
+}
+.works-card-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 0;
+  list-style: none;
+}
+.works-card-stack li {
+  padding: 2px 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm, 6px);
+  color: var(--body-text);
+  font-size: 1.15rem;
+}
+.works-card .btn { align-self: flex-start; margin-top: 4px; }

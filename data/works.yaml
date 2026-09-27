@@ -1,0 +1,26 @@
+# Side projects shown on /works/. List order is display order.
+# `slug` matches the ?from= value the games append when linking here,
+# and the image at static/images/works/<slug>.webp.
+- slug: "miracle-mine"
+  title: "Miracle Mine"
+  status: "公開中"
+  audience: "子ども向け・無料"
+  summary: "数字をつないで、自分だけの蒸気飛行機を組み立てる冒険パズル。スマホ・タブレット・PC のブラウザで遊べます。"
+  url: "https://miracle-mine.vercel.app/"
+  stack: ["HTML / CSS / JavaScript", "PWA", "Vercel Functions"]
+
+- slug: "miracle-clock"
+  title: "Miracle Clock 〜ルカと空のとけい便〜"
+  status: "開発中"
+  audience: "子ども向け・Miracle Mine の続編"
+  summary: "時計の針を合わせて、お客さんの荷物を時間どおりに届けるゲーム。「2時間半後」などいろいろな言い方の時刻を読み取ります。"
+  url: "https://miracle-clock.vercel.app/"
+  stack: ["HTML / CSS / JavaScript", "PWA", "Playwright"]
+
+- slug: "rep-quest"
+  title: "REP QUEST"
+  status: "開発中"
+  audience: "iPhone 向け"
+  summary: "腕立て・スクワット・プランクの 1 回ごとに経験値が入り、冒険者が育つ RPG。ホーム画面に追加して使えます。"
+  url: "https://rep-quest-seven.vercel.app/"
+  stack: ["PWA", "DeviceMotion", "Canvas 2D"]

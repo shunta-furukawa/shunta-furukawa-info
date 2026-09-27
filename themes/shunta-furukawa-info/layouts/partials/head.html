@@ -73,7 +73,7 @@
 <script type="application/ld+json">{{ $person | jsonify | safeJS }}</script>
 {{- end }}
 
-{{ range slice "css/main.css" "css/knowledge.css" "css/writings.css" "css/notfound.css" "css/avatar-world.css" }}
+{{ range slice "css/main.css" "css/knowledge.css" "css/writings.css" "css/notfound.css" "css/avatar-world.css" "css/works.css" }}
 {{ with resources.Get . | minify | fingerprint }}<link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous">{{ end }}
 {{ end }}
 {{ if or .IsHome (eq .Type "story") }}

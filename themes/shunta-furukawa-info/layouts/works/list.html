@@ -1,0 +1,30 @@
+{{ define "main" }}
+<section class="works-index">
+  <header class="knowledge-index-head">
+    <p class="section-eyebrow">WORKS</p>
+    <h1>仕事の外で、つくっているもの</h1>
+    <p class="knowledge-index-lead">個人でつくっているゲームとアプリです。どれもブラウザで遊べます。</p>
+  </header>
+
+  <div class="works-grid">
+    {{ range hugo.Data.works }}
+    <article class="works-card" id="{{ .slug }}">
+      <img src="/images/works/{{ .slug }}.webp" width="960" height="504" alt="{{ .title }} のイメージ" loading="lazy" decoding="async">
+      <div class="works-card-body">
+        <p class="works-card-meta"><span class="works-card-status">{{ .status }}</span>{{ .audience }}</p>
+        <h2>{{ .title }}</h2>
+        <p>{{ .summary }}</p>
+        <ul class="works-card-stack" aria-label="使っている技術">{{ range .stack }}<li>{{ . }}</li>{{ end }}</ul>
+        <a class="btn btn-primary" href="{{ .url }}" target="_blank" rel="noopener">遊んでみる ↗</a>
+      </div>
+    </article>
+    {{ end }}
+  </div>
+
+  <aside class="knowledge-zenn panel">
+    <p class="section-eyebrow">ABOUT</p>
+    <p class="knowledge-zenn-lead">本業は ABEMA の広告配信基盤エンジニアです。つくっている途中の話は X にも書いています。</p>
+    <a class="btn btn-primary" href="/#profile">プロフィールを見る →</a>
+  </aside>
+</section>
+{{ end }}
