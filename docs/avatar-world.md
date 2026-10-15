@@ -54,3 +54,11 @@ The preview is an offline depth-buffer rendering of the actual model geometry,
 not an in-browser screenshot. Production Hugo build and the avatar geometry tests
 passed. The cloud browser could not initialize the site's 3D renderer, so final
 WebGL lighting and iPhone Safari appearance have not been visually verified here.
+
+### Raised hood
+The hoodie is worn up around the simple head. A continuous dark fabric shell
+wraps the crown and back, with a narrow lining accent around the front opening.
+The old folded hood behind the neck is removed. Front and three-quarter eye
+sightlines, movement bounds and existing geometry checks still pass. The preview
+above now shows the raised hood. Browser WebGL / iPhone visual verification
+remains unavailable in this environment.
