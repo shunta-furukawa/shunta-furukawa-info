@@ -21,15 +21,8 @@ export function createAvatar({onHeadBuilt}={}){
  // Dropped shoulders, a loose waist and gathered hem give the hoodie its own cut.
  const torso=cloth(body,[[0,.94,0],[0,1.10,.016],[0,1.35,0],[0,1.60,-.018],[0,1.79,-.025],[0,1.87,0]],[.46,.505,.49,.46,.365,.235],[.33,.36,.35,.315,.26,.18],'cloth',.010);
  cloth(body,[[0,.90,0],[0,.94,0],[0,1.02,.014]],[.445,.47,.50],[.31,.335,.35],'rib',.003);
- // The hood is behind the neck. A narrow lining fold is visible at the sides;
- // there is no inflated ring across the chin.
- oval(body,'cloth',0,1.85,-.235,1.02,.47,.73);
- oval(body,'lining',0,1.925,-.205,.84,.22,.56);
+ // The raised hood is built around the head below, with a clear front opening.
  oval(body,'skin',0,1.94,.025,.275,.29,.265);
- for(const side of [-1,1]){
-  line(body,[[side*.30,1.73,-.08],[side*.41,1.91,-.06],[side*.26,1.97,-.18]],.047,'cloth');
-  line(body,[[side*.29,1.79,.055],[side*.36,1.92,-.012],[side*.24,1.96,-.145]],.016,'lining');
- }
  // A pocket follows the front of the sweatshirt, with openings where the hands rest.
  const pocket=surfaceGeometry((u,v)=>{const x=(v-.5)*.66,y=1.055+u*.275;return new T.Vector3(x,y,.363+.025*Math.sin(Math.PI*u)-.065*(x/.4)**2);},10,20,new T.Vector3(0,0,1));part(body,pocket,'cloth');
  seam(body,[[-.32,1.065,.326],[-.26,1.23,.362],[-.21,1.315,.37]]);seam(body,[[.32,1.065,.326],[.26,1.23,.362],[.21,1.315,.37]]);
@@ -41,6 +34,23 @@ export function createAvatar({onHeadBuilt}={}){
  // A graphic mascot head shares the icon's white face and black side sweep.
  const headParts=createSimpleHead();
  const {head}=headParts;head.position.set(0,2.28,.005);head.scale.setScalar(.92);body.add(head);
+ // A continuous fabric shell wraps the crown and back; the opening leaves
+ // the graphic face and swept fringe exposed instead of covering them with a cap.
+ const hood=new T.Group();hood.name='raised-hood';head.add(hood);
+ function hoodPoint(u,v){
+  const a=v*Math.PI*2,t=u*Math.PI*.5,c=Math.cos(t);
+  return new T.Vector3(.68*Math.cos(a)*c,.10+.91*Math.sin(a)*c,.28-.93*Math.sin(t)+.08*Math.sin(a)*c);
+ }
+ const hoodShell=surfaceGeometry(hoodPoint,24,48,new T.Vector3(0,0,-1));
+ const hoodMaterial=m.cloth.clone();hoodMaterial.side=T.DoubleSide;
+ part(hood,hoodShell,hoodMaterial).name='hood-shell';
+ const rimPoints=Array.from({length:65},(_,i)=>hoodPoint(0,i/64));
+ line(hood,rimPoints,.032,'rib').name='hood-rim';
+ // A narrow inner fold carries the existing lining accent, while the outside
+ // remains the same dark fabric as the sweatshirt.
+ const innerPoints=rimPoints.map(p=>new T.Vector3(p.x*.974,.10+(p.y-.10)*.974,p.z+.005));
+ line(hood,innerPoints,.012,'lining').name='hood-lining';
+ headParts.hood=hood;
  // Shoulder straps and a sculpted backpack: its circle is legible from the chase camera.
  for(const side of [-1,1]){
   line(body,[[side*.31,1.14,-.42],[side*.37,1.63,-.42],[side*.34,1.80,-.04],[side*.31,1.50,.34],[side*.33,1.14,.38]],.044,'leather');
