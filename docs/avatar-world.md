@@ -35,3 +35,22 @@ The correction uses perspective projection, discrete top/front/side colors (Mesh
 The renderer has a dedicated responsive viewport beside the desktop content or above the mobile content. Reduced motion stops animation, not rendering, including when switching careers or demo states. Texture loading cannot block the 3D geometry. Native DOM choices remain available without WebGL.
 
 Validation: production Hugo build and CPU projection checks for desktop/mobile map anchors. Browser visual/interaction testing remains unperformed.
+
+## Simple icon avatar (October 2026)
+The playable avatar now uses a white oval face, two small black eyes and a single
+smile stroke. A black cap with two broad side-swept shapes replaces individual
+hair strands. Flat, unlit head materials remove skin and hair highlights; there
+are no sculpted nose, lip, jaw, eye layers or ear recesses. The existing hoodie,
+backpack, limbs and animation remain, with hands and neck matching the white face.
+
+`simple-avatar-head.js` builds the head; `explorer-avatar.js` keeps the existing
+body and movement integration. The face tests now verify this graphic design,
+including eye visibility from front and three-quarter directions, rather than
+requiring the superseded anatomical geometry.
+
+![CPU geometry preview: front, three-quarter and back](avatar-simple-preview.png)
+
+The preview is an offline depth-buffer rendering of the actual model geometry,
+not an in-browser screenshot. Production Hugo build and the avatar geometry tests
+passed. The cloud browser could not initialize the site's 3D renderer, so final
+WebGL lighting and iPhone Safari appearance have not been visually verified here.

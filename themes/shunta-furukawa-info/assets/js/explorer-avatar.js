@@ -1,22 +1,17 @@
 import * as T from './vendor/three.module.js';
-import {REFERENCE_FACE as F,referenceHairY} from './avatar-reference.js';
+import {createSimpleHead} from './simple-avatar-head.js';
 import {rounded,batchStatic} from './world-shapes.js';
-import {surfaceGeometry,faceGeometry,faceZ,facePatch,hairLock,fabricTube,referenceEyePatch,referenceIrisPatch,referenceUpperLidPatch,earSurfaces} from './avatar-surfaces.js';
+import {surfaceGeometry,fabricTube} from './avatar-surfaces.js';
 
 export function createAvatar({onHeadBuilt}={}){
  const player=new T.Group(),body=new T.Group();player.add(body);player.name='explorer';
  const material=(color,roughness=.8)=>new T.MeshStandardMaterial({color,roughness,metalness:0});
- // Diffuse eye surfaces keep the single designed catchlight legible. Specular
- // lobes would create extra white spots as the character turns under the lamps.
- const diffuse=color=>new T.MeshLambertMaterial({color});
- const m={cloth:material(0x292a35,.96),rib:material(0x20212b,.98),seam:material(0x343641,.92),hair:material(0x22232e,.76),hairRidge:material(0x292b37,.80),hairShade:material(0x1b1c26,.80),white:material(0xecebf0,.8),skin:material(0xffe7df,.8),ear:material(0xe4bcb7,.9),sclera:diffuse(0xfff3ef),iris:diffuse(0x211a23),eye:diffuse(0x15121b),mouth:material(0x63414b,.9),sole:material(0xe4e4eb,.92),leather:material(0x242530,.82),pink:material(0xff3b8d,.7),lining:material(0x8d174d,.96)};
- for(const key of ['hair','hairRidge','hairShade'])m[key].side=T.DoubleSide;
+ const m={cloth:material(0x292a35,.96),rib:material(0x20212b,.98),seam:material(0x343641,.92),white:material(0xecebf0,.8),skin:new T.MeshBasicMaterial({color:0xf5f3f5}),sole:material(0xe4e4eb,.92),leather:material(0x242530,.82),pink:material(0xff3b8d,.7),lining:material(0x8d174d,.96)};
  m.pink.emissive.set(0xff3b8d);m.pink.emissiveIntensity=.38;
  // Fine woven relief belongs to cloth only, rather than glossy molded surfaces.
  const weaveData=new Uint8Array(64*64*4);for(let y=0;y<64;y++)for(let x=0;x<64;x++){const i=(y*64+x)*4,v=128+((x+y)%4<2?9:-9)+((x*17+y*13)%7-3);weaveData.set([v,v,v,255],i);}
  const weave=new T.DataTexture(weaveData,64,64);weave.wrapS=weave.wrapT=T.RepeatWrapping;weave.repeat.set(7,7);weave.magFilter=T.LinearFilter;weave.minFilter=T.LinearMipmapLinearFilter;weave.generateMipmaps=true;weave.needsUpdate=true;
  for(const key of ['cloth','rib','lining']){m[key].bumpMap=weave;m[key].bumpScale=.0017;}
- const shine=new T.MeshBasicMaterial({color:0xfff7f4});
  function part(parent,geometry,key,x=0,y=0,z=0){const mesh=new T.Mesh(geometry,m[key]||key);mesh.position.set(x,y,z);mesh.castShadow=true;mesh.receiveShadow=true;parent.add(mesh);return mesh;}
  function oval(parent,key,x,y,z,sx,sy,sz){const mesh=part(parent,new T.SphereGeometry(.5,28,20),key,x,y,z);mesh.scale.set(sx,sy,sz);return mesh;}
  function block(parent,w,h,d,key,x,y,z,r=.06){return part(parent,rounded(w,h,d,r),key,x,y,z);}
@@ -43,55 +38,9 @@ export function createAvatar({onHeadBuilt}={}){
   line(body,[[x,1.76,.284],[x*1.08,1.56,.347],[x*1.25,1.33,.38]],.016,'white');
   block(body,.035,.078,.036,'pink',x*1.25,1.295,.38,.01);
  }
- const head=new T.Group();head.position.set(0,2.28,.005);head.scale.setScalar(F.headScale);body.add(head);const face=part(head,faceGeometry(),'skin'),eyes=[],eyeDetails=[],ears=[];
- for(const side of [-1,1]){
-  const ear=new T.Group(),earShape=earSurfaces(side);head.add(ear);ear.name=`ear-${side}`;
-  part(ear,earShape.shell,'skin');part(ear,earShape.back,'skin');part(ear,earShape.concha,'ear');ears.push({side,ear});
-  const x=side*F.eyeCenterX,y=F.eyeCenterY;
-  function eyePart(name,geometry,key){const mesh=part(head,geometry,key);mesh.name=`eye-${side}-${name}`;mesh.castShadow=false;mesh.receiveShadow=false;return mesh;}
-  const sclera=eyePart('sclera',referenceEyePatch(x,y,side,1,.006),'sclera');eyes.push(sclera);
-  const iris=eyePart('iris',referenceIrisPatch(x,y,side),'iris');
-  const pupilX=x-side*F.irisOffset;
-  const pupil=eyePart('pupil',referenceIrisPatch(x,y,side,{rx:F.pupilRadiusX,ry:F.pupilRadiusY,depth:.010}),'eye');
-  const lid=eyePart('upper-lid',referenceUpperLidPatch(x,y,side),'eye');
-  const glint=eyePart('catchlight',facePatch(pupilX-F.eyeWidth*.117,y+F.eyeHeight*.213,F.catchlightRadiusX,F.catchlightRadiusY,.014),shine);
-  eyeDetails.push({side,sclera,iris,pupil,lid,glint});
-  const brow=[[-.383,.692],[-.033,.908],[.333,.725]].map(([dx,dy])=>{const bx=x+side*dx*F.eyeWidth,by=y+dy*F.eyeHeight;return [bx,by,faceZ(bx,by)+.009];});line(head,brow,.014,'hairShade');
- }
- const smile=[[-.11,-.220],[-.04,-.245],[.032,-.246],[.108,-.218]].map(([x,y])=>[x,y,faceZ(x,y)+.006]);line(head,smile,.008,'mouth');
- // Small sculpted nostril creases, rather than a separate bead-shaped nose.
- for(const side of [-1,1]){const x=side*.037,y=-.140;part(head,facePatch(x,y,.012,.0045,.003),'ear');}
- const hair=new T.Group();hair.scale.set(F.hairWidthScale,1,F.hairDepthScale);head.add(hair);
- // The front edge of the scalp stops above the brows; side/back volume can grow
- // without a spherical cap covering the enlarged, wider-set eyes.
- const capGeo=surfaceGeometry((u,v)=>{const phi=v*Math.PI*2,front=Math.sin(phi),edge=front>0?1.43-.10*front**3:1.43-.77*front,theta=u*edge;return new T.Vector3(-Math.cos(phi)*Math.sin(theta)*.555,.155+Math.cos(theta)*.545,-.045+Math.sin(phi)*Math.sin(theta)*.485);},32,48);
- part(hair,capGeo,'hairShade');
- function lock(points,width,depth=.024,outward=[0,0,1],key='hair',highlight=false){
-  const leaf=hairLock(points,width,depth,outward);const mesh=part(hair,leaf.geometry,key);mesh.castShadow=false;
-  // Shallow secondary ridges read as combed strands, not additional thick locks.
-  for(const v of [.29,.46,.69]){const ridge=surfaceGeometry((u,w)=>leaf.sample(.09+u*.85,v+(w-.5)*.016,.0015),24,2,leaf.out);part(hair,ridge,'hairRidge').castShadow=false;}
-  if(highlight){const ribbon=surfaceGeometry((u,v)=>leaf.sample(.07+u*.86,.32+(v-.5)*.12*Math.sin(Math.PI*u),.003),32,4,leaf.out);part(hair,ribbon,'white').castShadow=false;}
- }
- // A layered side sweep with a few broad leaves; the tips thin into the silhouette.
- lock([[.40,.48,.23],[.22,.57,.365],[-.15,.50,.425],[-.52,.285,.26]],.166,.024,[0,0,1],'hair',true);
- lock([[.40,.39,.29],[.21,.435,.452],[-.14,.31,.493],[-.48,.13,.335]],.155,.023,[0,0,1],'hair');
- lock([[.30,.31,.35],[.18,.27,.460],[-.055,.165,.49],[-.28,.045,.424]],.126,.022,[0,0,1],'hairShade');
- lock([[.20,.60,.08],[-.04,.69,.19],[-.32,.545,.30],[-.57,.365,.12]],.118,.025,[0,0,1],'hair',true);
- // Short sideburns sit in front of the ears; the rear layers sit behind them.
- lock([[.36,.475,.12],[.46,.38,.24],[.48,.19,.285],[.43,-.105,.255]],.080,.018,[1,0,.2],'hair');
- lock([[-.37,.37,.04],[-.48,.25,.235],[-.48,.065,.26],[-.42,-.12,.23]],.080,.018,[-1,0,.15],'hairShade');
- lock([[.12,.63,-.13],[.28,.735,-.12],[.38,.675,-.045],[.38,.505,.105]],.083,.012,[0,.6,1],'hair');
- // A full rear haircut with fine tapered tips above the hood and behind the ears.
- for(const side of [-1,1]){
-  for(let i=0;i<4;i++){
-   const x=side*(.06+i*.126);
-   lock([[x*.60,.61-i*.035,-.225],[x,.38,-.455+i*.040],[x*1.04,.07,-.49+i*.05],[x*1.05,-.23+i*.045,-.30+i*.025]],.125-i*.008,.018,[side*.25,0,-1],i%2?'hairShade':'hair');
-  }
-  lock([[side*.38,.46,-.24],[side*.52,.26,-.33],[side*.56,.01,-.32],[side*.43,-.21,-.24]],.12,.017,[side,0,-.3]);
- }
- // Expand the cap and the existing layers as one silhouette, without thickening
- // individual strands into tubes or lifting the fringe away from the eyebrows.
- hair.traverse(object=>{if(!object.isMesh)return;const p=object.geometry.attributes.position;for(let i=0;i<p.count;i++){p.setY(i,referenceHairY(p.getY(i)));const z=p.getZ(i);if(z<-.08)p.setZ(i,-.08+(z+.08)*1.24);}p.needsUpdate=true;object.geometry.computeVertexNormals();});
+ // A graphic mascot head shares the icon's white face and black side sweep.
+ const headParts=createSimpleHead();
+ const {head}=headParts;head.position.set(0,2.28,.005);head.scale.setScalar(.92);body.add(head);
  // Shoulder straps and a sculpted backpack: its circle is legible from the chase camera.
  for(const side of [-1,1]){
   line(body,[[side*.31,1.14,-.42],[side*.37,1.63,-.42],[side*.34,1.80,-.04],[side*.31,1.50,.34],[side*.33,1.14,.38]],.044,'leather');
@@ -136,7 +85,7 @@ export function createAvatar({onHeadBuilt}={}){
   oval(arm,'skin',side*.008,-.582,.277,.078,.12,.075);
   limbs.push({side,leg,arm});
  }
- if(onHeadBuilt){player.updateWorldMatrix(true,true);onHeadBuilt({head,face,eyes,hair,eyeDetails,ears});}
+ if(onHeadBuilt){player.updateWorldMatrix(true,true);onHeadBuilt(headParts);}
  const joints=new Set(limbs.flatMap(({leg,arm})=>[leg,arm]));batchStatic(body,joints);for(const joint of joints)batchStatic(joint);
  player.rotation.y=Math.PI;
  function setAccent(color){m.pink.color.set(color);m.pink.emissive.set(color);m.lining.color.set(color).multiplyScalar(.32);}
