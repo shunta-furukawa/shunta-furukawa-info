@@ -1,0 +1,22 @@
+weight: 2
+category: "インフラ・SRE"
+color: "#3BB273"
+items:
+  - name: "Kubernetes"
+    description: "オーケストレーションを軸に、スケーラブルなシステム設計と運用。"
+    years: 6
+  - name: "Terraform"
+    description: "インフラの IaC 化と自動化、変更の安全性を担保する運用設計。"
+    years: 5
+  - name: "GCP / AWS"
+    description: "GCP/AWS 上でのインフラ設計、運用、アプリケーション基盤の構築。"
+    years: 7
+  - name: "Docker"
+    description: "開発環境のコンテナ化および CI/CD パイプラインで活用。"
+    years: 7
+  - name: "CI/CD"
+    description: "デプロイパイプラインの設計・刷新、IaC への移行と継続的デリバリの仕組み化。"
+    years: 5
+  - name: "負荷試験・キャパシティプランニング"
+    description: "大規模ライブイベントを見据えた負荷試験設計・実施、スケール戦略の具体化。"
+    years: 3

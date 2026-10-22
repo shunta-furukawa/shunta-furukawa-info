@@ -1,0 +1,10 @@
+weight: 3
+category: "データ・配信基盤"
+color: "#F18F01"
+items:
+  - name: "BigQuery"
+    description: "広告配信のログ・レポート用途で利用。クエリ設計やパイプライン整備など。"
+    years: 4
+  - name: "広告配信システム設計・運用"
+    description: "広告配信基盤の設計・運用。認証認可、レポート出力基盤、配信ロジック、運用面まで横断で担当。"
+    years: 7
