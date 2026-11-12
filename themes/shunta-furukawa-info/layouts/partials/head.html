@@ -20,7 +20,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+One&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap">
 {{- with .OutputFormats.Get "RSS" }}
 <link rel="alternate" type="application/rss+xml" href="{{ .Permalink }}" title="{{ site.Title }}">
 {{- end }}
@@ -73,7 +73,7 @@
 <script type="application/ld+json">{{ $person | jsonify | safeJS }}</script>
 {{- end }}
 
-{{ range slice "css/main.css" "css/knowledge.css" "css/writings.css" "css/notfound.css" "css/avatar-world.css" "css/pop.css" }}
+{{ range slice "css/main.css" "css/knowledge.css" "css/writings.css" "css/notfound.css" "css/avatar-world.css" "css/world-theme.css" }}
 {{ with resources.Get . | minify | fingerprint }}<link rel="stylesheet" href="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous">{{ end }}
 {{ end }}
 {{ if or .IsHome (eq .Type "story") }}

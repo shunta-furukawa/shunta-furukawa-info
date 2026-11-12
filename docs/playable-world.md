@@ -119,10 +119,12 @@ Collecting all thirteen items now unlocks 最後の手紙 (`#ending`), reachable
 
 Validation: `node tests/exhibit-puzzles.mjs` enumerates every arrangement of every puzzle (up to 1.7 million) and asserts that each starts unsolved, that the stored answer is accepted, that the nine puzzles promising a single answer have exactly one, that the pipe puzzle accepts only the checkpoint route, that the auction accepts only the A/D/E winning set, and that failed attempts produce an explanation. All other existing tests and the Hugo production build pass. Each puzzle was additionally played in headless Chromium through the real page: one failed attempt, the answer entered with keyboard or clicks, then the item collected and the debrief shown.
 
-## Pop sticker theme
+## World theme: dark base, one pink accent
 
-The night-instrument HUD and dark reading panels were replaced by a pop theme in `assets/css/pop.css`, loaded after `avatar-world.css` and scoped to `.game-ready`: cream paper sheets, 3–4px ink outlines, hard offset shadows, yellow/cyan/mint/purple alongside the slot accent, the Mochiy Pop One display face, tilted labels and springy hover/press states. Puzzle boards stay dark as a "game screen" set into the paper sheet. The 3D scene itself is unchanged.
+A first attempt at a brighter "pop sticker" look (cream paper, several colours, thick outlines) was rejected by the owner: the dark base with a single pink accent is the identity to keep, and the target is cool and stylish with a little cuteness left in. That attempt was removed.
 
-`pop-fx.js` adds decorative effects: a CLEAR! stamp and confetti when a puzzle is solved, confetti for the profile item and full completion, a bump on the coin and collection counters, and a shake on a failed attempt. All of these are skipped with reduced motion or 動き OFF.
+`assets/css/world-theme.css` is loaded after `avatar-world.css` and scoped to `.game-ready`. It keeps the dark surfaces and uses the slot accent as the only colour: hairline borders, pill-shaped controls, soft pink glow on the primary action, mono kickers, and pink dots/sparkles as markers. The small amount of charm comes from rounded shapes, a slowly floating exhibit item inside a dashed ring, springy hover and press states, and a gentle pulse on 調べる. On the puzzle boards pink means on/correct and grey or dashed white means off/not yet, replacing the earlier green, red and gold. The 3D scene is unchanged.
 
-Checked in headless Chromium at 1280×800 and 390×800: start screen, HUD, menu, exhibit panels (career, philosophy, settings, skills), a puzzle in its initial, failed and solved states, and the inventory. Not checked on physical devices.
+`pop-fx.js` adds decorative effects in pink and white only: a CLEAR pill and a small confetti burst when a puzzle is solved, confetti for the profile item and full completion, a bump on the coin and collection counters, and a shake on a failed attempt. All are skipped with reduced motion or 動き OFF.
+
+Checked in headless Chromium at 1280×800 and 390×800: start screen, HUD, menu, exhibit panels, a puzzle in its initial, failed and solved states, and the inventory. Not checked on physical devices.

@@ -7,13 +7,13 @@ export {evaluate,solved,rotatePipe};
 const pos=(s,label)=>s.indexOf(label),cell=(s,r,c)=>s[r*4+c],rowSum=(s,r)=>[0,1,2,3].filter(c=>cell(s,r,c)).length,colSum=(s,c)=>[0,1,2].filter(r=>cell(s,r,c)).length;
 const count=(s,v)=>s.filter(x=>x===v).length;
 export const PUZZLES={
- 'career-0':{type:'toggle',title:'回帰テストを、ぜんぶ緑に',
-  intro:'保守中の業務システム（架空）で、テストが3項目落ちています。修正を当てると、線でつながった項目の結果が反転します。直したつもりが、別の場所を壊すことも。6項目すべてを緑にする修正の組み合わせを探そう。',
+ 'career-0':{type:'toggle',title:'回帰テストを、ぜんぶ通す',
+  intro:'保守中の業務システム（架空）で、テストが3項目落ちています。修正を当てると、線でつながった項目の結果が反転します。直したつもりが、別の場所を壊すことも。6項目すべてが通る修正の組み合わせを探そう。',
   lamps:['受注入力','在庫照会','請求計算','帳票出力','月次集計','通知メール'],start:[0,0,0,1,1,1],
   patches:[{label:'日付処理',flips:[3,4]},{label:'税計算',flips:[2,4]},{label:'コード変換',flips:[1,3,5]},{label:'入力チェック',flips:[0,2,4]},{label:'書式設定',flips:[0,1,5]},{label:'権限判定',flips:[0,5]}],
   initial:[0,0,0,0,0,0],answer:[1,1,1,0,0,1],
   hints:['同じ修正を2回当てると元に戻ります。大事なのは「どれを当てるか」だけで、順番は関係ありません。','「在庫照会」を反転できる修正は2つだけ。どちらか片方だけを当てる必要があります。','当てる修正は4つ。「入力チェック」と「書式設定」は当てません。'],
-  success:'全項目が緑になりました。',debrief:'ひとつの修正が、離れた場所の結果を変える。既存システムの保守では、直すことと同じくらい「壊していないと確かめること」が仕事になります。'},
+  success:'全項目のテストが通りました。',debrief:'ひとつの修正が、離れた場所の結果を変える。既存システムの保守では、直すことと同じくらい「壊していないと確かめること」が仕事になります。'},
  'career-1':{type:'program',title:'ステージを組み立てる',
   intro:'5つの命令を並べて、キャラクターをゴールの旗まで導こう。途中のスターも必要です。命令列は最大3周くり返されます。1周目と2周目で、同じ手順が別の意味を持つように組むのがコツ。',
   cols:6,rows:4,loops:3,start:{x:2,y:1,d:2},goal:[5,0],stars:[[4,2]],walls:[[0,1],[5,3],[5,1]],holes:[[3,2],[5,2],[0,0],[1,0],[3,1],[2,2]],
@@ -97,7 +97,7 @@ export function mountPuzzle(host,{onSolve}){let id=null,state=[],selected=null,h
   if(p.rules){const list=el('ol',undefined,'puzzle-rules');p.rules.forEach((r,i)=>{const li=el('li',r.text);const mark=won?true:feedback?.marks?.[i];if(mark!==undefined){li.className=mark?'is-met':'is-unmet';li.setAttribute('aria-label',r.text+(mark?'（成立）':'（未成立）'));}list.append(li);});host.append(list);}
   host.append(el('small',GESTURE[p.type],'puzzle-gesture'));
   const report=el('p',message,'puzzle-report');report.setAttribute('role','status');
-  const actions=el('div',undefined,'puzzle-actions'),test=el('button',won?'稼働中 ✓':p.rules?'確かめる':'動かす');test.type='button';test.disabled=won;test.onclick=()=>{const r=evaluate(p,state);feedback=r;if(r.ok){won=true;sessions.set(id,{state:[...state],won:true});const doneId=id;message='';render();const stage=host.closest('dialog')||host,stamp=el('div','CLEAR!','puzzle-stamp');stamp.setAttribute('aria-hidden','true');stamp.addEventListener('animationend',e=>{if(e.animationName==='pop-stamp-out')stamp.remove();});stage.querySelector(':scope > .puzzle-stamp')?.remove();stage.append(stamp);burst(stage,70);onSolve(doneId);}else{message=r.issues.join(' ')||'まだ条件が揃っていません。';render();replay(host,'is-wrong');host.querySelector('.puzzle-actions button')?.focus({preventScroll:true});}};
+  const actions=el('div',undefined,'puzzle-actions'),test=el('button',won?'稼働中 ✓':p.rules?'確かめる':'動かす');test.type='button';test.disabled=won;test.onclick=()=>{const r=evaluate(p,state);feedback=r;if(r.ok){won=true;sessions.set(id,{state:[...state],won:true});const doneId=id;message='';render();const stage=host.closest('dialog')||host,stamp=el('div','CLEAR','puzzle-stamp');stamp.setAttribute('aria-hidden','true');stamp.addEventListener('animationend',e=>{if(e.animationName==='th-stamp-out')stamp.remove();});stage.querySelector(':scope > .puzzle-stamp')?.remove();stage.append(stamp);burst(stage,42);onSolve(doneId);}else{message=r.issues.join(' ')||'まだ条件が揃っていません。';render();replay(host,'is-wrong');host.querySelector('.puzzle-actions button')?.focus({preventScroll:true});}};
   const help=el('button',hint?`ヒント ${Math.min(hint,p.hints.length)} / ${p.hints.length}`:'ヒント');help.type='button';help.onclick=()=>{message='ヒント：'+p.hints[Math.min(hint++,p.hints.length-1)];render();};
   const reset=el('button','やり直す');reset.type='button';reset.onclick=()=>{state=[...p.initial];won=false;selected=null;hint=0;feedback=null;message='';render();};actions.append(test,help,reset);host.append(actions,report);
   if(won){report.textContent=p.success+(owned?'（獲得済み）':'');const memo=el('div',undefined,'puzzle-debrief');memo.append(el('small','この模型が伝えたいこと'),el('p',p.debrief));host.append(memo);}
