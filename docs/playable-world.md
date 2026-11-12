@@ -136,3 +136,15 @@ The concept ties the UI to the subject. This is the portfolio of someone who bui
 `assets/css/world-theme.css` holds all of this, loaded after `avatar-world.css` and scoped to `.game-ready`. Body text uses Zen Kaku Gothic New inside the game; Unbounded is used for Latin display text and numerals. Small supporting changes: the start title marks its second line, a ticker element was added to the start dialog, the exhibit heading carries its number as `data-no`, the minimap canvas uses a flat black palette, and the CLEAR band is not inserted when motion is reduced. The 3D scene is unchanged.
 
 Checked in headless Chromium at 1280×800 and 390×800: title card, overlay, menu, exhibit sheet, a puzzle in its initial, failed and solved states, and the inventory. Not checked on physical devices.
+
+### The district, monitors and props
+
+The 3D scene now follows the same concept; layout, collision footprints, coins and save data are unchanged.
+
+- **Exhibit signs** are broadcast monitors on a slim stand. The screen shows the channel number as a large outline, the exhibit name, and a lower third that reports its state: STANDBY (not inspected), REC (inspected) or a full pink ON AIR bar (collected). A tally lamp on top lights when the exhibit is on air. The floating check mark was removed.
+- **Collectibles** were remodelled as white studio props with one pink accent so they read on the black interface: staff pass, clipboard, phone, compass, chart panel, vision mixer, studio monitor, server rack, wrench, toolbox, book and radio. Each sits on a round stage with a ring light under a spot beam, which turns pink once the item is collected.
+- **Buildings** are black studios with lit corner fins, a stage door, a roof dish and a marquee rail. The scene hangs neon zone names on the rails (PROFILE, CAREER, WORK, THINK, ARCHIVE, CONNECT) and an ON AIR gate over the entrance. The communication station has a transmission tower with signal arcs; the work studio carries a mast. Ground markers read CH and the exhibit number.
+
+`harbor-models.js` stays DOM-free (geometry only) for the node tests; canvas-drawn faces and neon live in `explorer-scene.js` and are redrawn once the web fonts load and whenever the accent colour changes. Static architecture is still batched within the existing draw-call and triangle budgets (7 meshes, about 210k triangles).
+
+Checked in headless Chromium at 1280×800: the entrance, the career street and the work district with collected and uncollected exhibits, and the item images in the inventory. Not checked on physical devices.
