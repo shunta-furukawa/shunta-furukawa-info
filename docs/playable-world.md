@@ -118,3 +118,11 @@ Save format, collection bits and coin IDs are unchanged, so existing saves and t
 Collecting all thirteen items now unlocks 最後の手紙 (`#ending`), reachable from the inventory. Before completion the same address shows the current count. The letter text is assembled from the existing ABOUT and story statements with short connecting sentences.
 
 Validation: `node tests/exhibit-puzzles.mjs` enumerates every arrangement of every puzzle (up to 1.7 million) and asserts that each starts unsolved, that the stored answer is accepted, that the nine puzzles promising a single answer have exactly one, that the pipe puzzle accepts only the checkpoint route, that the auction accepts only the A/D/E winning set, and that failed attempts produce an explanation. All other existing tests and the Hugo production build pass. Each puzzle was additionally played in headless Chromium through the real page: one failed attempt, the answer entered with keyboard or clicks, then the item collected and the debrief shown.
+
+## Pop sticker theme
+
+The night-instrument HUD and dark reading panels were replaced by a pop theme in `assets/css/pop.css`, loaded after `avatar-world.css` and scoped to `.game-ready`: cream paper sheets, 3–4px ink outlines, hard offset shadows, yellow/cyan/mint/purple alongside the slot accent, the Mochiy Pop One display face, tilted labels and springy hover/press states. Puzzle boards stay dark as a "game screen" set into the paper sheet. The 3D scene itself is unchanged.
+
+`pop-fx.js` adds decorative effects: a CLEAR! stamp and confetti when a puzzle is solved, confetti for the profile item and full completion, a bump on the coin and collection counters, and a shake on a failed attempt. All of these are skipped with reduced motion or 動き OFF.
+
+Checked in headless Chromium at 1280×800 and 390×800: start screen, HUD, menu, exhibit panels (career, philosophy, settings, skills), a puzzle in its initial, failed and solved states, and the inventory. Not checked on physical devices.
