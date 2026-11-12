@@ -87,3 +87,34 @@ A curved river now occupies the eastern optional route, with a bridge and steppi
 Coin IDs and count remain 0–100 for existing save/URL compatibility. The last 24 coins relocate to the optional river route; twelve are airborne and require jumping to collect. Old road coins that intersect water move to a nearby bank. Existing collected IDs remain collected. Enough ground coins remain to unlock all exhibits using the bridge route.
 
 Validation: SVG swap/drop/dial mapping, all prior puzzle predicates, stable coin IDs and URL round trip, grounded versus airborne pickup, bridge/water collision, and successful river crossings at walking/dash speeds across 30/60/120 fps. Hugo build, camera/movement tests and HTML controller integrity pass. Local browser/device visual or pointer-interaction testing was not performed.
+
+## Deeper exhibits, twelve reworked puzzles and the last letter
+
+Exhibit panels had been reduced to three or four bullet points. They now restore the material of the original portfolio from the existing data files: each career stop shows its summary facts, the full narrative (`data/stories/*.descriptions`), the illustration, the "いまにつながること" link to the present (`connection`) and the skills of that period. Work cases include the original highlight summaries. The tool shelf shows every skill with its years and description without opening anything. Profile carries the original ABOUT lead, body, tags and stats plus a short orientation of the town. The archive describes the RTB article and its vocabulary; the communication station lists the planned series from `data/series.yaml`. No new career facts or figures were added.
+
+On-site panels now read top to bottom as exhibit heading → record → puzzle, so the puzzle follows the reading it is based on. The pickup bar's 謎解きへ button still jumps straight to it.
+
+The twelve puzzles were replaced. The previous set could be solved by reading the answer out of the instruction (four steps in the obvious order, two or three switches). Each new puzzle is a small logic problem themed on its exhibit:
+
+| Exhibit | Type | Problem |
+| --- | --- | --- |
+| career-0 | toggle | Six patches each flip several regression tests; find the combination that turns all six green. |
+| career-1 | program | Five looping commands (forward, turn, jump) must collect a star and reach the flag on a 6×4 stage. |
+| career-2 | deduce | Order five stakeholders under five clues. |
+| career-3 | rule | Build `(A op B) op C` so that exactly the four starred users are targeted. |
+| career-4 | matrix | Assign 3 roles × 4 permissions under eight separation-of-duty rules. |
+| work-0 | pipe | Rotate a 4×3 pipe board so the route passes two checkpoints before the screen; decoy pipes included. |
+| work-1 | plan | Choose server counts for eight time slots: cover demand, scale up by at most one per slot, stay in budget. |
+| work-2 | stage | Schedule seven release tasks into four stages of two, respecting prerequisites. |
+| skills | match | Connect six skills to the era they were acquired in; the answers are in the career exhibits. |
+| philosophy | slots | Place ads in seven programme breaks under relevance, timing, frequency and "do not deliver now" rules. |
+| knowledge | auction | Bid on five second-price auctions within a budget; the highest-value slot is a trap. |
+| connect | relay | Aim seven relay antennas so the signal visits every relay once and reaches the receiver. |
+
+`puzzle-logic.js` holds the DOM-free rules (`evaluate` returns `ok`, human-readable `issues` and per-rule `marks`); `exhibit-puzzles.js` holds the data and the panel; `puzzle-svg.js` renders eight SVG boards and four HTML table boards. Failed attempts explain what went wrong (which slot fell into a hole, which time slot ran short, how many rules are unmet). Rule-based puzzles mark each rule met or unmet only after 確かめる. Hints have three levels, the third close to the answer. Solving shows a short debrief relating the model to the exhibit. There are still no timers or penalties, all models are labelled fictional, and every control works by tap and keyboard (arrow keys cycle or step values; ordering, staging and cabling also support dragging).
+
+Save format, collection bits and coin IDs are unchanged, so existing saves and transfer URLs keep working. A collected item still reopens its puzzle in the solved state.
+
+Collecting all thirteen items now unlocks 最後の手紙 (`#ending`), reachable from the inventory. Before completion the same address shows the current count. The letter text is assembled from the existing ABOUT and story statements with short connecting sentences.
+
+Validation: `node tests/exhibit-puzzles.mjs` enumerates every arrangement of every puzzle (up to 1.7 million) and asserts that each starts unsolved, that the stored answer is accepted, that the nine puzzles promising a single answer have exactly one, that the pipe puzzle accepts only the checkpoint route, that the auction accepts only the A/D/E winning set, and that failed attempts produce an explanation. All other existing tests and the Hugo production build pass. Each puzzle was additionally played in headless Chromium through the real page: one failed attempt, the answer entered with keyboard or clicks, then the item collected and the debrief shown.
