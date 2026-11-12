@@ -128,3 +128,7 @@ A first attempt at a brighter "pop sticker" look (cream paper, several colours, 
 `pop-fx.js` adds decorative effects in pink and white only: a CLEAR pill and a small confetti burst when a puzzle is solved, confetti for the profile item and full completion, a bump on the coin and collection counters, and a shake on a failed attempt. All are skipped with reduced motion or 動き OFF.
 
 Checked in headless Chromium at 1280×800 and 390×800: start screen, HUD, menu, exhibit panels, a puzzle in its initial, failed and solved states, and the inventory. Not checked on physical devices.
+
+### Ticket-cut controls
+
+Buttons no longer use a plain rounded rectangle. Two opposite corners are scooped out like a ticket, with a small pink dot in the top-right scoop. Edge and fill are two masked pseudo-element layers so the hairline follows the scoop, and glow uses `drop-shadow` on the button so it follows the shape. Slot buttons keep their plain shape because their coloured left border identifies the slot. The exhibit heading and puzzle frames echo the motif with two tight corners.
