@@ -8,7 +8,7 @@ const result=(issues,extra={})=>({ok:issues.length===0,issues,...extra});
 
 // career-0: every patch flips the tests wired to it.
 export function lampsOf(p,state){const lamps=[...p.start];state.forEach((on,i)=>{if(on)for(const k of p.patches[i].flips)lamps[k]^=1;});return lamps;}
-function toggle(p,state){const lamps=lampsOf(p,state),red=lamps.filter(v=>!v).length;return result(red?[`まだ ${red} 項目が赤です。当てた修正が、別の項目を反転させていないか確認しよう。`]:[],{lamps});}
+function toggle(p,state){const lamps=lampsOf(p,state),red=lamps.filter(v=>!v).length;return result(red?[`まだ ${red} 項目が落ちています。当てた修正が、別の項目を反転させていないか確認しよう。`]:[],{lamps});}
 
 // career-1: a looping command list drives the character across the stage.
 export const COMMANDS=['なし','前進','右を向く','左を向く','ジャンプ'];
