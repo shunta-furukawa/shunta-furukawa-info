@@ -18,7 +18,8 @@
     "approach": [
       0,
       21
-    ]
+    ],
+    "cost": 5
   },
   {
     "id": "career-0",
@@ -40,7 +41,8 @@
     "approach": [
       -16,
       6
-    ]
+    ],
+    "cost": 15
   },
   {
     "id": "career-1",
@@ -63,7 +65,8 @@
     "approach": [
       -21,
       4
-    ]
+    ],
+    "cost": 15
   },
   {
     "id": "career-2",
@@ -85,7 +88,8 @@
     "approach": [
       -23,
       -7
-    ]
+    ],
+    "cost": 15
   },
   {
     "id": "career-3",
@@ -108,7 +112,8 @@
     "approach": [
       -15,
       -18
-    ]
+    ],
+    "cost": 15
   },
   {
     "id": "career-4",
@@ -131,7 +136,8 @@
     "approach": [
       -4,
       -24
-    ]
+    ],
+    "cost": 15
   },
   {
     "id": "work-0",
@@ -153,7 +159,8 @@
     "approach": [
       8,
       -10
-    ]
+    ],
+    "cost": 20
   },
   {
     "id": "work-1",
@@ -175,7 +182,8 @@
     "approach": [
       16,
       -11
-    ]
+    ],
+    "cost": 20
   },
   {
     "id": "work-2",
@@ -197,7 +205,8 @@
     "approach": [
       21,
       -10
-    ]
+    ],
+    "cost": 20
   },
   {
     "id": "skills",
@@ -217,7 +226,8 @@
     "approach": [
       22,
       -3
-    ]
+    ],
+    "cost": 20
   },
   {
     "id": "philosophy",
@@ -234,7 +244,8 @@
     "approach": [
       -5,
       -5
-    ]
+    ],
+    "cost": 20
   },
   {
     "id": "knowledge",
@@ -251,7 +262,8 @@
     "approach": [
       18,
       10
-    ]
+    ],
+    "cost": 20
   },
   {
     "id": "connect",
@@ -268,6 +280,7 @@
     "approach": [
       -5,
       14
-    ]
+    ],
+    "cost": 30
   }
 ]

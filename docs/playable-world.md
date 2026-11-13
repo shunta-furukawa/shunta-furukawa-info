@@ -148,3 +148,18 @@ The 3D scene now follows the same concept; layout, collision footprints, coins a
 `harbor-models.js` stays DOM-free (geometry only) for the node tests; canvas-drawn faces and neon live in `explorer-scene.js` and are redrawn once the web fonts load and whenever the accent colour changes. Static architecture is still batched within the existing draw-call and triangle budgets (7 meshes, about 210k triangles).
 
 Checked in headless Chromium at 1280×800: the entrance, the career street and the work district with collected and uncollected exhibits, and the item images in the inventory. Not checked on physical devices.
+
+### Coins worth collecting
+
+The coin was a pink ring worth one, every exhibit cost a flat three, and the balance was a small figure under the signal meter. The economy and its presentation were rebuilt.
+
+- **Three denominations.** 128 coins worth 1, 5 or 10 (364 in total). IDs 0–100 keep their original positions; 27 new coins (101–127) are scattered off the roads: beside each studio, along the runway behind the start, around and on top of the transmission tower, on the bridge, in the air over the main crossing and along the far edge. Jumping always pays at least 5. A 10 stands in a thin column of light and is marked on the radar until collected.
+- **Minted coins.** Each coin is a disc with a milled rim and a struck face on both sides: a play mark on the 1, the numeral on the 5 and 10. The 10 is white with a pink numeral. They bob and spin; faces are redrawn with the accent colour.
+- **Prices.** Each exhibit has its own price in `harbor-catalog.json` (`cost`): 5 for the profile, 15 for each career stop, 20 for work, tools, thinking and archive, 30 for the communication station; 230 in total. Road coins alone (117) are not enough, so some exploring is required, but about a third of the coins can be left behind. The three coins at the start are 1, 1 and 5, which pays for the first monitor and introduces the denominations.
+- **Wallet.** The balance is a large numeral with a coin mark at the top left, always in view. Picking a coin up shows its value next to the wallet and above the avatar, larger for 5 and 10.
+- **Locked monitors** show LOCKED and their price, so the cost is visible before walking up.
+- **Opening a channel.** The offer shows the channel number, the item to be won (dimmed), the price, the balance and what will be left, with a meter. When the balance is short it says by how much and where larger coins are. Paying is a short ceremony: coins drop into the monitor, the numbers count down, the screen turns ON AIR, then the exhibit opens. With reduced motion the exhibit opens immediately.
+
+Save compatibility: the transfer URL is now version 2 and uses the two previously unused bytes for a bonus balance; version 1 links still load. A save that opened exhibits at the old flat price keeps them and is credited the difference, so no existing balance goes down. `normalizeSave` still rejects a save that claims exhibits it could not have paid for.
+
+Validation: `tests/explorer-save.mjs` covers coin values, total price and affordability, the starting coins, the legacy migration (applied once, preserved through the URL) and rejection of unpaid claims; `tests/svg-river.mjs` covers the new coin count, stable IDs, airborne values and that no ground coin sits in water. In headless Chromium at 1280×800 a new game was played from the start: the three starting coins were collected (balance 7), the first monitor was opened for 5 (balance 2) and its exhibit opened. The short-of-coins offer, a 10 with its light column, and the phone layout of the wallet and offer (390×800) were also checked. Not checked on physical devices.
