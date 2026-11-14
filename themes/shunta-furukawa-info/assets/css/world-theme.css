@@ -74,22 +74,30 @@ body.game-ready{--font-body:'Zen Kaku Gothic New','Hiragino Sans','Yu Gothic',sa
 .game-ready .explorer-status::before{content:'INFO';align-self:stretch;display:flex;align-items:center;flex:none;margin-right:16px;padding:11px 14px;background:var(--pk);color:var(--pki);font:700 1.05rem var(--font-mono);letter-spacing:.18em}
 .game-ready #first-hint{bottom:104px;padding:0;background:none;border:0;border-radius:0;box-shadow:none;color:#fff;font-size:1.6rem;font-weight:700;letter-spacing:.08em;text-shadow:0 2px 16px #000,0 0 2px #000}
 .game-ready #first-hint::after{content:'';display:inline-block;width:9px;height:1.1em;margin-left:8px;vertical-align:-.15em;background:var(--pk);animation:oa-blink 1s steps(2,jump-none) infinite}
-/* action cluster: one big round key with two satellites */
-.game-ready .explorer-actions{display:block;right:30px;bottom:max(30px,env(safe-area-inset-bottom));width:240px;height:216px;pointer-events:none}
-.game-ready .explorer-actions button{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;width:68px;height:68px;min-width:0;min-height:0;padding:0;background:#06060ad9;border:1px solid var(--ln2);border-radius:50%;box-shadow:0 10px 30px #000b;backdrop-filter:blur(10px);color:var(--tx);font-size:1rem;font-weight:700;letter-spacing:.02em;pointer-events:auto;transition:transform .2s var(--sp),border-color .2s,background .2s}
-.game-ready .explorer-actions button .ui-icon{width:22px;height:22px;color:var(--pk)}
-.game-ready .explorer-actions button#explorer-run{right:130px;bottom:18px}
-.game-ready .explorer-actions button#explorer-jump{right:74px;bottom:118px}
-.game-ready .explorer-actions button:hover{border-color:var(--pk)}
-.game-ready .explorer-actions button:active,.game-ready #explorer-run.is-held{transform:scale(.9);border-color:var(--pk);background:color-mix(in srgb,var(--pk) 26%,#06060a);box-shadow:0 0 26px var(--pk-glow)}
-.game-ready .explorer-actions button#explorer-inspect{position:absolute;right:0;bottom:0;width:114px;height:114px;min-height:0;background:var(--pk);border:0;color:var(--pki);font-size:1.7rem;font-weight:900;letter-spacing:.12em;box-shadow:0 0 0 7px #06060a8c,0 16px 44px var(--pk-glow);animation:none}
-.game-ready .explorer-actions button#explorer-inspect::after{content:'';position:absolute;inset:-12px;border:1px solid var(--pk);border-radius:50%;pointer-events:none;animation:oa-ping 1.9s var(--ez) infinite}
-.game-ready .explorer-actions button#explorer-inspect:hover{transform:scale(1.05)}
-.game-ready .explorer-actions button#explorer-inspect:active{transform:scale(.94)}
-.game-ready #explorer-inspect>.ui-icon{display:none}
-.game-ready #explorer-inspect span{margin-top:16px}
-.game-ready #explorer-inspect kbd{position:absolute;left:50%;top:18px;transform:translateX(-50%);margin:0;padding:1px 8px;background:#0000002e;border:1px solid #ffffff73;border-radius:6px;font:1rem var(--font-mono);color:inherit}
-@media(pointer:coarse){.game-ready #explorer-inspect kbd{display:none}.game-ready #explorer-inspect span{margin-top:0}}
+/* action keys: one family of round keys on one layer. Jump sits under the thumb and 調べる appears
+   beside it near an exhibit. IDs are used so older size rules for these buttons cannot leak through. */
+.game-ready .explorer-actions{display:block;right:26px;bottom:max(28px,env(safe-area-inset-bottom));width:220px;height:190px;pointer-events:none}
+.game-ready #explorer-controls button{position:absolute;box-sizing:border-box;-webkit-appearance:none;appearance:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;width:88px;height:88px;min-width:0;min-height:0;max-width:none;margin:0;padding:0;background:#06060ad9;border:1px solid var(--ln2);border-radius:50%;box-shadow:0 10px 30px #000b;backdrop-filter:blur(10px);color:var(--tx);font-size:1.15rem;font-weight:700;letter-spacing:.04em;line-height:1.2;pointer-events:auto;animation:none;transition:transform .16s var(--sp),border-color .2s,background .2s}
+.game-ready #explorer-controls button .ui-icon{position:static;display:block;width:26px;height:26px;color:var(--pk)}
+.game-ready #explorer-controls button span{margin:0}
+.game-ready #explorer-controls kbd{position:static;transform:none;margin:0;padding:0;background:none;border:0;border-radius:0;font:.85rem var(--font-mono);letter-spacing:.1em;color:var(--mu)}
+.game-ready #explorer-controls #explorer-jump{right:0;bottom:0}
+.game-ready #explorer-controls #explorer-inspect{right:98px;bottom:32px;background:var(--pk);border-color:var(--pk);color:var(--pki);animation:key-in .32s var(--sp)}
+.game-ready #explorer-controls #explorer-inspect .ui-icon,.game-ready #explorer-controls #explorer-inspect kbd{color:inherit}
+.game-ready #explorer-controls #explorer-inspect::after{content:none}
+.game-ready #explorer-controls #explorer-run{right:14px;bottom:100px;width:64px;height:64px;font-size:1rem}
+.game-ready #explorer-controls #explorer-run .ui-icon{width:20px;height:20px}
+.game-ready #explorer-controls button:hover{border-color:var(--pk)}
+.game-ready #explorer-controls button:active,.game-ready #explorer-controls #explorer-run.is-held{transform:scale(.9);border-color:var(--pk);background:color-mix(in srgb,var(--pk) 26%,#06060a)}
+.game-ready #explorer-controls #explorer-inspect:active{background:color-mix(in srgb,var(--pk) 80%,#06060a)}
+@keyframes key-in{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
+/* touch: the stick appears where the thumb lands and a full tilt runs, so the dash key is not needed */
+#stick-zone{display:none}
+@media(pointer:coarse),(max-width:720px){#stick-zone{display:block;position:absolute;left:0;bottom:0;width:56vw;height:58dvh;touch-action:none;pointer-events:auto;-webkit-user-select:none;user-select:none}.game-ready #explorer-controls kbd{display:none}.game-ready #explorer-controls #explorer-run{display:none}}
+.game-ready .explorer-joystick{opacity:.6;transition:opacity .2s}
+.game-ready .explorer-joystick.is-live{opacity:1;transition:none}
+.game-ready .explorer-joystick.is-live small{visibility:hidden}
+.game-ready .explorer-joystick.is-run::before{border-style:solid;border-color:var(--pk);box-shadow:0 0 22px var(--pk-glow)}
 .game-ready .explorer-joystick{width:138px;height:138px;left:34px;bottom:max(40px,calc(env(safe-area-inset-bottom) + 10px));background:radial-gradient(circle,#06060a8c 0 62%,transparent 63%);border:1px solid var(--ln2);box-shadow:none;backdrop-filter:blur(4px)}
 .game-ready .explorer-joystick::before{inset:15px;border:1px dashed var(--ln2);transform:none}
 .game-ready .explorer-joystick::after{content:none}
@@ -297,6 +305,32 @@ body.game-ready{--font-body:'Zen Kaku Gothic New','Hiragino Sans','Yu Gothic',sa
 .game-ready #explorer-dialog #unlock-panel #unlock-button:disabled{background:none;box-shadow:none;border:1px solid var(--ln2);color:var(--mu)}
 .game-ready #explorer-dialog #unlock-panel.is-paying #unlock-button{opacity:.5}
 .game-ready #explorer-dialog #unlock-panel.is-paying #unlock-back{visibility:hidden}
+/* locked channels cannot be read from the menu or from another exhibit's tabs */
+.game-ready #explorer-dialog #explorer-reading.is-sealed .world-zone.is-open:not(#career):not(#work) .zone-content>*:not(#sealed-note){display:none}
+.game-ready #explorer-dialog #explorer-reading.is-sealed #career-reading,.game-ready #explorer-dialog #explorer-reading.is-sealed .world-visual-caption{display:none}
+.game-ready #explorer-dialog #explorer-reading.is-sealed :is(#work-cases,#world-skills)>*:not(#sealed-note):not(.work-case-buttons){display:none}
+.game-ready #explorer-dialog #explorer-reading.is-sealed #exhibit-heading img{filter:grayscale(1) brightness(.5);opacity:.45;animation:none}
+.game-ready #explorer-dialog #explorer-reading.is-sealed #exhibit-heading::before{-webkit-text-stroke-color:#ffffff30}
+.game-ready #explorer-dialog #explorer-reading.is-sealed #exhibit-heading::after{display:none}
+.game-ready #explorer-dialog #explorer-reading.is-sealed #exhibit-state::before{background:var(--mu)}
+.game-ready #explorer-dialog #sealed-note{margin:26px 0 30px;padding:26px 28px;background:var(--k0) repeating-linear-gradient(0deg,#ffffff0b 0 1px,transparent 1px 3px);border:1px solid var(--ln2);border-radius:16px}
+.game-ready #explorer-dialog #sealed-note .unlock-kicker{margin-bottom:12px}
+.game-ready #explorer-dialog #sealed-note h3{margin:0 0 14px;font-size:2.3rem;font-weight:900;color:#fff}
+.game-ready #explorer-dialog .sealed-price{display:flex;align-items:center;gap:12px;margin:0 0 14px}
+.game-ready #explorer-dialog .sealed-price .coin-icon{width:34px;height:34px}
+.game-ready #explorer-dialog .sealed-price strong{font:700 3rem/1 var(--fd);color:var(--pk)}
+.game-ready #explorer-dialog .sealed-price span{font:1.15rem var(--font-mono);letter-spacing:.06em;color:var(--mu)}
+.game-ready #explorer-dialog #sealed-note>p:not([class]){margin:0 0 18px;font-size:1.4rem;line-height:1.9;color:#a9abbd}
+.game-ready #explorer-dialog #sealed-locate{padding:8px 0;background:none;border:0;border-bottom:1px solid var(--pk);border-radius:0;color:var(--pk);font-size:1.45rem;font-weight:700;cursor:pointer}
+.game-ready #explorer-dialog .career-stops button.is-locked{color:#5f6177}
+.game-ready #explorer-dialog .career-stops button.is-locked small{font-size:0}
+.game-ready #explorer-dialog .career-stops button.is-locked small::after{content:'LOCKED';font:.95rem var(--font-mono);letter-spacing:.14em}
+.game-ready #explorer-dialog .career-stops button.is-locked::after{border-style:dashed}
+.game-ready #explorer-dialog .career-stops button.is-locked[aria-pressed=true]{color:#c9cad6}
+.game-ready #explorer-dialog .career-stops button.is-locked[aria-pressed=true]::after{background:var(--k1);border:1px dashed #c9cad6;box-shadow:none}
+.game-ready #explorer-dialog :is(.choice-row,.work-switch) button.is-locked{border-style:dashed;color:var(--mu)}
+.game-ready #explorer-dialog :is(.choice-row,.work-switch) button.is-locked::before{content:'LOCKED ';font:.95rem var(--font-mono);letter-spacing:.1em;margin-right:6px}
+.game-ready #explorer-dialog .choice-row button.is-locked[aria-pressed=true]{background:none;border-color:#c9cad6;color:#fff}
 /* channel wall */
 .game-ready #explorer-dialog .harbor-shelf{grid-template-columns:repeat(3,1fr);gap:1px;background:var(--ln);border:1px solid var(--ln);counter-reset:ch}
 .game-ready #explorer-dialog .harbor-item{counter-increment:ch;position:relative;aspect-ratio:1;min-height:0;padding:0;justify-content:center;background:var(--k1);border:0;border-radius:0;box-shadow:none;color:var(--mu);overflow:hidden;transform:none;transition:background .25s}
@@ -318,6 +352,9 @@ body.game-ready{--font-body:'Zen Kaku Gothic New','Hiragino Sans','Yu Gothic',sa
 .game-ready .harbor-pickup img{width:42px;height:42px}
 .game-ready .harbor-pickup small{font:400 1.05rem var(--font-mono);letter-spacing:.18em;color:var(--pk)}
 .game-ready .harbor-pickup strong{font-size:1.45rem;font-weight:700;color:#fff}
+.game-ready #explorer-dialog .harbor-pickup>div{min-width:0;flex:1}
+.game-ready #explorer-dialog .harbor-pickup strong{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.game-ready #explorer-dialog .harbor-pickup button{flex:none;max-width:none;white-space:nowrap}
 .game-ready .harbor-pickup button{margin-left:auto;padding:13px 28px;background:var(--pk);border:0;border-radius:999px;box-shadow:0 8px 30px var(--pk-glow);color:var(--pki);font-size:1.4rem;font-weight:900;letter-spacing:.1em;white-space:nowrap;transition:transform .25s var(--sp)}
 .game-ready .harbor-pickup button:hover:not(:disabled){transform:translateY(-2px)}
 .game-ready #explorer-dialog .harbor-pickup button:disabled{padding-right:8px;background:none;box-shadow:none;color:var(--pk);opacity:1}
@@ -410,12 +447,10 @@ body.game-ready{--font-body:'Zen Kaku Gothic New','Hiragino Sans','Yu Gothic',sa
  .game-ready #collection-marks{height:22px;gap:2px}
  .game-ready .explorer-status{top:auto;right:auto;left:50%;bottom:max(232px,calc(env(safe-area-inset-bottom) + 212px));max-width:calc(100vw - 32px)}
  .game-ready #first-hint{bottom:max(286px,calc(env(safe-area-inset-bottom) + 266px));font-size:1.4rem}
- .game-ready .explorer-actions{right:16px;bottom:max(22px,env(safe-area-inset-bottom));width:210px;height:190px}
- .game-ready .explorer-actions button{width:62px;height:62px}
- .game-ready .explorer-actions button#explorer-inspect{width:100px;height:100px;font-size:1.55rem}
- .game-ready .explorer-actions button#explorer-run{right:112px;bottom:12px}
- .game-ready .explorer-actions button#explorer-jump{right:62px;bottom:102px}
- .game-ready .explorer-joystick{left:20px;width:128px;height:128px}
+ .game-ready .explorer-actions{right:18px;bottom:max(26px,env(safe-area-inset-bottom));width:190px;height:150px}
+ .game-ready #explorer-controls button{width:82px;height:82px}
+ .game-ready #explorer-controls #explorer-inspect{right:90px;bottom:30px}
+ .game-ready .explorer-joystick{left:22px;bottom:max(34px,calc(env(safe-area-inset-bottom) + 8px));width:124px;height:124px}
  .game-ready #start-title{font-size:clamp(3.2rem,11.4vw,6rem)}
  .game-ready #start-screen .start-content>button{font-size:1.9rem;padding:9px 20px 9px 0}
  .game-ready #start-screen::before{top:92px;width:112px;height:9px}
@@ -433,7 +468,9 @@ body.game-ready{--font-body:'Zen Kaku Gothic New','Hiragino Sans','Yu Gothic',sa
  .game-ready #explorer-dialog .harbor-shelf{grid-template-columns:repeat(2,1fr)}
  .game-ready #explorer-dialog .career-stops{align-items:flex-end}.game-ready #explorer-dialog .career-stops span{font-size:1.2rem}.game-ready #explorer-dialog .career-stops small{font-size:.88rem;white-space:nowrap;letter-spacing:-.03em}
  .game-ready #explorer-dialog .career-art{width:78px;height:78px;padding:12px}
- .game-ready .harbor-pickup{padding:11px 14px 11px 20px}
+ .game-ready .harbor-pickup{padding:11px 16px max(11px,env(safe-area-inset-bottom)) 20px;gap:12px}
+ .game-ready #explorer-dialog .harbor-pickup button{padding:12px 20px;font-size:1.3rem}
+ .game-ready #explorer-dialog #sealed-note{padding:22px 20px}
  .game-ready #exhibit-puzzle .puzzle-actions{gap:20px;flex-wrap:wrap}
  .puzzle-stamp{font-size:2.8rem;padding:12px 0}
 }
