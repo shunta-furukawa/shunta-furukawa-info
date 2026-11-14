@@ -3,6 +3,11 @@ export const riverCenter=x=>8+Math.sin((x-20)*.17)*1.5;
 export const STONES=[{x:43,z:riverCenter(43),r:.75}];
 export function waterAt(x,z,margin=0){if(x<RIVER.start||x>RIVER.end)return false;if(Math.abs(x-RIVER.bridgeX)<RIVER.bridgeHalf-margin)return false;if(STONES.some(s=>Math.hypot(x-s.x,z-s.z)<s.r-margin))return false;return Math.abs(z-riverCenter(x))<RIVER.halfWidth+margin;}
 export function riverWalkable(x,z,height){return height>.25||!waterAt(x,z,.3);}
+// Airborne coins float clearly above the avatar's head (about 2.85 tall), so walking under one
+// never looks like touching it. A coin is taken when the body reaches its height, which a jump
+// does for most of its arc.
+export const AIR_COIN_Y=3.7,AVATAR_REACH=3.05;
 // Coin IDs remain unchanged. The final 24 coins become optional jump-route rewards.
-export function adventureCoins(coins){return coins.map((c,i)=>{if(i<coins.length-24)return {...c,z:waterAt(c.x,c.z)?riverCenter(c.x)+(c.z<riverCenter(c.x)?-2.3:2.3):c.z,y:.8};const j=i-(coins.length-24),lane=Math.floor(j/4),step=j%4,x=31+lane*3.7;return {...c,x,z:riverCenter(x)+(step-1.5)*2.15,y:step===1||step===2?2.4:.8};});}
-export function canReachCoin(player,coin){return Math.hypot(player.x-coin.x,player.z-coin.z)<.9&&Math.abs(player.y+.8-coin.y)<.65;}
+export function adventureCoins(coins){return coins.map((c,i)=>{if(i<coins.length-24)return {...c,z:waterAt(c.x,c.z)?riverCenter(c.x)+(c.z<riverCenter(c.x)?-2.3:2.3):c.z,y:.8};const j=i-(coins.length-24),lane=Math.floor(j/4),step=j%4,x=31+lane*3.7;return {...c,x,z:riverCenter(x)+(step-1.5)*2.15,y:step===1||step===2?AIR_COIN_Y:.8};});}
+export function canReachCoin(player,coin){return Math.hypot(player.x-coin.x,player.z-coin.z)<.9&&coin.y>=player.y-.3&&coin.y<=player.y+AVATAR_REACH;}
+export const underCoin=(player,coin)=>coin.y>player.y+AVATAR_REACH&&Math.hypot(player.x-coin.x,player.z-coin.z)<.9;

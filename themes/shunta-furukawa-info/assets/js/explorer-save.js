@@ -1,4 +1,4 @@
-import {adventureCoins} from './explorer-river.js';
+import {adventureCoins,AIR_COIN_Y} from './explorer-river.js';
 import {SIGNS,SPAWN} from './explorer-physics.js';
 import {WORLD_PATHS} from './explorer-paths.js';
 const houses=[[0,12.5,3.12],[-26,3,2.5],[-26,-10,2.5],[-9,-27,3.12],[16,-20,5.72],[-10,-10,3.12],[19,18,2.6],[-10,10.5,3.12]];
@@ -6,7 +6,7 @@ const points=[[0,32],[0,30],[0,28]];
 for(const route of WORLD_PATHS)for(const [x,z] of route.points){if(Math.hypot(x,z)>53||points.some(p=>Math.hypot(p[0]-x,p[1]-z)<2.8)||houses.some(([a,b,r])=>Math.hypot(a*1.6-x,b*1.6-z)<r+1)||SIGNS.some(s=>Math.hypot(s.x-x,s.z-z)<1))continue;points.push([x,z]);}
 // Coins come in 1, 5 and 10. IDs are permanent: 0-100 keep their original places, 101-127 are
 // scattered off the roads (beside studios, on the runway, at the tower, along the far edge).
-const scattered=[[-4.73,18.04,.8,5],[-45.75,6.52,.8,5],[-45.75,-17.72,.8,5],[-16.36,-47.93,.8,5],[28.55,-39.13,.8,5],[-12.38,-19.62,.8,5],[33.65,32.05,.8,5],[-21.12,16.8,.8,5],[0,41,.8,5],[0,46,.8,5],[0,52,.8,10],[-14.66,10.57,.8,5],[-18.6,12.77,.8,5],[-16,12.8,2.4,10],[16.93,46.51,.8,10],[47.81,12.81,.8,10],[37.92,-31.82,.8,10],[-40.55,28.39,.8,10],[-16.93,46.51,.8,10],[25,9.13,.8,5],[0,-11.2,2.4,10],[48,-16,.8,5],[-34,-40,.8,5],[18,-26,.8,5],[14,-48,.8,5],[-26,34,.8,5],[34,-14,.8,5]];
+const scattered=[[-4.73,18.04,.8,5],[-45.75,6.52,.8,5],[-45.75,-17.72,.8,5],[-16.36,-47.93,.8,5],[28.55,-39.13,.8,5],[-12.38,-19.62,.8,5],[33.65,32.05,.8,5],[-21.12,16.8,.8,5],[0,41,.8,5],[0,46,.8,5],[0,52,.8,10],[-14.66,10.57,.8,5],[-18.6,12.77,.8,5],[-16,12.8,AIR_COIN_Y,10],[16.93,46.51,.8,10],[47.81,12.81,.8,10],[37.92,-31.82,.8,10],[-40.55,28.39,.8,10],[-16.93,46.51,.8,10],[25,9.13,.8,5],[0,-11.2,AIR_COIN_Y,10],[48,-16,.8,5],[-34,-40,.8,5],[18,-26,.8,5],[14,-48,.8,5],[-26,34,.8,5],[34,-14,.8,5]];
 const routeCoins=adventureCoins(points.slice(0,101).map(([x,z],id)=>({id,x,z})));
 export const COINS=[...routeCoins.map(c=>({...c,value:c.id===2||c.y>2||(c.id>2&&c.id<77&&c.id%9===4)?5:1})),...scattered.map(([x,z,y,value],i)=>({id:routeCoins.length+i,x,z,y,value}))];
 const valueOf=new Map(COINS.map(c=>[c.id,c.value]));

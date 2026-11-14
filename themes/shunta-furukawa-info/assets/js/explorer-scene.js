@@ -1,4 +1,4 @@
-import {RIVER,STONES,riverCenter,waterAt,riverWalkable,canReachCoin} from './explorer-river.js';
+import {RIVER,STONES,riverCenter,waterAt,riverWalkable,canReachCoin,underCoin} from './explorer-river.js';
 import {COINS,jumpStep} from './explorer-save.js';
 import * as T from './vendor/three.module.js';
 import {followYaw,signYaw,createMovementFrame} from './explorer-camera.js';
@@ -9,7 +9,7 @@ import {createAvatar} from './explorer-avatar.js';
 import {buildHarbor,createArtifact,artifactImages,setArtifactColor} from './harbor-models.js';
 import {BASE_SIGNS as SIGNS,WORLD_SCALE,WALK_SPEED,RUN_SPEED,SPAWN,movePlayer,movementVector,nearestSign} from './explorer-physics.js';
 
-export function createExplorer(host,{onNear,onRead,onPosition,onFailure,onImages=()=>{},onCoin=()=>{},onFall=()=>{},reduced=false}) {
+export function createExplorer(host,{onNear,onRead,onPosition,onFailure,onImages=()=>{},onCoin=()=>{},onCoinMiss=()=>{},onFall=()=>{},reduced=false}) {
  const renderer=new T.WebGLRenderer({antialias:true,alpha:false});renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.setClearColor(0x111116);host.appendChild(renderer.domElement);
  renderer.domElement.setAttribute('aria-label','アバターで歩く3D空間。WASDまたは矢印キーで移動、Fで調べる。');renderer.domElement.tabIndex=0;
  const world=new T.Scene(),environment=new T.Group();world.add(environment);const camera=new T.PerspectiveCamera(52,1,.1,180);const lighting=plazaLighting(world,renderer);
@@ -95,7 +95,7 @@ export function createExplorer(host,{onNear,onRead,onPosition,onFailure,onImages
  function updateExhibits(){for(const sign of SIGNS){const owned=collected.has(sign.id),seen=visited.has(sign.id),board=boards.get(sign.id),old=board.userData.faces[0].material;old.map.dispose();old.dispose();const material=label(sign,board.userData.index,owned?2:seen?1:!opened||opened.has(sign.id)?0:-1);board.userData.faces.forEach(face=>face.material=material);exhibits.get(sign.id).material=owned?luminousAccent:solids.gray;badges.get(sign.id).visible=false;if(devices.has(sign.id)){const d=devices.get(sign.id);d.light.material=owned?luminousAccent:solids.gray;d.beam.material=owned?beamOn:beamOff;}}}
  const movementFrame=createMovementFrame();let manualUntil=0,walkingTime=0;const manualCamera=()=>{manualUntil=performance.now()+1400;};
  const keys=new Set();let stick={x:0,z:0},yaw=0,pitch=0,reading=false,motionReduced=reduced,running=false,frame=0,last=0,phase=0,time=0,near=null,drag=null,failed=false;
- let lastShore={...SPAWN},fallCooldown=0;let jumpState={phase:'ground',y:0,v:0};function jump(){if(!reading&&jumpState.phase==='ground')jumpState={phase:'launch',y:0,v:0,delay:.09};}
+ let lastShore={...SPAWN},fallCooldown=0,missCooldown=0;let jumpState={phase:'ground',y:0,v:0};function jump(){if(!reading&&jumpState.phase==='ground')jumpState={phase:'launch',y:0,v:0,delay:.09};}
  const target=new T.Vector3(),desired=new T.Vector3(),offset=new T.Vector3();let first=true;
  function clearInput(){movementFrame.reset();walkingTime=0;keys.clear();running=false;stick={x:0,z:0};drag=null;}
  function interact(){if(reading||!near)return;
@@ -119,10 +119,10 @@ export function createExplorer(host,{onNear,onRead,onPosition,onFailure,onImages
    const v=movementVector(ix,iz,movementFrame.resolve(ix,iz,yaw,Boolean(drag)||performance.now()<manualUntil)),speed=keys.has('shift')||running?RUN_SPEED:WALK_SPEED;const p=movePlayer(player.position,{x:v.x*speed*dt,z:v.z*speed*dt},obstacles,(x,z)=>riverWalkable(x,z,jumpState.y));moving=Math.hypot(p.x-player.position.x,p.z-player.position.z)>.0001;player.position.x=p.x;player.position.z=p.z;
    if(moving){const angle=Math.atan2(v.x,v.z);player.rotation.y+=Math.atan2(Math.sin(angle-player.rotation.y),Math.cos(angle-player.rotation.y))*Math.min(1,dt*14);phase+=dt*(speed===RUN_SPEED?16:11);}
   }
-  if(!reading)jumpState=jumpStep(jumpState,dt);player.position.y=jumpState.y;fallCooldown=Math.max(0,fallCooldown-dt);if(!reading&&jumpState.y<=.08&&waterAt(player.position.x,player.position.z)){player.position.set(lastShore.x,0,lastShore.z);jumpState={phase:'ground',y:0,v:0};clearInput();first=true;if(!fallCooldown){onFall();fallCooldown=1;}}else if(!waterAt(player.position.x,player.position.z,.45)&&jumpState.phase==='ground')lastShore={x:player.position.x,z:player.position.z};
+  if(!reading)jumpState=jumpStep(jumpState,dt);player.position.y=jumpState.y;fallCooldown=Math.max(0,fallCooldown-dt);missCooldown=Math.max(0,missCooldown-dt);if(!reading&&jumpState.y<=.08&&waterAt(player.position.x,player.position.z)){player.position.set(lastShore.x,0,lastShore.z);jumpState={phase:'ground',y:0,v:0};clearInput();first=true;if(!fallCooldown){onFall();fallCooldown=1;}}else if(!waterAt(player.position.x,player.position.z,.45)&&jumpState.phase==='ground')lastShore={x:player.position.x,z:player.position.z};
   const swing=moving?Math.sin(phase)*.6:0;for(const {side,leg,arm} of limbs){leg.rotation.x=swing*side;arm.rotation.x=-swing*side*.8;}body.position.y=moving&&!motionReduced?Math.abs(Math.sin(phase))*.045:0;
   const airborne=jumpState.phase==='air',crouch=['launch','land'].includes(jumpState.phase);body.scale.set(1,crouch?.88:1,1);if(airborne){for(const {side,leg,arm} of limbs){leg.rotation.x=.35+side*.15;arm.rotation.x=-1.1;arm.rotation.z=side*.18;}}else for(const {arm} of limbs)arm.rotation.z=0;
-  for(const {value,list,rim,face} of mint){list.forEach((coin,i)=>{const gone=pickedCoins.has(coin.id);if(!gone&&!reading&&canReachCoin(player.position,coin)){pickedCoins.add(coin.id);onCoin(coin.id);}coinTransform.position.set(coin.x,coin.y+(motionReduced?0:Math.sin(time*2.2+coin.id)*.07),coin.z);coinTransform.rotation.set(0,motionReduced?.5:time*(value===10?2.1:1.5)+coin.id,0);coinTransform.scale.setScalar(pickedCoins.has(coin.id)?1e-6:1);coinTransform.updateMatrix();rim.setMatrixAt(i,coinTransform.matrix);face.setMatrixAt(i,coinTransform.matrix);if(value===10){coinTransform.position.y=coin.y+3.6;coinTransform.rotation.set(0,0,0);coinTransform.updateMatrix();pillar.setMatrixAt(i,coinTransform.matrix);}});rim.instanceMatrix.needsUpdate=true;face.instanceMatrix.needsUpdate=true;}pillar.instanceMatrix.needsUpdate=true;
+  for(const {value,list,rim,face} of mint){list.forEach((coin,i)=>{const gone=pickedCoins.has(coin.id);if(!gone&&!reading&&canReachCoin(player.position,coin)){pickedCoins.add(coin.id);onCoin(coin.id);}else if(!gone&&!reading&&missCooldown<=0&&jumpState.phase==='ground'&&underCoin(player.position,coin)){missCooldown=5;onCoinMiss(coin.id);}coinTransform.position.set(coin.x,coin.y+(motionReduced?0:Math.sin(time*2.2+coin.id)*.07),coin.z);coinTransform.rotation.set(0,motionReduced?.5:time*(value===10?2.1:1.5)+coin.id,0);coinTransform.scale.setScalar(pickedCoins.has(coin.id)?1e-6:1);coinTransform.updateMatrix();rim.setMatrixAt(i,coinTransform.matrix);face.setMatrixAt(i,coinTransform.matrix);if(value===10){coinTransform.position.y=coin.y+3.6;coinTransform.rotation.set(0,0,0);coinTransform.updateMatrix();pillar.setMatrixAt(i,coinTransform.matrix);}});rim.instanceMatrix.needsUpdate=true;face.instanceMatrix.needsUpdate=true;}pillar.instanceMatrix.needsUpdate=true;
 
   shadow.scale.setScalar(1-jumpState.y*.12);
   shadow.position.set(player.position.x,.012,player.position.z);
